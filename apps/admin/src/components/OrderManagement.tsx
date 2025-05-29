@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import {
   List,
   Datagrid,
@@ -6,7 +6,7 @@ import {
   NumberField,
   DateField,
   EditButton,
-  DeleteButton,
+  // DeleteButton,
   Edit,
   SimpleForm,
   TextInput,
@@ -23,7 +23,7 @@ import {
   SingleFieldList,
   ChipField,
   ReferenceField,
-  ReferenceManyField,
+  // ReferenceManyField,
 } from 'react-admin';
 
 /**
@@ -98,8 +98,8 @@ export const OrderList = () => (
         label="实付金额"
         options={{ style: 'currency', currency: 'CNY' }}
       />
-      <OrderStatusField source="status" label="订单状态" />
-      <PaymentStatusField source="paymentStatus" label="支付状态" />
+      <OrderStatusField />
+      <PaymentStatusField />
       <DateField source="createdAt" label="创建时间" />
       <EditButton />
     </Datagrid>
@@ -176,8 +176,8 @@ export const OrderShow = () => (
       />
 
       {/* 状态信息 */}
-      <OrderStatusField source="status" label="订单状态" />
-      <PaymentStatusField source="paymentStatus" label="支付状态" />
+      <OrderStatusField />
+      <PaymentStatusField />
 
       {/* 地址信息 */}
       <TextField source="shippingAddress" label="收货地址" />

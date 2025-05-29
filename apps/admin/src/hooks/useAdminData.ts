@@ -180,7 +180,7 @@ export const useAdminData = () => {
  * 监控低库存产品
  */
 export const useStockAlerts = (threshold: number = 10) => {
-  const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [lowStockProducts, setLowStockProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const dataProvider = useDataProvider();
@@ -229,8 +229,8 @@ export const useStockAlerts = (threshold: number = 10) => {
  * 监控即将过期的优惠券
  */
 export const useCouponAlerts = () => {
-  const [expiringSoonCoupons, setExpiringSoonCoupons] = useState([]);
-  const [expiredCoupons, setExpiredCoupons] = useState([]);
+  const [expiringSoonCoupons, setExpiringSoonCoupons] = useState<any[]>([]);
+  const [expiredCoupons, setExpiredCoupons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const dataProvider = useDataProvider();
@@ -306,8 +306,7 @@ export const useCouponAlerts = () => {
  * 处理系统实时通知
  */
 export const useRealtimeNotifications = () => {
-  const [notifications, setNotifications] = useState([]);
-  const notify = useNotify();
+  const [notifications, setNotifications] = useState<any[]>([]);
 
   useEffect(() => {
     // 这里可以集成WebSocket或Server-Sent Events

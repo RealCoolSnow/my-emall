@@ -50,7 +50,15 @@ export const dataProvider: DataProvider = {
       ...params.filter,
     };
 
-    const url = `${API_URL}/${resource}?${new URLSearchParams(query).toString()}`;
+    // 处理管理后台特殊路由
+    let url = `${API_URL}/${resource}`;
+    if (resource === 'users') {
+      url = `${API_URL}/admin/users`;
+    } else if (resource.startsWith('admin/')) {
+      url = `${API_URL}/${resource}`;
+    }
+
+    url += `?${new URLSearchParams(query).toString()}`;
     Logger.debug(`Fetching list for ${resource}`, { url, params });
 
     try {
@@ -71,7 +79,14 @@ export const dataProvider: DataProvider = {
    * 获取单个资源
    */
   getOne: async (resource, params) => {
-    const url = `${API_URL}/${resource}/${params.id}`;
+    let url = `${API_URL}/${resource}/${params.id}`;
+
+    // 处理管理后台特殊路由
+    if (resource === 'users') {
+      url = `${API_URL}/admin/users/${params.id}`;
+    } else if (resource.startsWith('admin/')) {
+      url = `${API_URL}/${resource}/${params.id}`;
+    }
 
     try {
       const { json } = await httpClient(url);
@@ -133,7 +148,14 @@ export const dataProvider: DataProvider = {
    * 创建资源
    */
   create: async (resource, params) => {
-    const url = `${API_URL}/${resource}`;
+    let url = `${API_URL}/${resource}`;
+
+    // 处理管理后台特殊路由
+    if (resource === 'users') {
+      url = `${API_URL}/admin/users`;
+    } else if (resource.startsWith('admin/')) {
+      url = `${API_URL}/${resource}`;
+    }
 
     try {
       const { json } = await httpClient(url, {
@@ -151,7 +173,14 @@ export const dataProvider: DataProvider = {
    * 更新资源
    */
   update: async (resource, params) => {
-    const url = `${API_URL}/${resource}/${params.id}`;
+    let url = `${API_URL}/${resource}/${params.id}`;
+
+    // 处理管理后台特殊路由
+    if (resource === 'users') {
+      url = `${API_URL}/admin/users/${params.id}`;
+    } else if (resource.startsWith('admin/')) {
+      url = `${API_URL}/${resource}/${params.id}`;
+    }
 
     try {
       const { json } = await httpClient(url, {
@@ -189,7 +218,14 @@ export const dataProvider: DataProvider = {
    * 删除资源
    */
   delete: async (resource, params) => {
-    const url = `${API_URL}/${resource}/${params.id}`;
+    let url = `${API_URL}/${resource}/${params.id}`;
+
+    // 处理管理后台特殊路由
+    if (resource === 'users') {
+      url = `${API_URL}/admin/users/${params.id}`;
+    } else if (resource.startsWith('admin/')) {
+      url = `${API_URL}/${resource}/${params.id}`;
+    }
 
     try {
       const { json } = await httpClient(url, {

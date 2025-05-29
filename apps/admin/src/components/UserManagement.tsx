@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import {
   List,
   Datagrid,
@@ -63,7 +63,7 @@ export const UserList = () => (
       <TextField source="id" label="用户ID" />
       <TextField source="username" label="用户名" />
       <EmailField source="email" label="邮箱" />
-      <UserRoleField source="role" label="角色" />
+      <UserRoleField />
       <BooleanField source="isActive" label="激活状态" />
       <DateField source="lastLoginAt" label="最后登录" />
       <DateField source="createdAt" label="注册时间" />
@@ -164,7 +164,7 @@ export const UserShow = () => (
       <TextField source="id" label="用户ID" />
       <TextField source="username" label="用户名" />
       <EmailField source="email" label="邮箱" />
-      <UserRoleField source="role" label="角色" />
+      <UserRoleField />
       <BooleanField source="isActive" label="激活状态" />
 
       {/* 个人信息 */}

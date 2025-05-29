@@ -27,14 +27,14 @@ const CustomMenu = () => {
 
   return (
     <Menu>
-      <MenuItemLink to="/" primaryText="仪表板" leftIcon="📊" />
-      <MenuItemLink to="/products" primaryText="产品管理" leftIcon="📦" />
-      <MenuItemLink to="/orders" primaryText="订单管理" leftIcon="📋" />
-      <MenuItemLink to="/coupons" primaryText="优惠券管理" leftIcon="🎫" />
+      <MenuItemLink to="/" primaryText="仪表板" />
+      <MenuItemLink to="/products" primaryText="产品管理" />
+      <MenuItemLink to="/orders" primaryText="订单管理" />
+      <MenuItemLink to="/coupons" primaryText="优惠券管理" />
 
       {/* 只有管理员和超级管理员可以看到用户管理 */}
       {(permissions === 'ADMIN' || permissions === 'SUPER_ADMIN') && (
-        <MenuItemLink to="/users" primaryText="用户管理" leftIcon="👥" />
+        <MenuItemLink to="/users" primaryText="用户管理" />
       )}
     </Menu>
   );

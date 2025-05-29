@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import { useState } from 'react';
 import {
   List,
   Datagrid,
@@ -61,7 +61,7 @@ export const CouponList = () => (
       <TextField source="id" label="ID" />
       <TextField source="code" label="优惠码" />
       <TextField source="name" label="名称" />
-      <CouponTypeField source="type" label="类型" />
+      <CouponTypeField />
       <NumberField source="value" label="折扣值" />
       <NumberField
         source="minAmount"
@@ -264,7 +264,7 @@ export const CouponShow = () => (
       <TextField source="code" label="优惠码" />
       <TextField source="name" label="名称" />
       <TextField source="description" label="描述" />
-      <CouponTypeField source="type" label="类型" />
+      <CouponTypeField />
       <NumberField source="value" label="折扣值" />
       <NumberField
         source="minAmount"

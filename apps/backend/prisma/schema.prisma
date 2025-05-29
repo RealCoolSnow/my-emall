@@ -16,6 +16,7 @@ model User {
   username  String   @unique
   password  String
   role      String   @default("CUSTOMER") // CUSTOMER, ADMIN, SUPER_ADMIN
+  isActive  Boolean  @default(true)
   profile   String?  // JSON string
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, Title } from 'react-admin';
+import { Title } from 'react-admin';
 import {
   useAdminData,
   useStockAlerts,
@@ -24,16 +24,23 @@ const StatCard: React.FC<StatCardProps> = ({
   color = '#1976d2',
   icon,
 }) => (
-  <Card style={{ minHeight: '120px', margin: '8px' }}>
-    <CardHeader
-      title={title}
-      style={{
-        backgroundColor: color,
-        color: 'white',
-        padding: '16px',
-      }}
-    />
-    <CardContent style={{ padding: '16px', textAlign: 'center' }}>
+  <div style={{
+    minHeight: '120px',
+    margin: '8px',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    overflow: 'hidden',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+  }}>
+    <div style={{
+      backgroundColor: color,
+      color: 'white',
+      padding: '16px',
+      fontWeight: 'bold',
+    }}>
+      {title}
+    </div>
+    <div style={{ padding: '16px', textAlign: 'center' }}>
       <div style={{ fontSize: '2rem', fontWeight: 'bold', color }}>
         {icon && <span style={{ marginRight: '8px' }}>{icon}</span>}
         {value}
@@ -43,8 +50,8 @@ const StatCard: React.FC<StatCardProps> = ({
           {subtitle}
         </div>
       )}
-    </CardContent>
-  </Card>
+    </div>
+  </div>
 );
 
 /**
@@ -63,9 +70,22 @@ const AlertList: React.FC<AlertListProps> = ({
   renderItem,
   emptyMessage,
 }) => (
-  <Card style={{ margin: '8px' }}>
-    <CardHeader title={title} />
-    <CardContent style={{ padding: '16px' }}>
+  <div style={{
+    margin: '8px',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    overflow: 'hidden',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+  }}>
+    <div style={{
+      backgroundColor: '#f5f5f5',
+      padding: '16px',
+      fontWeight: 'bold',
+      borderBottom: '1px solid #ddd'
+    }}>
+      {title}
+    </div>
+    <div style={{ padding: '16px' }}>
       {items.length > 0 ? (
         <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
           {items.map((item, index) => (
@@ -73,8 +93,7 @@ const AlertList: React.FC<AlertListProps> = ({
               key={index}
               style={{
                 padding: '8px',
-                borderBottom: '1px solid #eee',
-                ':last-child': { borderBottom: 'none' },
+                borderBottom: index < items.length - 1 ? '1px solid #eee' : 'none',
               }}
             >
               {renderItem(item)}
@@ -86,8 +105,8 @@ const AlertList: React.FC<AlertListProps> = ({
           {emptyMessage}
         </div>
       )}
-    </CardContent>
-  </Card>
+    </div>
+  </div>
 );
 
 /**
@@ -262,9 +281,22 @@ export const Dashboard: React.FC = () => {
       )}
 
       {/* 快速操作区域 */}
-      <Card style={{ margin: '8px' }}>
-        <CardHeader title="快速操作" />
-        <CardContent style={{ padding: '16px' }}>
+      <div style={{
+        margin: '8px',
+        border: '1px solid #ddd',
+        borderRadius: '4px',
+        overflow: 'hidden',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        <div style={{
+          backgroundColor: '#f5f5f5',
+          padding: '16px',
+          fontWeight: 'bold',
+          borderBottom: '1px solid #ddd'
+        }}>
+          快速操作
+        </div>
+        <div style={{ padding: '16px' }}>
           <div
             style={{
               display: 'grid',
@@ -329,13 +361,26 @@ export const Dashboard: React.FC = () => {
               👥 管理用户
             </button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* 系统信息 */}
-      <Card style={{ margin: '8px' }}>
-        <CardHeader title="系统信息" />
-        <CardContent style={{ padding: '16px' }}>
+      <div style={{
+        margin: '8px',
+        border: '1px solid #ddd',
+        borderRadius: '4px',
+        overflow: 'hidden',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      }}>
+        <div style={{
+          backgroundColor: '#f5f5f5',
+          padding: '16px',
+          fontWeight: 'bold',
+          borderBottom: '1px solid #ddd'
+        }}>
+          系统信息
+        </div>
+        <div style={{ padding: '16px' }}>
           <div
             style={{
               display: 'grid',
@@ -358,8 +403,8 @@ export const Dashboard: React.FC = () => {
               <span style={{ color: 'green' }}>正常运行</span>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
