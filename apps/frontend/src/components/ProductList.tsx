@@ -80,7 +80,9 @@ export const ProductList: React.FC<ProductListProps> = ({
                       <a href={`/products/${product.id}`}>
                         <Image
                           alt={product.name}
-                          src={product.imageUrls?.[0] || '/placeholder-image.jpg'}
+                          src={
+                            product.imageUrls?.[0] || '/placeholder-image.jpg'
+                          }
                           height={200}
                           style={{ objectFit: 'cover' }}
                           fallback="/placeholder-image.jpg"

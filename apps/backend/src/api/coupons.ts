@@ -240,7 +240,7 @@ router.post(
     };
 
     // 转换优惠券格式以匹配 CouponService 期望的类型
-    const couponData = coupons.map(coupon => ({
+    const couponData = coupons.map((coupon) => ({
       ...coupon,
       description: coupon.description || undefined,
     }));
@@ -254,7 +254,10 @@ router.post(
 
     for (const coupon of result.appliedCoupons) {
       const currentContext = { ...orderContext, subtotal: remainingSubtotal };
-      const discountResult = couponService.calculateDiscount(coupon, currentContext);
+      const discountResult = couponService.calculateDiscount(
+        coupon,
+        currentContext
+      );
 
       if (discountResult) {
         appliedCouponsWithDiscount.push({

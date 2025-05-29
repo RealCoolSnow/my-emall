@@ -7,7 +7,11 @@ import express from 'express';
 import { db } from '../models/database';
 import { authenticate } from '../middleware/auth';
 import { validate, commonSchemas } from '../middleware/validation';
-import { asyncHandler, NotFoundError, ValidationError } from '../middleware/errorHandler';
+import {
+  asyncHandler,
+  NotFoundError,
+  ValidationError,
+} from '../middleware/errorHandler';
 import { ApiResponse } from '../types';
 import { z } from 'zod';
 
@@ -79,11 +83,12 @@ router.post(
     }
 
     // 模拟支付处理
-    const paymentSuccess = mockResult === 'success' ||
-                          (mockResult !== 'failed' && Math.random() > 0.1); // 90%成功率
+    const paymentSuccess =
+      mockResult === 'success' ||
+      (mockResult !== 'failed' && Math.random() > 0.1); // 90%成功率
 
     // 模拟支付延迟
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     if (paymentSuccess) {
       // 支付成功，更新订单状态
@@ -204,11 +209,13 @@ router.get(
 router.post(
   '/refund',
   authenticate,
-  validate(z.object({
-    orderId: z.string().min(1, '订单ID不能为空'),
-    amount: z.number().positive('退款金额必须大于0'),
-    reason: z.string().optional(),
-  })),
+  validate(
+    z.object({
+      orderId: z.string().min(1, '订单ID不能为空'),
+      amount: z.number().positive('退款金额必须大于0'),
+      reason: z.string().optional(),
+    })
+  ),
   asyncHandler(async (req, res) => {
     const { orderId, amount, reason } = req.body;
     const userId = req.user!.userId;

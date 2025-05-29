@@ -57,7 +57,11 @@ class PaymentService {
   /**
    * 模拟支付成功
    */
-  async mockPaymentSuccess(orderId: string, paymentMethod: string, amount: number) {
+  async mockPaymentSuccess(
+    orderId: string,
+    paymentMethod: string,
+    amount: number
+  ) {
     return this.processPayment({
       orderId,
       paymentMethod: paymentMethod as any,
@@ -69,7 +73,11 @@ class PaymentService {
   /**
    * 模拟支付失败
    */
-  async mockPaymentFailure(orderId: string, paymentMethod: string, amount: number) {
+  async mockPaymentFailure(
+    orderId: string,
+    paymentMethod: string,
+    amount: number
+  ) {
     return this.processPayment({
       orderId,
       paymentMethod: paymentMethod as any,

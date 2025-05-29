@@ -46,7 +46,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
-  
+
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -61,7 +61,7 @@ export default function ProfilePage() {
         setLoading(true);
         const userData = await authService.getCurrentUser();
         setUserInfo(userData);
-        
+
         // 设置表单初始值
         form.setFieldsValue({
           username: userData.username,
@@ -81,8 +81,9 @@ export default function ProfilePage() {
   const handleUpdateProfile = async (values: any) => {
     setUpdating(true);
     try {
-      const { username, firstName, lastName, phone, address, birthday } = values;
-      
+      const { username, firstName, lastName, phone, address, birthday } =
+        values;
+
       await authService.updateProfile({
         username,
         profile: {
@@ -95,7 +96,7 @@ export default function ProfilePage() {
       });
 
       message.success('个人信息更新成功');
-      
+
       // 重新加载用户信息
       const userData = await authService.getCurrentUser();
       setUserInfo(userData);
@@ -108,7 +109,10 @@ export default function ProfilePage() {
 
   const handleChangePassword = async (values: any) => {
     try {
-      await authService.changePassword(values.currentPassword, values.newPassword);
+      await authService.changePassword(
+        values.currentPassword,
+        values.newPassword
+      );
       message.success('密码修改成功');
       passwordForm.resetFields();
     } catch (error) {
@@ -128,14 +132,16 @@ export default function ProfilePage() {
 
   return (
     <Layout>
-      <Header style={{ 
-        background: '#fff', 
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Space align="center" style={{ height: '100%' }}>
-          <Button 
-            type="text" 
+          <Button
+            type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => router.back()}
           >
@@ -168,7 +174,9 @@ export default function ProfilePage() {
                       </Text>
                       <Text>
                         <strong>注册时间：</strong>
-                        {userInfo?.createdAt ? new Date(userInfo.createdAt).toLocaleDateString() : '-'}
+                        {userInfo?.createdAt
+                          ? new Date(userInfo.createdAt).toLocaleDateString()
+                          : '-'}
                       </Text>
                     </Space>
                     <Divider />
@@ -202,7 +210,9 @@ export default function ProfilePage() {
                             <Form.Item
                               name="username"
                               label="用户名"
-                              rules={[{ required: true, message: '请输入用户名' }]}
+                              rules={[
+                                { required: true, message: '请输入用户名' },
+                              ]}
                             >
                               <Input />
                             </Form.Item>
@@ -276,7 +286,9 @@ export default function ProfilePage() {
                         <Form.Item
                           name="currentPassword"
                           label="当前密码"
-                          rules={[{ required: true, message: '请输入当前密码' }]}
+                          rules={[
+                            { required: true, message: '请输入当前密码' },
+                          ]}
                         >
                           <Input.Password placeholder="请输入当前密码" />
                         </Form.Item>
@@ -300,10 +312,15 @@ export default function ProfilePage() {
                             { required: true, message: '请确认新密码' },
                             ({ getFieldValue }) => ({
                               validator(_, value) {
-                                if (!value || getFieldValue('newPassword') === value) {
+                                if (
+                                  !value ||
+                                  getFieldValue('newPassword') === value
+                                ) {
                                   return Promise.resolve();
                                 }
-                                return Promise.reject(new Error('两次输入的密码不一致'));
+                                return Promise.reject(
+                                  new Error('两次输入的密码不一致')
+                                );
                               },
                             }),
                           ]}
@@ -331,7 +348,10 @@ export default function ProfilePage() {
                       <div style={{ textAlign: 'center', padding: '50px' }}>
                         <Text type="secondary">
                           订单历史功能请前往
-                          <Button type="link" onClick={() => router.push('/orders')}>
+                          <Button
+                            type="link"
+                            onClick={() => router.push('/orders')}
+                          >
                             订单管理页面
                           </Button>
                         </Text>

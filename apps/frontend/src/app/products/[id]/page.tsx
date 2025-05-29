@@ -36,7 +36,7 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
-  
+
   const router = useRouter();
   const params = useParams();
   const { addItem } = useCart();
@@ -64,7 +64,7 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = async () => {
     if (!product) return;
-    
+
     setAddingToCart(true);
     try {
       await addItem(product.id, quantity);
@@ -86,7 +86,8 @@ export default function ProductDetailPage() {
       INACTIVE: { color: 'gray', text: '下架' },
       OUT_OF_STOCK: { color: 'red', text: '缺货' },
     };
-    const statusInfo = statusMap[status as keyof typeof statusMap] || statusMap.ACTIVE;
+    const statusInfo =
+      statusMap[status as keyof typeof statusMap] || statusMap.ACTIVE;
     return <Tag color={statusInfo.color}>{statusInfo.text}</Tag>;
   };
 
@@ -108,14 +109,16 @@ export default function ProductDetailPage() {
 
   return (
     <Layout>
-      <Header style={{ 
-        background: '#fff', 
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Space align="center" style={{ height: '100%' }}>
-          <Button 
-            type="text" 
+          <Button
+            type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => router.back()}
           >
@@ -150,7 +153,11 @@ export default function ProductDetailPage() {
                           <Image
                             src={url}
                             alt={`${product.name} ${index + 2}`}
-                            style={{ width: '100%', height: 80, objectFit: 'cover' }}
+                            style={{
+                              width: '100%',
+                              height: 80,
+                              objectFit: 'cover',
+                            }}
                             fallback="/placeholder-image.jpg"
                           />
                         </Col>
@@ -163,7 +170,11 @@ export default function ProductDetailPage() {
 
             {/* 商品信息 */}
             <Col xs={24} md={12}>
-              <Space direction="vertical" size="large" style={{ width: '100%' }}>
+              <Space
+                direction="vertical"
+                size="large"
+                style={{ width: '100%' }}
+              >
                 <div>
                   <Space>
                     {getStatusTag(product.status)}
@@ -248,10 +259,8 @@ export default function ProductDetailPage() {
           <Row style={{ marginTop: 48 }}>
             <Col span={24}>
               <Card title="商品详情">
-                <Paragraph>
-                  {product.description || '暂无详细信息'}
-                </Paragraph>
-                
+                <Paragraph>{product.description || '暂无详细信息'}</Paragraph>
+
                 <Title level={4}>商品规格</Title>
                 <Row gutter={[16, 16]}>
                   <Col span={8}>

@@ -71,7 +71,7 @@ export default function OrdersPage() {
 
       const result = await orderService.getUserOrders(query);
       setOrders(result.data);
-      setPagination(prev => ({
+      setPagination((prev) => ({
         ...prev,
         total: result.pagination.total,
       }));
@@ -80,7 +80,13 @@ export default function OrdersPage() {
     } finally {
       setLoading(false);
     }
-  }, [pagination.current, pagination.pageSize, filters.status, filters.paymentStatus, filters.dateRange]);
+  }, [
+    pagination.current,
+    pagination.pageSize,
+    filters.status,
+    filters.paymentStatus,
+    filters.dateRange,
+  ]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -121,7 +127,8 @@ export default function OrdersPage() {
       DELIVERED: { color: 'green', text: '已送达' },
       CANCELLED: { color: 'red', text: '已取消' },
     };
-    const statusInfo = statusMap[status as keyof typeof statusMap] || statusMap.PENDING;
+    const statusInfo =
+      statusMap[status as keyof typeof statusMap] || statusMap.PENDING;
     return <Tag color={statusInfo.color}>{statusInfo.text}</Tag>;
   };
 
@@ -132,7 +139,8 @@ export default function OrdersPage() {
       FAILED: { color: 'red', text: '支付失败' },
       REFUNDED: { color: 'purple', text: '已退款' },
     };
-    const statusInfo = statusMap[status as keyof typeof statusMap] || statusMap.PENDING;
+    const statusInfo =
+      statusMap[status as keyof typeof statusMap] || statusMap.PENDING;
     return <Tag color={statusInfo.color}>{statusInfo.text}</Tag>;
   };
 
@@ -147,7 +155,10 @@ export default function OrdersPage() {
       key: 'id',
       width: 200,
       render: (id: string) => (
-        <Button type="link" onClick={() => handleViewDetail(orders.find(o => o.id === id)!)}>
+        <Button
+          type="link"
+          onClick={() => handleViewDetail(orders.find((o) => o.id === id)!)}
+        >
           {id.slice(0, 8)}...
         </Button>
       ),
@@ -204,11 +215,13 @@ export default function OrdersPage() {
 
   return (
     <Layout>
-      <Header style={{
-        background: '#fff',
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Space align="center" style={{ height: '100%' }}>
           <Button
             type="text"
@@ -234,7 +247,9 @@ export default function OrdersPage() {
                   style={{ width: '100%' }}
                   allowClear
                   value={filters.status || undefined}
-                  onChange={(value) => setFilters(prev => ({ ...prev, status: value || '' }))}
+                  onChange={(value) =>
+                    setFilters((prev) => ({ ...prev, status: value || '' }))
+                  }
                 >
                   <Option value="PENDING">待处理</Option>
                   <Option value="CONFIRMED">已确认</Option>
@@ -249,7 +264,12 @@ export default function OrdersPage() {
                   style={{ width: '100%' }}
                   allowClear
                   value={filters.paymentStatus || undefined}
-                  onChange={(value) => setFilters(prev => ({ ...prev, paymentStatus: value || '' }))}
+                  onChange={(value) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      paymentStatus: value || '',
+                    }))
+                  }
                 >
                   <Option value="PENDING">待支付</Option>
                   <Option value="PAID">已支付</Option>
@@ -262,7 +282,9 @@ export default function OrdersPage() {
                   style={{ width: '100%' }}
                   placeholder={['开始日期', '结束日期']}
                   value={filters.dateRange}
-                  onChange={(dates) => setFilters(prev => ({ ...prev, dateRange: dates }))}
+                  onChange={(dates) =>
+                    setFilters((prev) => ({ ...prev, dateRange: dates }))
+                  }
                 />
               </Col>
               <Col xs={24} sm={24} md={4}>
@@ -307,7 +329,9 @@ export default function OrdersPage() {
             {selectedOrder && (
               <div>
                 <Descriptions bordered column={2}>
-                  <Descriptions.Item label="订单号">{selectedOrder.id}</Descriptions.Item>
+                  <Descriptions.Item label="订单号">
+                    {selectedOrder.id}
+                  </Descriptions.Item>
                   <Descriptions.Item label="订单状态">
                     {getStatusTag(selectedOrder.status)}
                   </Descriptions.Item>
@@ -325,7 +349,9 @@ export default function OrdersPage() {
                   </Descriptions.Item>
                 </Descriptions>
 
-                <Title level={5} style={{ marginTop: 24 }}>商品清单</Title>
+                <Title level={5} style={{ marginTop: 24 }}>
+                  商品清单
+                </Title>
                 <List
                   dataSource={(selectedOrder as any).orderItems || []}
                   renderItem={(item: any) => (
@@ -341,7 +367,9 @@ export default function OrdersPage() {
 
                 {selectedOrder.notes && (
                   <>
-                    <Title level={5} style={{ marginTop: 24 }}>订单备注</Title>
+                    <Title level={5} style={{ marginTop: 24 }}>
+                      订单备注
+                    </Title>
                     <p>{selectedOrder.notes}</p>
                   </>
                 )}

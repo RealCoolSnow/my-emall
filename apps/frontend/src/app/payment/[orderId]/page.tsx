@@ -41,7 +41,9 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState('alipay');
   const [paymentStep, setPaymentStep] = useState(0); // 0: 选择支付方式, 1: 支付中, 2: 支付结果
-  const [paymentResult, setPaymentResult] = useState<'success' | 'failed' | null>(null);
+  const [paymentResult, setPaymentResult] = useState<
+    'success' | 'failed' | null
+  >(null);
   const [countdown, setCountdown] = useState(0);
 
   const router = useRouter();
@@ -90,7 +92,7 @@ export default function PaymentPage() {
     try {
       // 显示倒计时
       const timer = setInterval(() => {
-        setCountdown(prev => {
+        setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
             return 0;
@@ -113,7 +115,6 @@ export default function PaymentPage() {
 
       // 更新本地订单状态
       setOrder(result.order);
-
     } catch (error) {
       setPaymentResult('failed');
       setPaymentStep(2);
@@ -150,11 +151,13 @@ export default function PaymentPage() {
 
   return (
     <Layout>
-      <Header style={{
-        background: '#fff',
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Space align="center" style={{ height: '100%' }}>
           <Button
             type="text"
@@ -180,8 +183,11 @@ export default function PaymentPage() {
             <Step
               title="支付完成"
               icon={
-                paymentResult === 'success' ? <CheckCircleOutlined /> :
-                paymentResult === 'failed' ? <CloseCircleOutlined /> : undefined
+                paymentResult === 'success' ? (
+                  <CheckCircleOutlined />
+                ) : paymentResult === 'failed' ? (
+                  <CloseCircleOutlined />
+                ) : undefined
               }
             />
           </Steps>
@@ -205,11 +211,15 @@ export default function PaymentPage() {
                     <Divider />
                     <div>
                       <Text strong>商品清单：</Text>
-                      {(order as any).orderItems?.map((item: any, index: number) => (
-                        <div key={index} style={{ marginTop: 8 }}>
-                          <Text>{item.product?.name || '商品'} x {item.quantity}</Text>
-                        </div>
-                      ))}
+                      {(order as any).orderItems?.map(
+                        (item: any, index: number) => (
+                          <div key={index} style={{ marginTop: 8 }}>
+                            <Text>
+                              {item.product?.name || '商品'} x {item.quantity}
+                            </Text>
+                          </div>
+                        )
+                      )}
                     </div>
                   </Space>
                 </Card>
@@ -224,10 +234,12 @@ export default function PaymentPage() {
                     style={{ width: '100%' }}
                   >
                     <Space direction="vertical" style={{ width: '100%' }}>
-                      {paymentMethods.map(method => (
+                      {paymentMethods.map((method) => (
                         <Radio key={method.value} value={method.value}>
                           <Space>
-                            <span style={{ fontSize: '20px' }}>{method.icon}</span>
+                            <span style={{ fontSize: '20px' }}>
+                              {method.icon}
+                            </span>
                             <Text>{method.label}</Text>
                           </Space>
                         </Radio>
@@ -275,10 +287,10 @@ export default function PaymentPage() {
               <Title level={3} style={{ marginTop: 24 }}>
                 支付处理中...
               </Title>
-              <Text type="secondary">
-                请稍候，正在处理您的支付请求
-              </Text>
-              <div style={{ marginTop: 24, maxWidth: 300, margin: '24px auto 0' }}>
+              <Text type="secondary">请稍候，正在处理您的支付请求</Text>
+              <div
+                style={{ marginTop: 24, maxWidth: 300, margin: '24px auto 0' }}
+              >
                 <Progress
                   percent={((5 - countdown) / 5) * 100}
                   status="active"
@@ -297,7 +309,11 @@ export default function PaymentPage() {
                   title="支付成功！"
                   subTitle={`订单 ${order.id} 已成功支付 ${formatPrice(order.totalAmount)}`}
                   extra={[
-                    <Button type="primary" key="orders" onClick={() => router.push('/orders')}>
+                    <Button
+                      type="primary"
+                      key="orders"
+                      onClick={() => router.push('/orders')}
+                    >
                       查看订单
                     </Button>,
                     <Button key="home" onClick={() => router.push('/')}>
@@ -311,7 +327,11 @@ export default function PaymentPage() {
                   title="支付失败"
                   subTitle="很抱歉，您的支付未能成功处理，请重试或选择其他支付方式。"
                   extra={[
-                    <Button type="primary" key="retry" onClick={() => setPaymentStep(0)}>
+                    <Button
+                      type="primary"
+                      key="retry"
+                      onClick={() => setPaymentStep(0)}
+                    >
                       重新支付
                     </Button>,
                     <Button key="orders" onClick={() => router.push('/orders')}>

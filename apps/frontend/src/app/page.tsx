@@ -1,7 +1,17 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Layout, Typography, Space, Input, Row, Col, Card, Spin, Button } from 'antd';
+import {
+  Layout,
+  Typography,
+  Space,
+  Input,
+  Row,
+  Col,
+  Card,
+  Spin,
+  Button,
+} from 'antd';
 import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { ProductList } from '../components/ProductList';
 import { useProducts } from '../hooks/useProducts';
@@ -58,11 +68,7 @@ export default function Home() {
           </Col>
           <Col>
             <Space size="large">
-              <Button
-                type="text"
-                href="/cart"
-                style={{ padding: '4px 8px' }}
-              >
+              <Button type="text" href="/cart" style={{ padding: '4px 8px' }}>
                 <Space>
                   <ShoppingCartOutlined style={{ fontSize: 20 }} />
                   <Text>购物车</Text>
