@@ -1,5 +1,13 @@
 import React from 'react';
-import { Admin, Resource, Layout, AppBar, Menu, MenuItemLink, usePermissions } from 'react-admin';
+import {
+  Admin,
+  Resource,
+  Layout,
+  AppBar,
+  Menu,
+  MenuItemLink,
+  usePermissions,
+} from 'react-admin';
 import { dataProvider, authProvider } from './dataProvider';
 import { APP_CONFIG, ENV_UTILS, Logger } from './config/env';
 import Dashboard from './components/Dashboard';
@@ -37,7 +45,14 @@ const CustomMenu = () => {
  */
 const CustomAppBar = () => (
   <AppBar>
-    <div style={{ flex: 1, textAlign: 'center', fontSize: '1.2rem', fontWeight: 'bold' }}>
+    <div
+      style={{
+        flex: 1,
+        textAlign: 'center',
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+      }}
+    >
       🛒 {APP_CONFIG.TITLE}
       {ENV_UTILS.isDevelopment() && (
         <span style={{ fontSize: '0.8rem', marginLeft: '8px', opacity: 0.7 }}>

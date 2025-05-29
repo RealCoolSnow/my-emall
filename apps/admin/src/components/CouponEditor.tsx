@@ -44,11 +44,7 @@ export const CouponList = () => (
   <List
     filters={[
       <TextInput source="search" label="搜索" alwaysOn />,
-      <SelectInput
-        source="type"
-        label="类型"
-        choices={couponTypeChoices}
-      />,
+      <SelectInput source="type" label="类型" choices={couponTypeChoices} />,
       <BooleanInput source="isActive" label="是否激活" />,
       <DateInput source="validFrom" label="开始日期" />,
       <DateInput source="validTo" label="结束日期" />,
@@ -67,8 +63,16 @@ export const CouponList = () => (
       <TextField source="name" label="名称" />
       <CouponTypeField source="type" label="类型" />
       <NumberField source="value" label="折扣值" />
-      <NumberField source="minAmount" label="最低消费" options={{ style: 'currency', currency: 'CNY' }} />
-      <NumberField source="maxDiscount" label="最大折扣" options={{ style: 'currency', currency: 'CNY' }} />
+      <NumberField
+        source="minAmount"
+        label="最低消费"
+        options={{ style: 'currency', currency: 'CNY' }}
+      />
+      <NumberField
+        source="maxDiscount"
+        label="最大折扣"
+        options={{ style: 'currency', currency: 'CNY' }}
+      />
       <BooleanField source="isActive" label="激活状态" />
       <DateField source="validFrom" label="开始日期" />
       <DateField source="validTo" label="结束日期" />
@@ -86,51 +90,56 @@ export const CouponList = () => (
 export const CouponCreate = () => (
   <Create>
     <SimpleForm>
-      <TextInput source="code" label="优惠码" validate={[required()]} helperText="唯一的优惠码" />
+      <TextInput
+        source="code"
+        label="优惠码"
+        validate={[required()]}
+        helperText="唯一的优惠码"
+      />
       <TextInput source="name" label="优惠券名称" validate={[required()]} />
       <TextInput source="description" label="描述" multiline rows={3} />
-      
+
       <SelectInput
         source="type"
         label="优惠券类型"
         choices={couponTypeChoices}
         validate={[required()]}
       />
-      
+
       <FormDataConsumer>
         {({ formData }) => (
           <>
             {formData.type === 'PERCENTAGE' && (
-              <NumberInput 
-                source="value" 
-                label="折扣百分比" 
-                validate={[required()]} 
+              <NumberInput
+                source="value"
+                label="折扣百分比"
+                validate={[required()]}
                 helperText="输入1-100之间的数字，如20表示8折"
                 min={1}
                 max={100}
               />
             )}
             {formData.type === 'FIXED_AMOUNT' && (
-              <NumberInput 
-                source="value" 
-                label="固定折扣金额" 
-                validate={[required()]} 
+              <NumberInput
+                source="value"
+                label="固定折扣金额"
+                validate={[required()]}
                 helperText="固定减免的金额"
                 min={0}
               />
             )}
             {formData.type === 'BUY_X_GET_Y' && (
               <>
-                <NumberInput 
-                  source="buyQuantity" 
-                  label="购买数量" 
-                  validate={[required()]} 
+                <NumberInput
+                  source="buyQuantity"
+                  label="购买数量"
+                  validate={[required()]}
                   min={1}
                 />
-                <NumberInput 
-                  source="getQuantity" 
-                  label="赠送数量" 
-                  validate={[required()]} 
+                <NumberInput
+                  source="getQuantity"
+                  label="赠送数量"
+                  validate={[required()]}
                   min={1}
                 />
               </>
@@ -141,15 +150,28 @@ export const CouponCreate = () => (
 
       <NumberInput source="minAmount" label="最低消费金额" min={0} />
       <NumberInput source="maxDiscount" label="最大折扣金额" min={0} />
-      <NumberInput source="usageLimit" label="使用次数限制" min={1} helperText="留空表示无限制" />
-      
+      <NumberInput
+        source="usageLimit"
+        label="使用次数限制"
+        min={1}
+        helperText="留空表示无限制"
+      />
+
       <DateInput source="validFrom" label="生效日期" validate={[required()]} />
       <DateInput source="validTo" label="失效日期" validate={[required()]} />
-      
+
       <BooleanInput source="isActive" label="立即激活" defaultValue={true} />
-      
-      <TextInput source="applicableProducts" label="适用产品ID" helperText="用逗号分隔多个产品ID，留空表示适用所有产品" />
-      <TextInput source="applicableCategories" label="适用分类ID" helperText="用逗号分隔多个分类ID" />
+
+      <TextInput
+        source="applicableProducts"
+        label="适用产品ID"
+        helperText="用逗号分隔多个产品ID，留空表示适用所有产品"
+      />
+      <TextInput
+        source="applicableCategories"
+        label="适用分类ID"
+        helperText="用逗号分隔多个分类ID"
+      />
     </SimpleForm>
   </Create>
 );
@@ -160,10 +182,15 @@ export const CouponCreate = () => (
 export const CouponEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="code" label="优惠码" validate={[required()]} disabled />
+      <TextInput
+        source="code"
+        label="优惠码"
+        validate={[required()]}
+        disabled
+      />
       <TextInput source="name" label="优惠券名称" validate={[required()]} />
       <TextInput source="description" label="描述" multiline rows={3} />
-      
+
       <SelectInput
         source="type"
         label="优惠券类型"
@@ -171,31 +198,41 @@ export const CouponEdit = () => (
         validate={[required()]}
         disabled
       />
-      
+
       <FormDataConsumer>
         {({ formData }) => (
           <>
             {formData.type === 'PERCENTAGE' && (
-              <NumberInput 
-                source="value" 
-                label="折扣百分比" 
-                validate={[required()]} 
+              <NumberInput
+                source="value"
+                label="折扣百分比"
+                validate={[required()]}
                 min={1}
                 max={100}
               />
             )}
             {formData.type === 'FIXED_AMOUNT' && (
-              <NumberInput 
-                source="value" 
-                label="固定折扣金额" 
-                validate={[required()]} 
+              <NumberInput
+                source="value"
+                label="固定折扣金额"
+                validate={[required()]}
                 min={0}
               />
             )}
             {formData.type === 'BUY_X_GET_Y' && (
               <>
-                <NumberInput source="buyQuantity" label="购买数量" validate={[required()]} min={1} />
-                <NumberInput source="getQuantity" label="赠送数量" validate={[required()]} min={1} />
+                <NumberInput
+                  source="buyQuantity"
+                  label="购买数量"
+                  validate={[required()]}
+                  min={1}
+                />
+                <NumberInput
+                  source="getQuantity"
+                  label="赠送数量"
+                  validate={[required()]}
+                  min={1}
+                />
               </>
             )}
           </>
@@ -205,12 +242,12 @@ export const CouponEdit = () => (
       <NumberInput source="minAmount" label="最低消费金额" min={0} />
       <NumberInput source="maxDiscount" label="最大折扣金额" min={0} />
       <NumberInput source="usageLimit" label="使用次数限制" min={1} />
-      
+
       <DateInput source="validFrom" label="生效日期" validate={[required()]} />
       <DateInput source="validTo" label="失效日期" validate={[required()]} />
-      
+
       <BooleanInput source="isActive" label="激活状态" />
-      
+
       <TextInput source="applicableProducts" label="适用产品ID" />
       <TextInput source="applicableCategories" label="适用分类ID" />
     </SimpleForm>
@@ -229,8 +266,16 @@ export const CouponShow = () => (
       <TextField source="description" label="描述" />
       <CouponTypeField source="type" label="类型" />
       <NumberField source="value" label="折扣值" />
-      <NumberField source="minAmount" label="最低消费" options={{ style: 'currency', currency: 'CNY' }} />
-      <NumberField source="maxDiscount" label="最大折扣" options={{ style: 'currency', currency: 'CNY' }} />
+      <NumberField
+        source="minAmount"
+        label="最低消费"
+        options={{ style: 'currency', currency: 'CNY' }}
+      />
+      <NumberField
+        source="maxDiscount"
+        label="最大折扣"
+        options={{ style: 'currency', currency: 'CNY' }}
+      />
       <NumberField source="usageCount" label="已使用次数" />
       <NumberField source="usageLimit" label="使用限制" />
       <BooleanField source="isActive" label="激活状态" />
@@ -258,7 +303,9 @@ export const CouponTypeField = () => {
     BUY_X_GET_Y: '买X送Y',
   };
 
-  return <span>{typeMap[record.type as keyof typeof typeMap] || record.type}</span>;
+  return (
+    <span>{typeMap[record.type as keyof typeof typeMap] || record.type}</span>
+  );
 };
 
 /**
@@ -289,11 +336,7 @@ export const CouponStatusField = () => {
     color = 'green';
   }
 
-  return (
-    <span style={{ color, fontWeight: 'bold' }}>
-      {status}
-    </span>
-  );
+  return <span style={{ color, fontWeight: 'bold' }}>{status}</span>;
 };
 
 // 导出所有组件

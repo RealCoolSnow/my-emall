@@ -239,7 +239,10 @@ export const OrderStatusField = () => {
     REFUNDED: { text: '已退款', color: 'gray' },
   };
 
-  const status = statusMap[record.status as keyof typeof statusMap] || { text: '未知', color: 'gray' };
+  const status = statusMap[record.status as keyof typeof statusMap] || {
+    text: '未知',
+    color: 'gray',
+  };
 
   return (
     <span style={{ color: status.color, fontWeight: 'bold' }}>
@@ -262,7 +265,10 @@ export const PaymentStatusField = () => {
     REFUNDED: { text: '已退款', color: 'gray' },
   };
 
-  const status = statusMap[record.paymentStatus as keyof typeof statusMap] || { text: '未知', color: 'gray' };
+  const status = statusMap[record.paymentStatus as keyof typeof statusMap] || {
+    text: '未知',
+    color: 'gray',
+  };
 
   return (
     <span style={{ color: status.color, fontWeight: 'bold' }}>
@@ -279,15 +285,31 @@ export const OrderStats = () => {
   if (!record) return null;
 
   return (
-    <div style={{ display: 'flex', gap: '20px', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '20px',
+        padding: '10px',
+        backgroundColor: '#f5f5f5',
+        borderRadius: '4px',
+      }}
+    >
       <div>
         <strong>商品数量:</strong> {record.items?.length || 0}
       </div>
       <div>
-        <strong>总件数:</strong> {record.items?.reduce((sum: number, item: any) => sum + item.quantity, 0) || 0}
+        <strong>总件数:</strong>{' '}
+        {record.items?.reduce(
+          (sum: number, item: any) => sum + item.quantity,
+          0
+        ) || 0}
       </div>
       <div>
-        <strong>折扣率:</strong> {record.totalAmount > 0 ? Math.round((record.discountAmount / record.totalAmount) * 100) : 0}%
+        <strong>折扣率:</strong>{' '}
+        {record.totalAmount > 0
+          ? Math.round((record.discountAmount / record.totalAmount) * 100)
+          : 0}
+        %
       </div>
     </div>
   );

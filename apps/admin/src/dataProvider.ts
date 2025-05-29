@@ -169,7 +169,7 @@ export const dataProvider: DataProvider = {
    * 更新多个资源
    */
   updateMany: async (resource, params) => {
-    const promises = params.ids.map(id =>
+    const promises = params.ids.map((id) =>
       httpClient(`${API_URL}/${resource}/${id}`, {
         method: 'PUT',
         body: JSON.stringify(params.data),
@@ -206,7 +206,7 @@ export const dataProvider: DataProvider = {
    * 删除多个资源
    */
   deleteMany: async (resource, params) => {
-    const promises = params.ids.map(id =>
+    const promises = params.ids.map((id) =>
       httpClient(`${API_URL}/${resource}/${id}`, {
         method: 'DELETE',
       })
@@ -230,7 +230,13 @@ export const authProvider = {
   /**
    * 登录
    */
-  login: async ({ username, password }: { username: string; password: string }) => {
+  login: async ({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) => {
     try {
       const { json } = await httpClient(`${API_URL}/auth/login`, {
         method: 'POST',

@@ -24,6 +24,7 @@ apps/admin/
 ## 🔧 配置分类
 
 ### 1. API配置
+
 ```env
 # 后端API基础URL
 VITE_API_URL=http://localhost:3000/api
@@ -36,6 +37,7 @@ VITE_API_RETRY_COUNT=3
 ```
 
 ### 2. 应用配置
+
 ```env
 # 应用标题
 VITE_APP_TITLE=电商平台管理后台
@@ -51,6 +53,7 @@ VITE_DEV_PORT=5173
 ```
 
 ### 3. 调试配置
+
 ```env
 # 是否启用调试模式
 VITE_DEBUG=true
@@ -63,6 +66,7 @@ VITE_SHOW_PERFORMANCE=false
 ```
 
 ### 4. 功能开关
+
 ```env
 # 是否启用暗色主题
 VITE_ENABLE_DARK_THEME=true
@@ -80,6 +84,7 @@ VITE_ENABLE_REALTIME=false
 ## 🏗️ 配置管理架构
 
 ### 配置对象结构
+
 ```typescript
 // src/config/env.ts
 export const API_CONFIG = {
@@ -110,6 +115,7 @@ export const FEATURE_CONFIG = {
 ```
 
 ### 工具函数
+
 ```typescript
 export const ENV_UTILS = {
   isDevelopment: () => boolean,
@@ -132,6 +138,7 @@ export const Logger = {
 ## 🔍 配置验证
 
 ### 自动验证
+
 系统在启动时会自动验证配置的有效性：
 
 ```typescript
@@ -144,6 +151,7 @@ export const validateConfig = () => {
 ```
 
 ### 验证规则
+
 - **API_URL**: 必须是有效的URL格式
 - **TIMEOUT**: 必须大于等于1000毫秒
 - **RETRY_COUNT**: 必须在0-10之间
@@ -152,6 +160,7 @@ export const validateConfig = () => {
 ## 🌍 环境特定配置
 
 ### 开发环境 (.env.development)
+
 ```env
 VITE_API_URL=http://localhost:3000/api
 VITE_DEBUG=true
@@ -159,6 +168,7 @@ VITE_LOG_LEVEL=debug
 ```
 
 ### 生产环境 (.env.production)
+
 ```env
 VITE_API_URL=https://api.yourdomain.com/api
 VITE_DEBUG=false
@@ -166,6 +176,7 @@ VITE_LOG_LEVEL=error
 ```
 
 ### 本地配置 (.env.local)
+
 ```env
 # 开发者个人配置
 VITE_API_URL=http://192.168.1.100:3000/api
@@ -175,24 +186,26 @@ VITE_DEBUG=true
 ## 📝 使用示例
 
 ### 在组件中使用配置
+
 ```typescript
 import { API_CONFIG, APP_CONFIG, Logger } from '../config/env';
 
 function MyComponent() {
   useEffect(() => {
     Logger.info('Component mounted', { title: APP_CONFIG.TITLE });
-    
+
     // 使用API配置
     fetch(`${API_CONFIG.BASE_URL}/data`)
       .then(response => response.json())
       .then(data => Logger.debug('Data fetched', data));
   }, []);
-  
+
   return <div>{APP_CONFIG.TITLE}</div>;
 }
 ```
 
 ### 在数据提供者中使用
+
 ```typescript
 import { API_CONFIG, Logger } from './config/env';
 
@@ -200,7 +213,7 @@ const dataProvider = {
   getList: async (resource, params) => {
     const url = `${API_CONFIG.BASE_URL}/${resource}`;
     Logger.debug(`Fetching ${resource}`, { url, params });
-    
+
     // API调用逻辑
   },
 };
@@ -209,11 +222,13 @@ const dataProvider = {
 ## 🔒 安全考虑
 
 ### 敏感信息处理
+
 - 不要在环境变量中存储密钥或密码
 - 使用 `.env.local` 存储本地敏感配置
 - 确保 `.env.local` 在 `.gitignore` 中
 
 ### 生产环境安全
+
 - 在生产环境中禁用调试模式
 - 设置适当的日志级别
 - 验证所有外部URL的安全性
@@ -221,6 +236,7 @@ const dataProvider = {
 ## 🚀 部署配置
 
 ### Docker部署
+
 ```dockerfile
 # 构建时传入环境变量
 ARG VITE_API_URL
@@ -233,6 +249,7 @@ RUN npm run build
 ```
 
 ### CI/CD配置
+
 ```yaml
 # GitHub Actions示例
 env:
@@ -244,6 +261,7 @@ env:
 ## 🛠️ 开发工具
 
 ### TypeScript支持
+
 完整的类型定义确保配置的类型安全：
 
 ```typescript
@@ -256,6 +274,7 @@ interface ImportMetaEnv {
 ```
 
 ### 开发时验证
+
 ```bash
 # 检查配置
 npm run dev
@@ -268,6 +287,7 @@ npm run dev
 ## 📊 监控和调试
 
 ### 日志系统
+
 ```typescript
 // 不同级别的日志
 Logger.debug('详细调试信息');
@@ -282,6 +302,7 @@ Logger.performance('操作名称', startTime);
 ```
 
 ### 环境信息查看
+
 ```typescript
 // 获取完整环境信息
 const envInfo = ENV_UTILS.getEnvInfo();
@@ -298,16 +319,19 @@ console.log('Environment Info:', envInfo);
 ## 📚 最佳实践
 
 ### 配置命名
+
 - 使用 `VITE_` 前缀
 - 使用大写字母和下划线
 - 名称要具有描述性
 
 ### 配置组织
+
 - 按功能分组配置
 - 提供默认值
 - 添加详细注释
 
 ### 版本控制
+
 - 提交 `.env.example`
 - 忽略 `.env.local`
 - 文档化所有配置项

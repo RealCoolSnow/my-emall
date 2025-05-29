@@ -63,7 +63,11 @@ export const ProductList = () => (
       <TextField source="id" label="ID" />
       <TextField source="name" label="产品名称" />
       <TextField source="description" label="描述" />
-      <NumberField source="price" label="价格" options={{ style: 'currency', currency: 'CNY' }} />
+      <NumberField
+        source="price"
+        label="价格"
+        options={{ style: 'currency', currency: 'CNY' }}
+      />
       <NumberField source="stock" label="库存" />
       <TextField source="status" label="状态" />
       <TextField source="categoryId" label="分类ID" />
@@ -161,7 +165,11 @@ export const ProductShow = () => (
       <TextField source="id" label="ID" />
       <TextField source="name" label="产品名称" />
       <TextField source="description" label="产品描述" />
-      <NumberField source="price" label="价格" options={{ style: 'currency', currency: 'CNY' }} />
+      <NumberField
+        source="price"
+        label="价格"
+        options={{ style: 'currency', currency: 'CNY' }}
+      />
       <NumberField source="stock" label="库存" />
       <TextField source="status" label="状态" />
       <TextField source="categoryId" label="分类ID" />
@@ -187,7 +195,10 @@ export const ProductStatusField = () => {
     OUT_OF_STOCK: { text: '缺货', color: 'orange' },
   };
 
-  const status = statusMap[record.status as keyof typeof statusMap] || { text: '未知', color: 'gray' };
+  const status = statusMap[record.status as keyof typeof statusMap] || {
+    text: '未知',
+    color: 'gray',
+  };
 
   return (
     <span style={{ color: status.color, fontWeight: 'bold' }}>

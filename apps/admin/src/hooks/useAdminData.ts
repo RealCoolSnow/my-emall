@@ -65,7 +65,9 @@ export const useAdminData = () => {
    */
   const fetchStats = async () => {
     try {
-      const response = await dataProvider.getOne('admin/stats', { id: 'dashboard' });
+      const response = await dataProvider.getOne('admin/stats', {
+        id: 'dashboard',
+      });
       setStats(response.data);
     } catch (err) {
       console.error('Failed to fetch admin stats:', err);
@@ -131,7 +133,7 @@ export const useAdminData = () => {
   const refreshData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       await Promise.all([
         fetchStats(),
@@ -159,11 +161,11 @@ export const useAdminData = () => {
     orderTrends,
     popularProducts,
     userGrowth,
-    
+
     // 状态
     loading,
     error,
-    
+
     // 方法
     refreshData,
     fetchStats,
@@ -180,7 +182,7 @@ export const useAdminData = () => {
 export const useStockAlerts = (threshold: number = 10) => {
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const dataProvider = useDataProvider();
   const notify = useNotify();
 
@@ -193,9 +195,11 @@ export const useStockAlerts = (threshold: number = 10) => {
         filter: { stock_lt: threshold },
       });
       setLowStockProducts(response.data);
-      
+
       if (response.data.length > 0) {
-        notify(`发现 ${response.data.length} 个低库存产品`, { type: 'warning' });
+        notify(`发现 ${response.data.length} 个低库存产品`, {
+          type: 'warning',
+        });
       }
     } catch (err) {
       console.error('Failed to fetch low stock products:', err);
@@ -206,10 +210,10 @@ export const useStockAlerts = (threshold: number = 10) => {
 
   useEffect(() => {
     fetchLowStockProducts();
-    
+
     // 每5分钟检查一次库存
     const interval = setInterval(fetchLowStockProducts, 5 * 60 * 1000);
-    
+
     return () => clearInterval(interval);
   }, [threshold]);
 
@@ -228,43 +232,50 @@ export const useCouponAlerts = () => {
   const [expiringSoonCoupons, setExpiringSoonCoupons] = useState([]);
   const [expiredCoupons, setExpiredCoupons] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const dataProvider = useDataProvider();
   const notify = useNotify();
 
   const fetchCouponAlerts = async () => {
     try {
       setLoading(true);
-      
+
       // 获取7天内即将过期的优惠券
       const soonResponse = await dataProvider.getList('coupons', {
         pagination: { page: 1, perPage: 50 },
         sort: { field: 'validTo', order: 'ASC' },
-        filter: { 
+        filter: {
           validTo_gte: new Date().toISOString(),
-          validTo_lte: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          validTo_lte: new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+          ).toISOString(),
           isActive: true,
         },
       });
       setExpiringSoonCoupons(soonResponse.data);
-      
+
       // 获取已过期但仍激活的优惠券
       const expiredResponse = await dataProvider.getList('coupons', {
         pagination: { page: 1, perPage: 50 },
         sort: { field: 'validTo', order: 'DESC' },
-        filter: { 
+        filter: {
           validTo_lt: new Date().toISOString(),
           isActive: true,
         },
       });
       setExpiredCoupons(expiredResponse.data);
-      
+
       if (soonResponse.data.length > 0) {
-        notify(`${soonResponse.data.length} 个优惠券即将过期`, { type: 'warning' });
+        notify(`${soonResponse.data.length} 个优惠券即将过期`, {
+          type: 'warning',
+        });
       }
-      
+
       if (expiredResponse.data.length > 0) {
-        notify(`${expiredResponse.data.length} 个优惠券已过期但仍处于激活状态`, { type: 'error' });
+        notify(
+          `${expiredResponse.data.length} 个优惠券已过期但仍处于激活状态`,
+          { type: 'error' }
+        );
       }
     } catch (err) {
       console.error('Failed to fetch coupon alerts:', err);
@@ -275,10 +286,10 @@ export const useCouponAlerts = () => {
 
   useEffect(() => {
     fetchCouponAlerts();
-    
+
     // 每小时检查一次优惠券状态
     const interval = setInterval(fetchCouponAlerts, 60 * 60 * 1000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -301,19 +312,19 @@ export const useRealtimeNotifications = () => {
   useEffect(() => {
     // 这里可以集成WebSocket或Server-Sent Events
     // 用于接收实时通知
-    
+
     // 模拟实时通知
     const mockNotifications = [
       { id: 1, type: 'order', message: '新订单 #12345', timestamp: new Date() },
       { id: 2, type: 'stock', message: '产品库存不足', timestamp: new Date() },
       { id: 3, type: 'user', message: '新用户注册', timestamp: new Date() },
     ];
-    
+
     setNotifications(mockNotifications);
   }, []);
 
   const markAsRead = (notificationId: number) => {
-    setNotifications(prev => 
+    setNotifications((prev) =>
       prev.filter((n: any) => n.id !== notificationId)
     );
   };

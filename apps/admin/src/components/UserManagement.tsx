@@ -45,11 +45,7 @@ export const UserList = () => (
   <List
     filters={[
       <TextInput source="search" label="搜索用户名/邮箱" alwaysOn />,
-      <SelectInput
-        source="role"
-        label="用户角色"
-        choices={userRoleChoices}
-      />,
+      <SelectInput source="role" label="用户角色" choices={userRoleChoices} />,
       <BooleanInput source="isActive" label="是否激活" />,
       <DateInput source="startDate" label="注册开始日期" />,
       <DateInput source="endDate" label="注册结束日期" />,
@@ -123,8 +119,18 @@ export const UserCreate = () => (
 export const UserEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="username" label="用户名" validate={[required()]} disabled />
-      <TextInput source="email" label="邮箱" validate={[required(), email()]} disabled />
+      <TextInput
+        source="username"
+        label="用户名"
+        validate={[required()]}
+        disabled
+      />
+      <TextInput
+        source="email"
+        label="邮箱"
+        validate={[required(), email()]}
+        disabled
+      />
 
       <SelectInput
         source="role"
@@ -210,12 +216,13 @@ export const UserRoleField = () => {
     SUPER_ADMIN: { text: '超级管理员', color: 'red' },
   };
 
-  const role = roleMap[record.role as keyof typeof roleMap] || { text: '未知', color: 'gray' };
+  const role = roleMap[record.role as keyof typeof roleMap] || {
+    text: '未知',
+    color: 'gray',
+  };
 
   return (
-    <span style={{ color: role.color, fontWeight: 'bold' }}>
-      {role.text}
-    </span>
+    <span style={{ color: role.color, fontWeight: 'bold' }}>{role.text}</span>
   );
 };
 
@@ -228,7 +235,9 @@ export const UserStatusField = () => {
 
   const now = new Date();
   const lastLogin = record.lastLoginAt ? new Date(record.lastLoginAt) : null;
-  const daysSinceLogin = lastLogin ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24)) : null;
+  const daysSinceLogin = lastLogin
+    ? Math.floor((now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60 * 24))
+    : null;
 
   let status = '正常';
   let color = 'green';
@@ -244,11 +253,7 @@ export const UserStatusField = () => {
     color = 'gray';
   }
 
-  return (
-    <span style={{ color, fontWeight: 'bold' }}>
-      {status}
-    </span>
-  );
+  return <span style={{ color, fontWeight: 'bold' }}>{status}</span>;
 };
 
 /**
@@ -259,7 +264,15 @@ export const UserStatsField = () => {
   if (!record) return null;
 
   return (
-    <div style={{ display: 'flex', gap: '20px', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
+    <div
+      style={{
+        display: 'flex',
+        gap: '20px',
+        padding: '10px',
+        backgroundColor: '#f5f5f5',
+        borderRadius: '4px',
+      }}
+    >
       <div>
         <strong>订单数:</strong> {record.orderCount || 0}
       </div>
@@ -267,7 +280,10 @@ export const UserStatsField = () => {
         <strong>总消费:</strong> ¥{record.totalSpent || 0}
       </div>
       <div>
-        <strong>平均订单:</strong> ¥{record.orderCount > 0 ? Math.round((record.totalSpent || 0) / record.orderCount) : 0}
+        <strong>平均订单:</strong> ¥
+        {record.orderCount > 0
+          ? Math.round((record.totalSpent || 0) / record.orderCount)
+          : 0}
       </div>
     </div>
   );
