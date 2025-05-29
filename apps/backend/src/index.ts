@@ -20,6 +20,7 @@ import authRoutes from './api/auth';
 import productRoutes from './api/products';
 import orderRoutes from './api/orders';
 import couponRoutes from './api/coupons';
+import paymentRoutes from './api/payments';
 
 // 加载环境变量
 dotenv.config();
@@ -98,6 +99,7 @@ app.get('/api', (req, res) => {
       products: '/api/products',
       orders: '/api/orders',
       coupons: '/api/coupons',
+      payments: '/api/payments',
     },
   });
 });
@@ -107,6 +109,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 404 处理
 app.use(notFoundHandler);

@@ -74,7 +74,7 @@ export default function CheckoutPage() {
 
       message.success('订单创建成功！');
       clearCart();
-      router.push(`/orders/${order.id}`);
+      router.push(`/payment/${order.id}`);
     } catch (error) {
       message.error('创建订单失败，请重试');
     } finally {

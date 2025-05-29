@@ -81,6 +81,7 @@ model Order {
   // Relations
   orderItems OrderItem[]
   coupons    OrderCoupon[]
+  payments   Payment[]
 
   @@map("orders")
 }
@@ -160,6 +161,22 @@ model OrderCoupon {
 
   @@unique([orderId, couponId])
   @@map("order_coupons")
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id])
+  amount        Float    // Payment amount (negative for refunds)
+  method        String   // alipay, wechat, credit_card, bank_card, refund
+  status        String   // SUCCESS, FAILED, PENDING
+  transactionId String?  // External transaction ID
+  failureReason String?  // Reason for failure
+  processedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("payments")
 }
 
 // Enums are replaced with String fields with comments indicating valid values

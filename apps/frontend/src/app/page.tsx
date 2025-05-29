@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Layout, Typography, Space, Input, Row, Col, Card, Spin } from 'antd';
+import { Layout, Typography, Space, Input, Row, Col, Card, Spin, Button } from 'antd';
 import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { ProductList } from '../components/ProductList';
 import { useProducts } from '../hooks/useProducts';
@@ -58,25 +58,37 @@ export default function Home() {
           </Col>
           <Col>
             <Space size="large">
-              <Space>
-                <ShoppingCartOutlined style={{ fontSize: 20 }} />
-                <Text>购物车</Text>
-                {itemCount > 0 && (
-                  <span
-                    style={{
-                      background: '#ff4d4f',
-                      color: 'white',
-                      borderRadius: '50%',
-                      padding: '2px 6px',
-                      fontSize: '12px',
-                      minWidth: '18px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {itemCount}
-                  </span>
-                )}
-              </Space>
+              <Button
+                type="text"
+                href="/cart"
+                style={{ padding: '4px 8px' }}
+              >
+                <Space>
+                  <ShoppingCartOutlined style={{ fontSize: 20 }} />
+                  <Text>购物车</Text>
+                  {itemCount > 0 && (
+                    <span
+                      style={{
+                        background: '#ff4d4f',
+                        color: 'white',
+                        borderRadius: '50%',
+                        padding: '2px 6px',
+                        fontSize: '12px',
+                        minWidth: '18px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {itemCount}
+                    </span>
+                  )}
+                </Space>
+              </Button>
+              <Button type="text" href="/profile">
+                个人中心
+              </Button>
+              <Button type="text" href="/orders">
+                我的订单
+              </Button>
             </Space>
           </Col>
         </Row>

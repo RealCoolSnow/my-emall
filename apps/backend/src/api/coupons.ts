@@ -36,7 +36,8 @@ router.get(
   optionalAuthenticate,
   validate(commonSchemas.pagination, 'query'),
   asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = Math.min(parseInt(req.query.limit as string) || 10, 100);
     const skip = (page - 1) * limit;
 
     // 构建查询条件
@@ -238,8 +239,34 @@ router.post(
       items: data.orderItems,
     };
 
+    // 转换优惠券格式以匹配 CouponService 期望的类型
+    const couponData = coupons.map(coupon => ({
+      ...coupon,
+      description: coupon.description || undefined,
+    }));
+
     // 应用优惠券
-    const result = couponService.applyCoupons(coupons, orderContext);
+    const result = couponService.applyCoupons(couponData as any, orderContext);
+
+    // 计算每个优惠券的具体折扣金额
+    const appliedCouponsWithDiscount = [];
+    let remainingSubtotal = data.subtotal;
+
+    for (const coupon of result.appliedCoupons) {
+      const currentContext = { ...orderContext, subtotal: remainingSubtotal };
+      const discountResult = couponService.calculateDiscount(coupon, currentContext);
+
+      if (discountResult) {
+        appliedCouponsWithDiscount.push({
+          id: coupon.id,
+          code: coupon.code,
+          name: coupon.name,
+          type: coupon.type,
+          discount: discountResult.discount,
+        });
+        remainingSubtotal = discountResult.finalAmount;
+      }
+    }
 
     const response: ApiResponse = {
       success: true,
@@ -247,15 +274,7 @@ router.post(
         originalAmount: data.subtotal,
         totalDiscount: result.totalDiscount,
         finalAmount: result.finalAmount,
-        appliedCoupons: result.appliedCoupons.map((coupon) => ({
-          id: coupon.id,
-          code: coupon.code,
-          name: coupon.name,
-          type: coupon.type,
-          discount:
-            result.appliedCoupons.find((c) => c.id === coupon.id)?.discount ||
-            0,
-        })),
+        appliedCoupons: appliedCouponsWithDiscount,
         errors: result.errors,
       },
       message: '应用优惠券成功',
