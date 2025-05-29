@@ -1,0 +1,36 @@
+# 规则文件
+
+## 代码风格
+- 使用 TypeScript，严格类型检查。
+- 遵循 Prettier（singleQuote: true, semi: true）。
+- 遵循 ESLint（@typescript-eslint/recommended）。
+
+## 项目结构
+- 应用：`apps/frontend`, `apps/backend`, `apps/admin`。
+- 公用模块：`packages/shared`, `packages/coupons`。
+
+## 命名规范
+- 组件文件：PascalCase（如 `ProductList.tsx`）。
+- 函数/变量：camelCase。
+- 类型/接口：PascalCase。
+
+## 代码生成
+- React 组件使用 Ant Design。
+- Express 路由遵循 RESTful。
+- Prisma 模型参考 `apps/backend/prisma/schema.prisma`。
+- 优惠券逻辑使用 `packages/coupons` 的策略模式。
+
+## 错误处理
+- API 调用使用 try-catch。
+- 前端使用 axios 拦截器。
+- 后端使用全局错误中间件。
+
+## 测试
+- 单元测试：Jest。
+- E2E 测试：Cypress。
+
+## 示例提示
+- `生成 Ant Design 商品列表组件`
+- `生成 Express 优惠券 API`
+- `生成 Prisma SQLite 模型`
+- `生成优惠券策略模式`
