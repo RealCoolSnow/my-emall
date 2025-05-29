@@ -13,7 +13,10 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "antd": "^5.0.0",
-    "axios": "^1.0.0"
+    "axios": "^1.0.0",
+    "zustand": "^4.4.0",
+    "shared": "workspace:*",
+    "coupons": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
