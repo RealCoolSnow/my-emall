@@ -5,26 +5,24 @@ module.exports = {
     env: {
       es2021: true,
     },
-    extends: [
-      'eslint:recommended'
-    ],
+    extends: ['eslint:recommended'],
     parserOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'module'
+      sourceType: 'module',
     },
     rules: {
       'no-unused-vars': 'error',
       'no-console': 'warn',
       'no-debugger': 'error',
-      'no-alert': 'warn'
+      'no-alert': 'warn',
     },
     ignorePatterns: [
       'node_modules/',
       'dist/',
       'build/',
       '*.config.js',
-      '*.config.mjs'
-    ]
+      '*.config.mjs',
+    ],
   },
 
   // Node.js 环境配置
@@ -33,25 +31,23 @@ module.exports = {
       node: true,
       es2021: true,
     },
-    extends: [
-      'eslint:recommended'
-    ],
+    extends: ['eslint:recommended'],
     parserOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'module'
+      sourceType: 'module',
     },
     rules: {
       'no-unused-vars': 'error',
       'no-console': 'off', // Node.js 允许 console
-      'no-debugger': 'error'
+      'no-debugger': 'error',
     },
     ignorePatterns: [
       'node_modules/',
       'dist/',
       'build/',
       '*.config.js',
-      '*.config.mjs'
-    ]
+      '*.config.mjs',
+    ],
   },
 
   // React 环境配置
@@ -60,21 +56,19 @@ module.exports = {
       browser: true,
       es2021: true,
     },
-    extends: [
-      'eslint:recommended'
-    ],
+    extends: ['eslint:recommended'],
     parserOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       ecmaFeatures: {
-        jsx: true
-      }
+        jsx: true,
+      },
     },
     rules: {
       'no-unused-vars': 'error',
       'no-console': 'warn',
       'no-debugger': 'error',
-      'no-alert': 'warn'
+      'no-alert': 'warn',
     },
     ignorePatterns: [
       'node_modules/',
@@ -82,7 +76,7 @@ module.exports = {
       'build/',
       '.next/',
       '*.config.js',
-      '*.config.mjs'
-    ]
-  }
+      '*.config.mjs',
+    ],
+  },
 };
