@@ -16,7 +16,11 @@ import {
   message,
   Divider,
 } from 'antd';
-import { ArrowLeftOutlined, CreditCardOutlined, HomeOutlined } from '@ant-design/icons';
+import {
+  ArrowLeftOutlined,
+  CreditCardOutlined,
+  HomeOutlined,
+} from '@ant-design/icons';
 import { CouponSelector } from '../../components/CouponSelector';
 import { OrderSummary } from '../../components/OrderSummary';
 import { useCart } from '../../hooks/useCart';
@@ -34,7 +38,7 @@ export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedCoupons, setSelectedCoupons] = useState<any[]>([]);
   const [submitting, setSubmitting] = useState(false);
-  
+
   const { items, total, clearCart } = useCart();
   const { isAuthenticated, user } = useAuth();
   const router = useRouter();
@@ -44,7 +48,7 @@ export default function CheckoutPage() {
       router.push('/login?redirect=/checkout');
       return;
     }
-    
+
     if (items.length === 0) {
       message.warning('购物车为空，请先添加商品');
       router.push('/');
@@ -56,18 +60,18 @@ export default function CheckoutPage() {
     setSubmitting(true);
     try {
       const orderData = {
-        items: items.map(item => ({
+        items: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
         })),
         shippingAddress: values.shippingAddress,
         paymentMethod: values.paymentMethod,
-        couponCodes: selectedCoupons.map(coupon => coupon.code),
+        couponCodes: selectedCoupons.map((coupon) => coupon.code),
         notes: values.notes,
       };
 
       const order = await orderService.createOrder(orderData);
-      
+
       message.success('订单创建成功！');
       clearCart();
       router.push(`/orders/${order.id}`);
@@ -99,14 +103,16 @@ export default function CheckoutPage() {
 
   return (
     <Layout>
-      <Header style={{ 
-        background: '#fff', 
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Space align="center" style={{ height: '100%' }}>
-          <Button 
-            type="text" 
+          <Button
+            type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => router.back()}
           >
@@ -128,7 +134,11 @@ export default function CheckoutPage() {
 
           <Row gutter={[24, 24]}>
             <Col xs={24} lg={16}>
-              <Space direction="vertical" size="large" style={{ width: '100%' }}>
+              <Space
+                direction="vertical"
+                size="large"
+                style={{ width: '100%' }}
+              >
                 {/* 收货地址 */}
                 <Card title="收货地址">
                   <Form
@@ -144,7 +154,9 @@ export default function CheckoutPage() {
                         <Form.Item
                           name={['shippingAddress', 'street']}
                           label="详细地址"
-                          rules={[{ required: true, message: '请输入详细地址' }]}
+                          rules={[
+                            { required: true, message: '请输入详细地址' },
+                          ]}
                         >
                           <Input placeholder="街道、门牌号等" />
                         </Form.Item>
@@ -230,12 +242,16 @@ export default function CheckoutPage() {
             </Col>
 
             <Col xs={24} lg={8}>
-              <Space direction="vertical" size="large" style={{ width: '100%' }}>
+              <Space
+                direction="vertical"
+                size="large"
+                style={{ width: '100%' }}
+              >
                 <OrderSummary
                   showActions={false}
                   selectedCoupons={selectedCoupons}
                 />
-                
+
                 <Button
                   type="primary"
                   size="large"

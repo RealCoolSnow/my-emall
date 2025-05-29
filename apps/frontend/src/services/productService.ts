@@ -1,4 +1,8 @@
-import api, { handleApiResponse, handlePaginatedResponse, FrontendPaginatedResponse } from '../lib/api';
+import api, {
+  handleApiResponse,
+  handlePaginatedResponse,
+  FrontendPaginatedResponse,
+} from '../lib/api';
 import { Product } from 'shared/types';
 
 export interface ProductQuery {
@@ -17,7 +21,9 @@ class ProductService {
   /**
    * 获取产品列表
    */
-  async getProducts(query: ProductQuery = {}): Promise<FrontendPaginatedResponse<Product>> {
+  async getProducts(
+    query: ProductQuery = {}
+  ): Promise<FrontendPaginatedResponse<Product>> {
     const response = await api.get('/products', { params: query });
     return handlePaginatedResponse<Product>(response);
   }
@@ -35,7 +41,7 @@ class ProductService {
    */
   async getPopularProducts(limit: number = 10): Promise<Product[]> {
     const response = await api.get('/products/popular', {
-      params: { limit }
+      params: { limit },
     });
     return handleApiResponse<Product[]>(response);
   }

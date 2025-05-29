@@ -26,7 +26,11 @@ export const useAuth = create<AuthState>()(
 
       register: async (email: string, username: string, password: string) => {
         try {
-          const authData = await authService.register({ email, username, password });
+          const authData = await authService.register({
+            email,
+            username,
+            password,
+          });
           set({
             user: authData.user,
             token: authData.token,

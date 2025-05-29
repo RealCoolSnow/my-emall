@@ -21,7 +21,8 @@ import { CartItem } from '../types';
 const { Title, Text } = Typography;
 
 export const Cart: React.FC = () => {
-  const { items, total, itemCount, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, total, itemCount, updateQuantity, removeItem, clearCart } =
+    useCart();
 
   const handleQuantityChange = async (productId: string, quantity: number) => {
     try {
@@ -99,11 +100,7 @@ export const Cart: React.FC = () => {
                   okText="确定"
                   cancelText="取消"
                 >
-                  <Button
-                    type="text"
-                    danger
-                    icon={<DeleteOutlined />}
-                  >
+                  <Button type="text" danger icon={<DeleteOutlined />}>
                     移除
                   </Button>
                 </Popconfirm>,
@@ -114,7 +111,9 @@ export const Cart: React.FC = () => {
                   <Image
                     width={80}
                     height={80}
-                    src={item.product.imageUrls?.[0] || '/placeholder-image.jpg'}
+                    src={
+                      item.product.imageUrls?.[0] || '/placeholder-image.jpg'
+                    }
                     alt={item.product.name}
                     style={{ objectFit: 'cover' }}
                     fallback="/placeholder-image.jpg"
@@ -142,9 +141,7 @@ export const Cart: React.FC = () => {
                       }}
                       style={{ width: 80 }}
                     />
-                    <Text type="secondary">
-                      库存: {item.product.stock}
-                    </Text>
+                    <Text type="secondary">库存: {item.product.stock}</Text>
                   </Space>
                 }
               />
@@ -161,9 +158,7 @@ export const Cart: React.FC = () => {
 
         <div style={{ textAlign: 'right' }}>
           <Space direction="vertical" size="small">
-            <Text>
-              共 {itemCount} 件商品
-            </Text>
+            <Text>共 {itemCount} 件商品</Text>
             <Title level={3} type="danger" style={{ margin: 0 }}>
               总计: {formatPrice(total)}
             </Title>

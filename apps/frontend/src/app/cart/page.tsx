@@ -33,14 +33,16 @@ export default function CartPage() {
 
   return (
     <Layout>
-      <Header style={{ 
-        background: '#fff', 
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
         <Space align="center" style={{ height: '100%' }}>
-          <Button 
-            type="text" 
+          <Button
+            type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => router.back()}
           >
@@ -59,10 +61,7 @@ export default function CartPage() {
               <Cart />
             </Col>
             <Col xs={24} lg={8}>
-              <OrderSummary 
-                showActions={true}
-                onCheckout={handleCheckout}
-              />
+              <OrderSummary showActions={true} onCheckout={handleCheckout} />
             </Col>
           </Row>
         </div>

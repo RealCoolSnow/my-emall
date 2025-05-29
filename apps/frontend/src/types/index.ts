@@ -49,7 +49,11 @@ export interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, username: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    password: string
+  ) => Promise<void>;
   logout: () => void;
   loadUser: () => Promise<void>;
 }

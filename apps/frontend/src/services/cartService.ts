@@ -30,7 +30,10 @@ class CartService {
   /**
    * 更新购物车商品数量
    */
-  async updateCartItem(productId: string, data: UpdateCartItemRequest): Promise<CartItem> {
+  async updateCartItem(
+    productId: string,
+    data: UpdateCartItemRequest
+  ): Promise<CartItem> {
     const response = await api.put(`/cart/${productId}`, data);
     return handleApiResponse<CartItem>(response);
   }

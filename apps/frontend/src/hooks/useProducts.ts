@@ -36,35 +36,38 @@ export const useProducts = (initialFilters: ProductFilters = {}) => {
   });
 
   // 加载产品列表
-  const loadProducts = useCallback(async (query: ProductQuery = {}) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+  const loadProducts = useCallback(
+    async (query: ProductQuery = {}) => {
+      setState((prev) => ({ ...prev, loading: true, error: null }));
 
-    try {
-      const response = await productService.getProducts({
-        page: state.pagination.page,
-        limit: state.pagination.limit,
-        ...state.filters,
-        ...query,
-      });
+      try {
+        const response = await productService.getProducts({
+          page: state.pagination.page,
+          limit: state.pagination.limit,
+          ...state.filters,
+          ...query,
+        });
 
-      setState(prev => ({
-        ...prev,
-        products: response.data,
-        pagination: response.pagination,
-        loading: false,
-      }));
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : '加载产品失败',
-        loading: false,
-      }));
-    }
-  }, [state.pagination.page, state.pagination.limit, state.filters]);
+        setState((prev) => ({
+          ...prev,
+          products: response.data,
+          pagination: response.pagination,
+          loading: false,
+        }));
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          error: error instanceof Error ? error.message : '加载产品失败',
+          loading: false,
+        }));
+      }
+    },
+    [state.pagination.page, state.pagination.limit, state.filters]
+  );
 
   // 搜索产品
   const searchProducts = useCallback(async (keyword: string) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       filters: { ...prev.filters, search: keyword },
       pagination: { ...prev.pagination, page: 1 },
@@ -73,7 +76,7 @@ export const useProducts = (initialFilters: ProductFilters = {}) => {
 
   // 设置筛选条件
   const setFilters = useCallback((newFilters: Partial<ProductFilters>) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       filters: { ...prev.filters, ...newFilters },
       pagination: { ...prev.pagination, page: 1 },
@@ -82,7 +85,7 @@ export const useProducts = (initialFilters: ProductFilters = {}) => {
 
   // 清除筛选条件
   const clearFilters = useCallback(() => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       filters: {},
       pagination: { ...prev.pagination, page: 1 },
@@ -91,7 +94,7 @@ export const useProducts = (initialFilters: ProductFilters = {}) => {
 
   // 翻页
   const goToPage = useCallback((page: number) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       pagination: { ...prev.pagination, page },
     }));
@@ -99,7 +102,7 @@ export const useProducts = (initialFilters: ProductFilters = {}) => {
 
   // 设置每页数量
   const setPageSize = useCallback((limit: number) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       pagination: { ...prev.pagination, limit, page: 1 },
     }));

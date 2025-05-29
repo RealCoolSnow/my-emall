@@ -31,14 +31,16 @@ export default function Home() {
 
   return (
     <Layout>
-      <Header style={{
-        background: '#fff',
-        padding: '0 50px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 1000
-      }}>
+      <Header
+        style={{
+          background: '#fff',
+          padding: '0 50px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+        }}
+      >
         <Row justify="space-between" align="middle" style={{ height: '100%' }}>
           <Col>
             <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
@@ -60,15 +62,17 @@ export default function Home() {
                 <ShoppingCartOutlined style={{ fontSize: 20 }} />
                 <Text>购物车</Text>
                 {itemCount > 0 && (
-                  <span style={{
-                    background: '#ff4d4f',
-                    color: 'white',
-                    borderRadius: '50%',
-                    padding: '2px 6px',
-                    fontSize: '12px',
-                    minWidth: '18px',
-                    textAlign: 'center'
-                  }}>
+                  <span
+                    style={{
+                      background: '#ff4d4f',
+                      color: 'white',
+                      borderRadius: '50%',
+                      padding: '2px 6px',
+                      fontSize: '12px',
+                      minWidth: '18px',
+                      textAlign: 'center',
+                    }}
+                  >
                     {itemCount}
                   </span>
                 )}
@@ -83,9 +87,7 @@ export default function Home() {
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <div style={{ textAlign: 'center' }}>
               <Title level={2}>精选商品</Title>
-              <Text type="secondary">
-                发现优质商品，享受购物乐趣
-              </Text>
+              <Text type="secondary">发现优质商品，享受购物乐趣</Text>
             </div>
 
             <ProductList pageSize={12} />

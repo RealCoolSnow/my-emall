@@ -1,4 +1,8 @@
-import api, { handleApiResponse, handlePaginatedResponse, FrontendPaginatedResponse } from '../lib/api';
+import api, {
+  handleApiResponse,
+  handlePaginatedResponse,
+  FrontendPaginatedResponse,
+} from '../lib/api';
 import { Order } from 'shared/types';
 
 export interface CreateOrderRequest {
@@ -41,7 +45,9 @@ class OrderService {
   /**
    * 获取订单列表
    */
-  async getOrders(query: OrderQuery = {}): Promise<FrontendPaginatedResponse<Order>> {
+  async getOrders(
+    query: OrderQuery = {}
+  ): Promise<FrontendPaginatedResponse<Order>> {
     const response = await api.get('/orders', { params: query });
     return handlePaginatedResponse<Order>(response);
   }
@@ -65,7 +71,9 @@ class OrderService {
   /**
    * 获取用户订单
    */
-  async getUserOrders(query: OrderQuery = {}): Promise<FrontendPaginatedResponse<Order>> {
+  async getUserOrders(
+    query: OrderQuery = {}
+  ): Promise<FrontendPaginatedResponse<Order>> {
     const response = await api.get('/orders/user', { params: query });
     return handlePaginatedResponse<Order>(response);
   }

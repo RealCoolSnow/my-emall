@@ -29,13 +29,13 @@ class AuthService {
   async login(data: LoginRequest): Promise<AuthResponse> {
     const response = await api.post('/auth/login', data);
     const authData = handleApiResponse<AuthResponse>(response);
-    
+
     // 保存到本地存储
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', JSON.stringify(authData.user));
     }
-    
+
     return authData;
   }
 
@@ -45,13 +45,13 @@ class AuthService {
   async register(data: RegisterRequest): Promise<AuthResponse> {
     const response = await api.post('/auth/register', data);
     const authData = handleApiResponse<AuthResponse>(response);
-    
+
     // 保存到本地存储
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', JSON.stringify(authData.user));
     }
-    
+
     return authData;
   }
 
@@ -83,7 +83,10 @@ class AuthService {
   /**
    * 修改密码
    */
-  async changePassword(oldPassword: string, newPassword: string): Promise<void> {
+  async changePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> {
     const response = await api.post('/auth/change-password', {
       oldPassword,
       newPassword,

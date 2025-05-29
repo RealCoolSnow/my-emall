@@ -13,7 +13,7 @@ import {
   Spin,
   Empty,
   Pagination,
-  message
+  message,
 } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Product, ProductListProps } from '../types';
@@ -25,16 +25,10 @@ const { Meta } = Card;
 
 export const ProductList: React.FC<ProductListProps> = ({
   filters = {},
-  pageSize = 12
+  pageSize = 12,
 }) => {
-  const {
-    products,
-    loading,
-    error,
-    pagination,
-    goToPage,
-    setPageSize
-  } = useProducts(filters);
+  const { products, loading, error, pagination, goToPage, setPageSize } =
+    useProducts(filters);
 
   const { addItem } = useCart();
 
@@ -57,7 +51,8 @@ export const ProductList: React.FC<ProductListProps> = ({
       INACTIVE: { color: 'gray', text: '下架' },
       OUT_OF_STOCK: { color: 'red', text: '缺货' },
     };
-    const statusInfo = statusMap[status as keyof typeof statusMap] || statusMap.ACTIVE;
+    const statusInfo =
+      statusMap[status as keyof typeof statusMap] || statusMap.ACTIVE;
     return <Tag color={statusInfo.color}>{statusInfo.text}</Tag>;
   };
 
@@ -73,10 +68,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     <div>
       <Spin spinning={loading}>
         {products.length === 0 && !loading ? (
-          <Empty
-            description="暂无商品"
-            style={{ margin: '50px 0' }}
-          />
+          <Empty description="暂无商品" style={{ margin: '50px 0' }} />
         ) : (
           <>
             <Row gutter={[16, 16]}>
@@ -99,7 +91,9 @@ export const ProductList: React.FC<ProductListProps> = ({
                         type="primary"
                         icon={<ShoppingCartOutlined />}
                         onClick={() => handleAddToCart(product.id)}
-                        disabled={product.status !== 'ACTIVE' || product.stock <= 0}
+                        disabled={
+                          product.status !== 'ACTIVE' || product.stock <= 0
+                        }
                         block
                       >
                         加入购物车
@@ -108,17 +102,21 @@ export const ProductList: React.FC<ProductListProps> = ({
                   >
                     <Meta
                       title={
-                        <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                        <Space
+                          direction="vertical"
+                          size="small"
+                          style={{ width: '100%' }}
+                        >
                           <Title
                             level={5}
                             ellipsis={{
-                              tooltip: product.name
+                              tooltip: product.name,
                             }}
                             style={{
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
                               WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden'
+                              overflow: 'hidden',
                             }}
                           >
                             {product.name}
@@ -130,16 +128,20 @@ export const ProductList: React.FC<ProductListProps> = ({
                         </Space>
                       }
                       description={
-                        <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                        <Space
+                          direction="vertical"
+                          size="small"
+                          style={{ width: '100%' }}
+                        >
                           <Text
                             ellipsis={{
-                              tooltip: product.description || '暂无描述'
+                              tooltip: product.description || '暂无描述',
                             }}
                             style={{
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
                               WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden'
+                              overflow: 'hidden',
                             }}
                           >
                             {product.description || '暂无描述'}

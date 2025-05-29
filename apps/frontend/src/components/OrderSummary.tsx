@@ -50,7 +50,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
       setCalculating(true);
       try {
         const orderData = {
-          orderItems: items.map(item => ({
+          orderItems: items.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: item.product.price,
@@ -99,7 +99,13 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
             <List.Item>
               <List.Item.Meta
                 title={
-                  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                    }}
+                  >
                     <Text ellipsis style={{ maxWidth: 200 }}>
                       {item.product.name}
                     </Text>
@@ -118,19 +124,37 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
 
         {/* 费用明细 */}
         <Space direction="vertical" style={{ width: '100%' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
             <Text>商品小计:</Text>
             <Text>{formatPrice(total)}</Text>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
             <Text>运费:</Text>
             <Text>{formatPrice(shippingCost)}</Text>
           </div>
 
           {selectedCoupons.length > 0 && (
             <>
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}
+              >
                 <Space>
                   <GiftOutlined />
                   <Text>优惠券折扣:</Text>
@@ -153,7 +177,13 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
 
           <Divider style={{ margin: '12px 0' }} />
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
             <Title level={4} style={{ margin: 0 }}>
               总计:
             </Title>

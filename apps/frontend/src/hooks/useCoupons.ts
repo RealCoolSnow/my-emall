@@ -19,16 +19,16 @@ export const useCoupons = () => {
 
   // 加载可用优惠券
   const loadAvailableCoupons = async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
       const coupons = await couponService.getAvailableCoupons();
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         availableCoupons: coupons,
         loading: false,
       }));
     } catch (error) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         error: error instanceof Error ? error.message : '加载优惠券失败',
         loading: false,
@@ -38,23 +38,23 @@ export const useCoupons = () => {
 
   // 添加优惠券
   const addCoupon = async (code: string, orderData: any) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
       const validation = await couponService.validateCoupon(code, orderData);
       if (validation.isValid && validation.coupon) {
         const isAlreadySelected = state.selectedCoupons.some(
-          coupon => coupon.id === validation.coupon!.id
+          (coupon) => coupon.id === validation.coupon!.id
         );
-        
+
         if (!isAlreadySelected) {
-          setState(prev => ({
+          setState((prev) => ({
             ...prev,
             selectedCoupons: [...prev.selectedCoupons, validation.coupon!],
             loading: false,
           }));
           return { success: true };
         } else {
-          setState(prev => ({
+          setState((prev) => ({
             ...prev,
             error: '该优惠券已经添加',
             loading: false,
@@ -62,7 +62,7 @@ export const useCoupons = () => {
           return { success: false, error: '该优惠券已经添加' };
         }
       } else {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           error: validation.error || '优惠券无效',
           loading: false,
@@ -70,8 +70,9 @@ export const useCoupons = () => {
         return { success: false, error: validation.error || '优惠券无效' };
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : '验证优惠券失败';
-      setState(prev => ({
+      const errorMessage =
+        error instanceof Error ? error.message : '验证优惠券失败';
+      setState((prev) => ({
         ...prev,
         error: errorMessage,
         loading: false,
@@ -82,15 +83,17 @@ export const useCoupons = () => {
 
   // 移除优惠券
   const removeCoupon = (couponId: string) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
-      selectedCoupons: prev.selectedCoupons.filter(coupon => coupon.id !== couponId),
+      selectedCoupons: prev.selectedCoupons.filter(
+        (coupon) => coupon.id !== couponId
+      ),
     }));
   };
 
   // 清空选中的优惠券
   const clearSelectedCoupons = () => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       selectedCoupons: [],
     }));
@@ -105,7 +108,7 @@ export const useCoupons = () => {
     try {
       const result = await couponService.applyCoupons({
         ...orderData,
-        couponCodes: state.selectedCoupons.map(coupon => coupon.code),
+        couponCodes: state.selectedCoupons.map((coupon) => coupon.code),
       });
       return result;
     } catch (error) {

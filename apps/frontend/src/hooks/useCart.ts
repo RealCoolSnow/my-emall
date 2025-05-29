@@ -15,7 +15,7 @@ export const useCart = create<CartState>()(
           const cartItem = await cartService.addToCart({ productId, quantity });
           const currentItems = get().items;
           const existingItemIndex = currentItems.findIndex(
-            item => item.productId === productId
+            (item) => item.productId === productId
           );
 
           let newItems: CartItem[];
@@ -55,8 +55,10 @@ export const useCart = create<CartState>()(
         try {
           await cartService.removeFromCart(productId);
           const currentItems = get().items;
-          const newItems = currentItems.filter(item => item.productId !== productId);
-          
+          const newItems = currentItems.filter(
+            (item) => item.productId !== productId
+          );
+
           const newTotal = newItems.reduce(
             (sum, item) => sum + item.product.price * item.quantity,
             0
@@ -86,10 +88,8 @@ export const useCart = create<CartState>()(
 
           await cartService.updateCartItem(productId, { quantity });
           const currentItems = get().items;
-          const newItems = currentItems.map(item =>
-            item.productId === productId
-              ? { ...item, quantity }
-              : item
+          const newItems = currentItems.map((item) =>
+            item.productId === productId ? { ...item, quantity } : item
           );
 
           const newTotal = newItems.reduce(
@@ -128,10 +128,7 @@ export const useCart = create<CartState>()(
             (sum, item) => sum + item.product.price * item.quantity,
             0
           );
-          const itemCount = items.reduce(
-            (sum, item) => sum + item.quantity,
-            0
-          );
+          const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
           set({
             items,

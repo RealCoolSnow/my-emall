@@ -66,7 +66,9 @@ api.interceptors.response.use(
 export default api;
 
 // 通用 API 响应处理函数
-export const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T => {
+export const handleApiResponse = <T>(
+  response: AxiosResponse<ApiResponse<T>>
+): T => {
   if (response.data.success) {
     return response.data.data as T;
   } else {

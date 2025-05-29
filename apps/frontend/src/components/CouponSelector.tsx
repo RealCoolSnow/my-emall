@@ -93,7 +93,8 @@ export const CouponSelector: React.FC<CouponSelectorProps> = ({
       PERCENTAGE: { color: 'orange', text: '折扣' },
       FREE_SHIPPING: { color: 'blue', text: '包邮' },
     };
-    const typeInfo = typeMap[type as keyof typeof typeMap] || typeMap.FIXED_AMOUNT;
+    const typeInfo =
+      typeMap[type as keyof typeof typeMap] || typeMap.FIXED_AMOUNT;
     return <Tag color={typeInfo.color}>{typeInfo.text}</Tag>;
   };
 
@@ -184,7 +185,8 @@ export const CouponSelector: React.FC<CouponSelectorProps> = ({
           <List
             size="small"
             dataSource={availableCoupons.filter(
-              coupon => !selectedCoupons.some(selected => selected.id === coupon.id)
+              (coupon) =>
+                !selectedCoupons.some((selected) => selected.id === coupon.id)
             )}
             renderItem={(coupon: Coupon) => {
               const expired = isExpired(coupon.endDate);
@@ -215,9 +217,7 @@ export const CouponSelector: React.FC<CouponSelectorProps> = ({
                         <Text type="danger">{formatCouponValue(coupon)}</Text>
                         {expired && <Tag color="red">已过期</Tag>}
                         {!minAmountMet && (
-                          <Tag color="orange">
-                            满¥{coupon.minAmount}可用
-                          </Tag>
+                          <Tag color="orange">满¥{coupon.minAmount}可用</Tag>
                         )}
                       </Space>
                     }
@@ -227,7 +227,11 @@ export const CouponSelector: React.FC<CouponSelectorProps> = ({
                         {coupon.minAmount && (
                           <span> · 满¥{coupon.minAmount}可用</span>
                         )}
-                        <span> · 有效期至{new Date(coupon.endDate).toLocaleDateString()}</span>
+                        <span>
+                          {' '}
+                          · 有效期至
+                          {new Date(coupon.endDate).toLocaleDateString()}
+                        </span>
                       </Text>
                     }
                   />
