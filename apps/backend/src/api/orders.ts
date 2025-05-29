@@ -4,6 +4,7 @@
  */
 
 import express from 'express';
+import { z } from 'zod';
 import { OrderService } from '../services/orderService';
 import {
   authenticate,
@@ -57,7 +58,7 @@ router.get(
 router.get(
   '/:id',
   authenticate,
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
   asyncHandler(async (req, res) => {
     const order = await orderService.getOrderById(req.params.id);
 
@@ -114,15 +115,33 @@ router.post(
 /**
  * PUT /api/orders/:id
  * 更新订单信息
- * 需要管理员权限
+ * 用户可以更新自己的订单，管理员可以更新任何订单
  */
 router.put(
   '/:id',
   authenticate,
-  authorize(['ADMIN']),
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
   validate(orderSchemas.update),
   asyncHandler(async (req, res) => {
+    // 先获取订单信息以检查权限
+    const existingOrder = await orderService.getOrderById(req.params.id);
+
+    // 检查权限：用户只能更新自己的订单
+    if (
+      req.user &&
+      !['ADMIN', 'SUPER_ADMIN'].includes(req.user.role) &&
+      existingOrder.userId !== req.user.userId
+    ) {
+      const response: ApiResponse = {
+        success: false,
+        error: 'ACCESS_DENIED',
+        message: '无权修改此订单',
+        timestamp: new Date().toISOString(),
+      };
+      res.status(403).json(response);
+      return;
+    }
+
     const order = await orderService.updateOrder(req.params.id, req.body);
 
     const response: ApiResponse = {
@@ -144,7 +163,7 @@ router.put(
 router.post(
   '/:id/cancel',
   authenticate,
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
   asyncHandler(async (req, res) => {
     // 如果不是管理员，只能取消自己的订单
     const userId = ['ADMIN', 'SUPER_ADMIN'].includes(req.user!.role)
@@ -165,6 +184,61 @@ router.post(
 );
 
 /**
+ * DELETE /api/orders/:id
+ * 删除订单
+ * 用户可以删除自己的订单（仅限未支付），管理员可以删除任何订单
+ */
+router.delete(
+  '/:id',
+  authenticate,
+  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
+  asyncHandler(async (req, res) => {
+    // 先获取订单信息以检查权限和状态
+    const existingOrder = await orderService.getOrderById(req.params.id);
+
+    // 检查权限：用户只能删除自己的订单
+    if (
+      req.user &&
+      !['ADMIN', 'SUPER_ADMIN'].includes(req.user.role) &&
+      existingOrder.userId !== req.user.userId
+    ) {
+      const response: ApiResponse = {
+        success: false,
+        error: 'ACCESS_DENIED',
+        message: '无权删除此订单',
+        timestamp: new Date().toISOString(),
+      };
+      res.status(403).json(response);
+      return;
+    }
+
+    // 检查订单状态：不允许删除已支付的订单
+    if (existingOrder.paymentStatus === 'PAID') {
+      const response: ApiResponse = {
+        success: false,
+        error: 'INVALID_OPERATION',
+        message: '不能删除已支付的订单',
+        timestamp: new Date().toISOString(),
+      };
+      res.status(400).json(response);
+      return;
+    }
+
+    // 删除订单
+    await orderService.deleteOrder(req.params.id);
+
+    const response: ApiResponse = {
+      success: true,
+      data: { id: req.params.id },
+      message: '删除订单成功',
+      timestamp: new Date().toISOString(),
+    };
+
+    res.json(response);
+  })
+);
+
+/**
  * GET /api/orders/user/:userId
  * 获取指定用户的订单列表
  * 需要管理员权限或用户本人
@@ -172,7 +246,7 @@ router.post(
 router.get(
   '/user/:userId',
   authenticate,
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ userId: z.string().min(1, '用户ID不能为空') }), 'params'),
   checkResourceOwnership((req) => req.params.userId),
   validate(orderSchemas.query, 'query'),
   asyncHandler(async (req, res) => {

@@ -514,14 +514,47 @@ export class OrderService {
    * @returns 格式化后的订单数据
    */
   private formatOrder(order: any) {
+    let shippingAddress = order.shippingAddress;
+
+    // 尝试解析JSON，如果失败则保持原字符串
+    if (typeof shippingAddress === 'string') {
+      try {
+        shippingAddress = JSON.parse(shippingAddress);
+      } catch (error) {
+        // 如果不是JSON格式，保持原字符串
+        shippingAddress = order.shippingAddress;
+      }
+    }
+
     return {
       ...order,
-      shippingAddress: order.shippingAddress
-        ? JSON.parse(order.shippingAddress)
-        : null,
+      shippingAddress,
       totalDiscount:
         order.coupons?.reduce((sum: number, oc: any) => sum + oc.discount, 0) ||
         0,
     };
+  }
+
+  /**
+   * 删除订单
+   * @param orderId 订单ID
+   */
+  async deleteOrder(orderId: string): Promise<void> {
+    await db.transaction(async (prisma) => {
+      // 先删除订单项
+      await prisma.orderItem.deleteMany({
+        where: { orderId },
+      });
+
+      // 删除订单优惠券关联
+      await prisma.orderCoupon.deleteMany({
+        where: { orderId },
+      });
+
+      // 最后删除订单
+      await prisma.order.delete({
+        where: { id: orderId },
+      });
+    });
   }
 }

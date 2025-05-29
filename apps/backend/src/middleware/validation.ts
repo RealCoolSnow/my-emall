@@ -208,6 +208,7 @@ export const orderSchemas = {
       ])
       .optional(),
     paymentStatus: z.enum(['PENDING', 'PAID', 'FAILED', 'REFUNDED']).optional(),
+    shippingAddress: z.string().optional(),
     notes: z.string().max(500, '备注最多 500 个字符').optional(),
   }),
 
@@ -254,6 +255,7 @@ export const couponSchemas = {
       startDate: z.string().datetime('开始时间格式不正确'),
       endDate: z.string().datetime('结束时间格式不正确'),
       usageLimit: z.number().int().positive('使用限制必须大于 0').optional(),
+      isActive: z.boolean().optional(),
     })
     .refine((data) => new Date(data.endDate) > new Date(data.startDate), {
       message: '结束时间必须晚于开始时间',

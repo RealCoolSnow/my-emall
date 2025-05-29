@@ -168,7 +168,7 @@ router.post(
 router.get(
   '/order/:orderId',
   authenticate,
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ orderId: z.string().min(1, '订单ID不能为空') }), 'params'),
   asyncHandler(async (req, res) => {
     const { orderId } = req.params;
     const userId = req.user!.userId;

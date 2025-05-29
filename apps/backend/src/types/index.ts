@@ -126,6 +126,7 @@ export interface CreateCouponRequest {
   startDate: string;
   endDate: string;
   usageLimit?: number;
+  isActive?: boolean;
 }
 
 export interface ApplyCouponRequest {

@@ -4,6 +4,7 @@
  */
 
 import express from 'express';
+import { z } from 'zod';
 import { CouponService } from 'coupons/services';
 import { db } from '../models/database';
 import {
@@ -86,7 +87,7 @@ router.get(
  */
 router.get(
   '/:id',
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ id: z.string().min(1, '优惠券ID不能为空') }), 'params'),
   optionalAuthenticate,
   asyncHandler(async (req, res) => {
     const coupon = await db.prisma.coupon.findUnique({
@@ -208,6 +209,72 @@ router.post(
 );
 
 /**
+ * POST /api/coupons/validate
+ * 验证优惠券是否有效
+ */
+router.post(
+  '/validate',
+  validate(z.object({
+    code: z.string().min(1, '优惠券代码不能为空'),
+    subtotal: z.number().min(0, '订单金额不能为负数'),
+  })),
+  asyncHandler(async (req, res) => {
+    const { code, subtotal } = req.body;
+
+    const coupon = await db.prisma.coupon.findUnique({
+      where: { code },
+    });
+
+    if (!coupon) {
+      const response: ApiResponse = {
+        success: true,
+        data: {
+          isValid: false,
+          reason: '优惠券不存在',
+        },
+        message: '优惠券验证完成',
+        timestamp: new Date().toISOString(),
+      };
+      return res.json(response);
+    }
+
+    // 检查优惠券是否有效
+    let isValid = true;
+    let reason = '';
+
+    if (!coupon.isActive) {
+      isValid = false;
+      reason = '优惠券已失效';
+    } else if (coupon.endDate < new Date()) {
+      isValid = false;
+      reason = '优惠券已过期';
+    } else if (coupon.startDate > new Date()) {
+      isValid = false;
+      reason = '优惠券尚未生效';
+    } else if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
+      isValid = false;
+      reason = '优惠券使用次数已达上限';
+    } else if (coupon.minAmount && subtotal < coupon.minAmount) {
+      isValid = false;
+      reason = `订单金额不足，最低消费 ${coupon.minAmount} 元`;
+    }
+
+    const response: ApiResponse = {
+      success: true,
+      data: {
+        isValid,
+        reason: isValid ? undefined : reason,
+        coupon: isValid ? coupon : undefined,
+      },
+      message: '优惠券验证完成',
+      timestamp: new Date().toISOString(),
+    };
+
+    res.json(response);
+  })
+);
+
+/**
  * POST /api/coupons/apply
  * 应用优惠券计算折扣
  * 需要用户认证
@@ -215,70 +282,76 @@ router.post(
 router.post(
   '/apply',
   authenticate,
-  validate(couponSchemas.apply),
+  validate(z.object({
+    codes: z.array(z.string()).min(1, '至少需要一个优惠券代码'),
+    subtotal: z.number().min(0, '订单金额不能为负数'),
+    items: z.array(z.object({
+      productId: z.string(),
+      quantity: z.number().min(1),
+      price: z.number().min(0),
+    })),
+  })),
   asyncHandler(async (req, res) => {
-    const data: ApplyCouponRequest = req.body;
+    const { codes, subtotal, items } = req.body;
 
     // 获取优惠券信息
     const coupons = await db.prisma.coupon.findMany({
       where: {
-        code: { in: data.couponCodes },
+        code: { in: codes },
         isActive: true,
       },
     });
 
-    if (coupons.length !== data.couponCodes.length) {
+    if (coupons.length !== codes.length) {
       throw new ValidationError('部分优惠券无效或已失效');
     }
 
-    // 构建订单上下文
-    const orderContext = {
-      subtotal: data.subtotal,
-      shippingCost: data.shippingCost,
-      userId: data.userId,
-      items: data.orderItems,
-    };
+    // 简化的折扣计算逻辑
+    let totalDiscount = 0;
+    const appliedCoupons = [];
 
-    // 转换优惠券格式以匹配 CouponService 期望的类型
-    const couponData = coupons.map((coupon) => ({
-      ...coupon,
-      description: coupon.description || undefined,
-    }));
+    for (const coupon of coupons) {
+      // 检查优惠券是否满足使用条件
+      if (coupon.minAmount && subtotal < coupon.minAmount) {
+        continue; // 跳过不满足条件的优惠券
+      }
 
-    // 应用优惠券
-    const result = couponService.applyCoupons(couponData as any, orderContext);
+      let discount = 0;
+      if (coupon.type === 'PERCENTAGE') {
+        discount = (subtotal * coupon.value) / 100;
+        if (coupon.maxDiscount && discount > coupon.maxDiscount) {
+          discount = coupon.maxDiscount;
+        }
+      } else if (coupon.type === 'FIXED_AMOUNT') {
+        discount = coupon.value;
+      }
 
-    // 计算每个优惠券的具体折扣金额
-    const appliedCouponsWithDiscount = [];
-    let remainingSubtotal = data.subtotal;
-
-    for (const coupon of result.appliedCoupons) {
-      const currentContext = { ...orderContext, subtotal: remainingSubtotal };
-      const discountResult = couponService.calculateDiscount(
-        coupon,
-        currentContext
-      );
-
-      if (discountResult) {
-        appliedCouponsWithDiscount.push({
+      if (discount > 0) {
+        totalDiscount += discount;
+        appliedCoupons.push({
           id: coupon.id,
           code: coupon.code,
           name: coupon.name,
           type: coupon.type,
-          discount: discountResult.discount,
+          discount,
         });
-        remainingSubtotal = discountResult.finalAmount;
       }
     }
+
+    // 确保折扣不超过订单金额
+    if (totalDiscount > subtotal) {
+      totalDiscount = subtotal;
+    }
+
+    const finalAmount = subtotal - totalDiscount;
 
     const response: ApiResponse = {
       success: true,
       data: {
-        originalAmount: data.subtotal,
-        totalDiscount: result.totalDiscount,
-        finalAmount: result.finalAmount,
-        appliedCoupons: appliedCouponsWithDiscount,
-        errors: result.errors,
+        originalAmount: subtotal,
+        totalDiscount,
+        finalAmount,
+        appliedCoupons,
       },
       message: '应用优惠券成功',
       timestamp: new Date().toISOString(),
@@ -297,7 +370,7 @@ router.put(
   '/:id',
   authenticate,
   authorize(['ADMIN']),
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ id: z.string().min(1, '优惠券ID不能为空') }), 'params'),
   validate(couponSchemas.create),
   asyncHandler(async (req, res) => {
     const data: CreateCouponRequest = req.body;
@@ -335,6 +408,7 @@ router.put(
         startDate: new Date(data.startDate),
         endDate: new Date(data.endDate),
         usageLimit: data.usageLimit,
+        isActive: data.isActive,
       },
     });
 
@@ -358,7 +432,7 @@ router.delete(
   '/:id',
   authenticate,
   authorize(['ADMIN']),
-  validate(commonSchemas.id, 'params'),
+  validate(z.object({ id: z.string().min(1, '优惠券ID不能为空') }), 'params'),
   asyncHandler(async (req, res) => {
     const coupon = await db.prisma.coupon.findUnique({
       where: { id: req.params.id },

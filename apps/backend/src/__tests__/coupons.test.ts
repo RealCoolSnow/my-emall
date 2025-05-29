@@ -65,7 +65,7 @@ describe('Coupons API', () => {
         usageLimit: 100,
         isActive: true,
         startDate: new Date('2024-01-01'),
-        endDate: new Date('2024-12-31'),
+        endDate: new Date('2025-12-31'),
       },
     });
     couponId = coupon.id;
@@ -144,8 +144,8 @@ describe('Coupons API', () => {
         maxDiscount: 100,
         usageLimit: 50,
         isActive: true,
-        startDate: '2024-01-01',
-        endDate: '2024-12-31',
+        startDate: '2024-01-01T00:00:00.000Z',
+        endDate: '2025-12-31T23:59:59.999Z',
       };
 
       const response = await request(app)
@@ -168,8 +168,8 @@ describe('Coupons API', () => {
         type: 'PERCENTAGE',
         value: 15,
         isActive: true,
-        startDate: '2024-01-01',
-        endDate: '2024-12-31',
+        startDate: '2024-01-01T00:00:00.000Z',
+        endDate: '2025-12-31T23:59:59.999Z',
       };
 
       await request(app)
@@ -186,8 +186,8 @@ describe('Coupons API', () => {
         type: 'PERCENTAGE',
         value: 10,
         isActive: true,
-        startDate: '2024-01-01',
-        endDate: '2024-12-31',
+        startDate: '2024-01-01T00:00:00.000Z',
+        endDate: '2025-12-31T23:59:59.999Z',
       };
 
       await request(app)
@@ -204,8 +204,8 @@ describe('Coupons API', () => {
         type: 'PERCENTAGE',
         value: 10,
         isActive: true,
-        startDate: '2024-01-01',
-        endDate: '2024-12-31',
+        startDate: '2024-01-01T00:00:00.000Z',
+        endDate: '2025-12-31T23:59:59.999Z',
       };
 
       await request(app).post('/api/coupons').send(couponData).expect(401);
@@ -228,9 +228,16 @@ describe('Coupons API', () => {
   describe('PUT /api/coupons/:id', () => {
     it('should update coupon for admin', async () => {
       const updateData = {
+        code: 'TEST10',
         name: '更新的优惠券名称',
         description: '更新的描述',
+        type: 'PERCENTAGE',
         value: 15,
+        minAmount: 100,
+        maxDiscount: 50,
+        startDate: '2024-01-01T00:00:00.000Z',
+        endDate: '2025-12-31T23:59:59.999Z',
+        usageLimit: 100,
         isActive: false,
       };
 
@@ -251,7 +258,14 @@ describe('Coupons API', () => {
       await request(app)
         .put('/api/coupons/non-existent-id')
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ name: '不存在的优惠券' })
+        .send({
+          code: 'NONEXISTENT',
+          name: '不存在的优惠券',
+          type: 'PERCENTAGE',
+          value: 10,
+          startDate: '2024-01-01T00:00:00.000Z',
+          endDate: '2025-12-31T23:59:59.999Z',
+        })
         .expect(404);
     });
 
@@ -259,7 +273,14 @@ describe('Coupons API', () => {
       await request(app)
         .put(`/api/coupons/${couponId}`)
         .set('Authorization', `Bearer ${userToken}`)
-        .send({ name: '用户更新' })
+        .send({
+          code: 'USERTEST',
+          name: '用户更新',
+          type: 'PERCENTAGE',
+          value: 10,
+          startDate: '2024-01-01T00:00:00.000Z',
+          endDate: '2025-12-31T23:59:59.999Z',
+        })
         .expect(403);
     });
   });
@@ -275,7 +296,7 @@ describe('Coupons API', () => {
           value: 10,
           isActive: true,
           startDate: new Date('2024-01-01'),
-          endDate: new Date('2024-12-31'),
+          endDate: new Date('2025-12-31'),
         },
       });
 
@@ -286,11 +307,12 @@ describe('Coupons API', () => {
 
       expect(response.body.success).toBe(true);
 
-      // 验证优惠券已被删除
+      // 验证优惠券已被软删除（设置为不可用）
       const deletedCoupon = await db.prisma.coupon.findUnique({
         where: { id: couponToDelete.id },
       });
-      expect(deletedCoupon).toBeNull();
+      expect(deletedCoupon).not.toBeNull();
+      expect(deletedCoupon!.isActive).toBe(false);
     });
 
     it('should return 404 for non-existent coupon', async () => {
@@ -376,6 +398,7 @@ describe('Coupons API', () => {
 
       const response = await request(app)
         .post('/api/coupons/apply')
+        .set('Authorization', `Bearer ${userToken}`)
         .send(applyData)
         .expect(200);
 
@@ -399,7 +422,7 @@ describe('Coupons API', () => {
           value: 5,
           isActive: true,
           startDate: new Date('2024-01-01'),
-          endDate: new Date('2024-12-31'),
+          endDate: new Date('2025-12-31'),
         },
       });
 
@@ -417,6 +440,7 @@ describe('Coupons API', () => {
 
       const response = await request(app)
         .post('/api/coupons/apply')
+        .set('Authorization', `Bearer ${userToken}`)
         .send(applyData)
         .expect(200);
 
@@ -432,6 +456,7 @@ describe('Coupons API', () => {
 
       await request(app)
         .post('/api/coupons/apply')
+        .set('Authorization', `Bearer ${userToken}`)
         .send(invalidApplyData)
         .expect(400);
     });

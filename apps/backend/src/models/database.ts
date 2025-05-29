@@ -105,12 +105,43 @@ class DatabaseService {
       throw new Error('Cleanup is only allowed in test environment');
     }
 
-    const tablenames = await this.prisma.$queryRaw<Array<{ name: string }>>`
-      SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_prisma_migrations';
-    `;
+    try {
+      // 禁用外键约束
+      await this.prisma.$executeRaw`PRAGMA foreign_keys = OFF;`;
 
-    for (const { name } of tablenames) {
-      await this.prisma.$executeRawUnsafe(`DELETE FROM "${name}";`);
+      // 按照依赖关系的逆序删除数据
+      const deleteOrder = [
+        'payments',
+        'order_coupons',
+        'order_items',
+        'orders',
+        'cart_items',
+        'reviews',
+        'products',
+        'categories',
+        'coupons',
+        'users'
+      ];
+
+      for (const tableName of deleteOrder) {
+        try {
+          await this.prisma.$executeRawUnsafe(`DELETE FROM "${tableName}";`);
+        } catch (error) {
+          // 忽略表不存在的错误
+          console.warn(`Warning: Could not delete from table ${tableName}:`, error);
+        }
+      }
+
+      // 重新启用外键约束
+      await this.prisma.$executeRaw`PRAGMA foreign_keys = ON;`;
+    } catch (error) {
+      console.warn('Warning: Could not cleanup database:', error);
+      // 确保外键约束重新启用
+      try {
+        await this.prisma.$executeRaw`PRAGMA foreign_keys = ON;`;
+      } catch (e) {
+        // 忽略错误
+      }
     }
   }
 }

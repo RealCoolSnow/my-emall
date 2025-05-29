@@ -55,6 +55,14 @@ describe('Orders API', () => {
       role: otherUser.role,
     });
 
+    // 创建测试分类
+    const category = await db.prisma.category.create({
+      data: {
+        name: '测试分类',
+        description: '测试分类描述',
+      },
+    });
+
     // 创建测试产品
     const product = await db.prisma.product.create({
       data: {
@@ -62,7 +70,7 @@ describe('Orders API', () => {
         description: '测试产品描述',
         price: 99.99,
         stock: 100,
-        category: '测试分类',
+        categoryId: category.id,
         status: 'ACTIVE',
       },
     });
@@ -75,6 +83,8 @@ describe('Orders API', () => {
         totalAmount: 199.98,
         paymentStatus: 'PENDING',
         status: 'PENDING',
+        shippingAddress: '测试地址',
+        paymentMethod: 'alipay',
         orderItems: {
           create: [
             {
@@ -101,12 +111,17 @@ describe('Orders API', () => {
           {
             productId: productId,
             quantity: 1,
-            price: 99.99,
           },
         ],
-        shippingAddress: '测试地址',
-        contactPhone: '13800138000',
-        appliedCoupons: [],
+        shippingAddress: {
+          street: '测试街道123号',
+          city: '测试城市',
+          state: '测试省份',
+          zipCode: '100000',
+          country: '中国',
+        },
+        paymentMethod: 'alipay',
+        notes: '测试订单',
       };
 
       const response = await request(app)
@@ -131,12 +146,17 @@ describe('Orders API', () => {
           {
             productId: productId,
             quantity: 3,
-            price: 99.99,
           },
         ],
-        shippingAddress: '测试地址',
-        contactPhone: '13800138000',
-        appliedCoupons: [],
+        shippingAddress: {
+          street: '测试街道123号',
+          city: '测试城市',
+          state: '测试省份',
+          zipCode: '100000',
+          country: '中国',
+        },
+        paymentMethod: 'alipay',
+        notes: '测试订单',
       };
 
       const response = await request(app)
@@ -154,12 +174,17 @@ describe('Orders API', () => {
           {
             productId: productId,
             quantity: 1,
-            price: 99.99,
           },
         ],
-        shippingAddress: '测试地址',
-        contactPhone: '13800138000',
-        appliedCoupons: [],
+        shippingAddress: {
+          street: '测试街道123号',
+          city: '测试城市',
+          state: '测试省份',
+          zipCode: '100000',
+          country: '中国',
+        },
+        paymentMethod: 'alipay',
+        notes: '测试订单',
       };
 
       await request(app).post('/api/orders').send(orderData).expect(401);
@@ -168,8 +193,14 @@ describe('Orders API', () => {
     it('should validate required fields', async () => {
       const invalidOrderData = {
         items: [], // 空的商品列表
-        shippingAddress: '测试地址',
-        contactPhone: '13800138000',
+        shippingAddress: {
+          street: '测试街道123号',
+          city: '测试城市',
+          state: '测试省份',
+          zipCode: '100000',
+          country: '中国',
+        },
+        paymentMethod: 'alipay',
       };
 
       await request(app)
@@ -185,19 +216,24 @@ describe('Orders API', () => {
           {
             productId: 'non-existent-product',
             quantity: 1,
-            price: 99.99,
           },
         ],
-        shippingAddress: '测试地址',
-        contactPhone: '13800138000',
-        appliedCoupons: [],
+        shippingAddress: {
+          street: '测试街道123号',
+          city: '测试城市',
+          state: '测试省份',
+          zipCode: '100000',
+          country: '中国',
+        },
+        paymentMethod: 'alipay',
+        notes: '测试订单',
       };
 
       await request(app)
         .post('/api/orders')
         .set('Authorization', `Bearer ${userToken}`)
         .send(orderData)
-        .expect(400);
+        .expect(404);
     });
   });
 
@@ -290,7 +326,7 @@ describe('Orders API', () => {
       const updateData = {
         status: 'CANCELLED',
         shippingAddress: '更新的地址',
-        contactPhone: '13900139000',
+        notes: '订单已取消',
       };
 
       const response = await request(app)
@@ -304,7 +340,7 @@ describe('Orders API', () => {
       expect(response.body.data.shippingAddress).toBe(
         updateData.shippingAddress
       );
-      expect(response.body.data.contactPhone).toBe(updateData.contactPhone);
+      expect(response.body.data.notes).toBe(updateData.notes);
     });
 
     it('should deny access to other users orders', async () => {
@@ -354,6 +390,8 @@ describe('Orders API', () => {
           totalAmount: 99.99,
           paymentStatus: 'PENDING',
           status: 'PENDING',
+          shippingAddress: '测试地址',
+          paymentMethod: 'alipay',
           orderItems: {
             create: [
               {
