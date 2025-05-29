@@ -1,0 +1,334 @@
+/* 全局样式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+/* React Admin 自定义样式 */
+.RaLayout-root {
+  background-color: #f5f5f5;
+}
+
+.RaAppBar-root {
+  background: linear-gradient(45deg, #1976d2 30%, #42a5f5 90%);
+  box-shadow: 0 3px 5px 2px rgba(25, 118, 210, 0.3);
+}
+
+.RaSidebar-root {
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+}
+
+.RaMenuItemLink-root {
+  border-radius: 8px;
+  margin: 4px 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.RaMenuItemLink-root:hover {
+  background-color: #e3f2fd;
+  transform: translateX(4px);
+}
+
+.RaMenuItemLink-active {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+/* 卡片样式 */
+.RaCard-root {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.RaCard-root:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 按钮样式 */
+.RaButton-root {
+  border-radius: 6px;
+  text-transform: none;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.RaButton-contained {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.RaButton-contained:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* 表格样式 */
+.RaDatagrid-root {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.RaDatagrid-headerRow {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.RaDatagrid-row:hover {
+  background-color: #f5f5f5;
+}
+
+.RaDatagrid-rowEven {
+  background-color: #fafafa;
+}
+
+.RaDatagrid-rowOdd {
+  background-color: #ffffff;
+}
+
+/* 表单样式 */
+.RaSimpleForm-root {
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.RaTextInput-root,
+.RaNumberInput-root,
+.RaSelectInput-root {
+  margin-bottom: 16px;
+}
+
+.MuiTextField-root {
+  border-radius: 8px;
+}
+
+.MuiOutlinedInput-root {
+  border-radius: 8px;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+  border-width: 2px;
+}
+
+/* 筛选器样式 */
+.RaFilterForm-root {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 分页样式 */
+.RaPagination-root {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 工具栏样式 */
+.RaTopToolbar-root {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 状态标签样式 */
+.status-active {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.status-processing {
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.status-completed {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.status-cancelled {
+  color: #9e9e9e;
+  font-weight: bold;
+}
+
+/* 警告样式 */
+.warning-text {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.error-text {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.success-text {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* 统计卡片样式 */
+.stat-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.stat-card-label {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* 仪表板网格样式 */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.dashboard-section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-section h3 {
+  margin-bottom: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .RaSimpleForm-root {
+    padding: 16px;
+  }
+  
+  .stat-card {
+    padding: 16px;
+  }
+  
+  .stat-card-value {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .RaLayout-content {
+    padding: 8px;
+  }
+  
+  .RaTopToolbar-root {
+    padding: 8px;
+  }
+  
+  .dashboard-section {
+    padding: 16px;
+  }
+}
+
+/* 加载动画 */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 打印样式 */
+@media print {
+  .RaSidebar-root,
+  .RaAppBar-root,
+  .RaTopToolbar-root {
+    display: none !important;
+  }
+  
+  .RaLayout-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
