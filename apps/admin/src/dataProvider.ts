@@ -2,6 +2,31 @@ import { DataProvider, fetchUtils } from 'react-admin';
 import { API_CONFIG, Logger } from './config/env';
 
 /**
+ * 格式化数据中的日期字段
+ */
+const formatDatesInData = (data: any): any => {
+  if (!data || typeof data !== 'object') {
+    return data;
+  }
+
+  const result = { ...data };
+
+  // 需要格式化的日期字段
+  const dateFields = ['startDate', 'endDate', 'createdAt', 'updatedAt'];
+
+  dateFields.forEach(field => {
+    if (result[field]) {
+      const date = new Date(result[field]);
+      if (!isNaN(date.getTime())) {
+        result[field] = date.toISOString();
+      }
+    }
+  });
+
+  return result;
+};
+
+/**
  * 自定义HTTP客户端
  * 添加认证头和错误处理
  */
@@ -158,9 +183,10 @@ export const dataProvider: DataProvider = {
     }
 
     try {
+      const formattedData = formatDatesInData(params.data);
       const { json } = await httpClient(url, {
         method: 'POST',
-        body: JSON.stringify(params.data),
+        body: JSON.stringify(formattedData),
       });
       return { data: json.data };
     } catch (error) {
@@ -183,9 +209,10 @@ export const dataProvider: DataProvider = {
     }
 
     try {
+      const formattedData = formatDatesInData(params.data);
       const { json } = await httpClient(url, {
         method: 'PUT',
-        body: JSON.stringify(params.data),
+        body: JSON.stringify(formattedData),
       });
       return { data: json.data };
     } catch (error) {
@@ -198,10 +225,11 @@ export const dataProvider: DataProvider = {
    * 更新多个资源
    */
   updateMany: async (resource, params) => {
+    const formattedData = formatDatesInData(params.data);
     const promises = params.ids.map((id) =>
       httpClient(`${API_URL}/${resource}/${id}`, {
         method: 'PUT',
-        body: JSON.stringify(params.data),
+        body: JSON.stringify(formattedData),
       })
     );
 

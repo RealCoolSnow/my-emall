@@ -46,8 +46,8 @@ export const CouponList = () => (
       <TextInput source="search" label="搜索" alwaysOn />,
       <SelectInput source="type" label="类型" choices={couponTypeChoices} />,
       <BooleanInput source="isActive" label="是否激活" />,
-      <DateInput source="validFrom" label="开始日期" />,
-      <DateInput source="validTo" label="结束日期" />,
+      <DateInput source="startDate" label="开始日期" />,
+      <DateInput source="endDate" label="结束日期" />,
     ]}
     actions={
       <TopToolbar>
@@ -74,9 +74,9 @@ export const CouponList = () => (
         options={{ style: 'currency', currency: 'CNY' }}
       />
       <BooleanField source="isActive" label="激活状态" />
-      <DateField source="validFrom" label="开始日期" />
-      <DateField source="validTo" label="结束日期" />
-      <NumberField source="usageCount" label="使用次数" />
+      <DateField source="startDate" label="开始日期" />
+      <DateField source="endDate" label="结束日期" />
+      <NumberField source="usedCount" label="使用次数" />
       <NumberField source="usageLimit" label="使用限制" />
       <EditButton />
       <DeleteButton />
@@ -157,8 +157,8 @@ export const CouponCreate = () => (
         helperText="留空表示无限制"
       />
 
-      <DateInput source="validFrom" label="生效日期" validate={[required()]} />
-      <DateInput source="validTo" label="失效日期" validate={[required()]} />
+      <DateInput source="startDate" label="生效日期" validate={[required()]} />
+      <DateInput source="endDate" label="失效日期" validate={[required()]} />
 
       <BooleanInput source="isActive" label="立即激活" defaultValue={true} />
 
@@ -243,8 +243,8 @@ export const CouponEdit = () => (
       <NumberInput source="maxDiscount" label="最大折扣金额" min={0} />
       <NumberInput source="usageLimit" label="使用次数限制" min={1} />
 
-      <DateInput source="validFrom" label="生效日期" validate={[required()]} />
-      <DateInput source="validTo" label="失效日期" validate={[required()]} />
+      <DateInput source="startDate" label="生效日期" validate={[required()]} />
+      <DateInput source="endDate" label="失效日期" validate={[required()]} />
 
       <BooleanInput source="isActive" label="激活状态" />
 
@@ -276,11 +276,11 @@ export const CouponShow = () => (
         label="最大折扣"
         options={{ style: 'currency', currency: 'CNY' }}
       />
-      <NumberField source="usageCount" label="已使用次数" />
+      <NumberField source="usedCount" label="已使用次数" />
       <NumberField source="usageLimit" label="使用限制" />
       <BooleanField source="isActive" label="激活状态" />
-      <DateField source="validFrom" label="生效日期" />
-      <DateField source="validTo" label="失效日期" />
+      <DateField source="startDate" label="生效日期" />
+      <DateField source="endDate" label="失效日期" />
       <TextField source="applicableProducts" label="适用产品" />
       <TextField source="applicableCategories" label="适用分类" />
       <DateField source="createdAt" label="创建时间" />
@@ -316,8 +316,8 @@ export const CouponStatusField = () => {
   if (!record) return null;
 
   const now = new Date();
-  const validFrom = new Date(record.validFrom);
-  const validTo = new Date(record.validTo);
+  const startDate = new Date(record.startDate);
+  const endDate = new Date(record.endDate);
 
   let status = '未知';
   let color = 'gray';
@@ -325,10 +325,10 @@ export const CouponStatusField = () => {
   if (!record.isActive) {
     status = '已停用';
     color = 'red';
-  } else if (now < validFrom) {
+  } else if (now < startDate) {
     status = '未开始';
     color = 'orange';
-  } else if (now > validTo) {
+  } else if (now > endDate) {
     status = '已过期';
     color = 'red';
   } else {

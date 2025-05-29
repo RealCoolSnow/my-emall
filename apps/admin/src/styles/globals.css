@@ -20,25 +20,39 @@ body {
 }
 
 .RaAppBar-root {
-  background: linear-gradient(45deg, #1976d2 30%, #42a5f5 90%);
-  box-shadow: 0 3px 5px 2px rgba(25, 118, 210, 0.3);
+  background: #ffffff !important;
+  color: #333 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  border-bottom: 1px solid #f0f0f0 !important;
 }
 
 .RaSidebar-root {
   background-color: #ffffff;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #f0f0f0;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
 }
 
 .RaMenuItemLink-root {
-  border-radius: 8px;
-  margin: 4px 8px;
-  transition: all 0.2s ease-in-out;
+  border-radius: 8px !important;
+  margin: 4px 0 !important;
+  transition: all 0.2s ease-in-out !important;
+  color: #666 !important;
 }
 
 .RaMenuItemLink-root:hover {
-  background-color: #e3f2fd;
-  transform: translateX(4px);
+  background-color: #f0f7ff !important;
+  color: #1976d2 !important;
+  transform: translateX(2px);
 }
+
+.RaMenuItemLink-root.RaMenuItemLink-active {
+  background-color: #e3f2fd !important;
+  color: #1976d2 !important;
+  font-weight: 600 !important;
+  border-left: 3px solid #1976d2;
+}
+
+
 
 .RaMenuItemLink-active {
   background-color: #1976d2 !important;

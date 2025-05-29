@@ -43,8 +43,18 @@ export function validate(
 
 // 通用验证模式
 export const commonSchemas = {
-  // ID 验证
-  id: z.string().min(1, 'ID 不能为空'),
+  // ID 验证 (用于路径参数)
+  id: z.object({
+    id: z.string().min(1, 'ID 不能为空'),
+  }),
+
+  // 单独的 ID 字符串验证
+  idString: z.string().min(1, 'ID 不能为空'),
+
+  // 用户ID验证 (用于路径参数)
+  userId: z.object({
+    userId: z.string().min(1, '用户ID不能为空'),
+  }),
 
   // 分页验证基础对象
   paginationBase: z.object({
@@ -252,8 +262,26 @@ export const couponSchemas = {
       value: z.number().positive('优惠值必须大于 0'),
       minAmount: z.number().min(0, '最小金额不能为负数').optional(),
       maxDiscount: z.number().positive('最大折扣必须大于 0').optional(),
-      startDate: z.string().datetime('开始时间格式不正确'),
-      endDate: z.string().datetime('结束时间格式不正确'),
+      startDate: z
+        .string()
+        .min(1, '开始时间不能为空')
+        .transform((val) => {
+          const date = new Date(val);
+          if (isNaN(date.getTime())) {
+            throw new Error('开始时间格式不正确');
+          }
+          return date.toISOString();
+        }),
+      endDate: z
+        .string()
+        .min(1, '结束时间不能为空')
+        .transform((val) => {
+          const date = new Date(val);
+          if (isNaN(date.getTime())) {
+            throw new Error('结束时间格式不正确');
+          }
+          return date.toISOString();
+        }),
       usageLimit: z.number().int().positive('使用限制必须大于 0').optional(),
       isActive: z.boolean().optional(),
     })

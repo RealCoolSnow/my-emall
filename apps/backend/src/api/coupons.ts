@@ -87,7 +87,7 @@ router.get(
  */
 router.get(
   '/:id',
-  validate(z.object({ id: z.string().min(1, '优惠券ID不能为空') }), 'params'),
+  validate(commonSchemas.id, 'params'),
   optionalAuthenticate,
   asyncHandler(async (req, res) => {
     const coupon = await db.prisma.coupon.findUnique({

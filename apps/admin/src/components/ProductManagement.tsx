@@ -13,6 +13,8 @@ import {
   TextInput,
   NumberInput,
   SelectInput,
+  ReferenceInput,
+  ReferenceField,
   required,
   Show,
   SimpleShowLayout,
@@ -40,16 +42,9 @@ export const ProductList = () => (
           { id: 'OUT_OF_STOCK', name: '缺货' },
         ]}
       />,
-      <SelectInput
-        source="categoryId"
-        label="分类"
-        choices={[
-          { id: '1', name: '电子产品' },
-          { id: '2', name: '服装' },
-          { id: '3', name: '家居' },
-          { id: '4', name: '图书' },
-        ]}
-      />,
+      <ReferenceInput source="categoryId" reference="categories" label="分类">
+        <SelectInput optionText="name" />
+      </ReferenceInput>,
     ]}
     actions={
       <TopToolbar>
@@ -70,7 +65,9 @@ export const ProductList = () => (
       />
       <NumberField source="stock" label="库存" />
       <TextField source="status" label="状态" />
-      <TextField source="categoryId" label="分类ID" />
+      <ReferenceField source="categoryId" reference="categories" label="分类">
+        <TextField source="name" />
+      </ReferenceField>
       <DateField source="createdAt" label="创建时间" />
       <EditButton />
       <DeleteButton />
@@ -100,17 +97,9 @@ export const ProductCreate = () => (
         defaultValue="ACTIVE"
         validate={[required()]}
       />
-      <SelectInput
-        source="categoryId"
-        label="分类"
-        choices={[
-          { id: '1', name: '电子产品' },
-          { id: '2', name: '服装' },
-          { id: '3', name: '家居' },
-          { id: '4', name: '图书' },
-        ]}
-        validate={[required()]}
-      />
+      <ReferenceInput source="categoryId" reference="categories" label="分类">
+        <SelectInput optionText="name" validate={[required()]} />
+      </ReferenceInput>
       <TextInput source="imageUrl" label="图片URL" />
       <TextInput source="tags" label="标签" helperText="用逗号分隔多个标签" />
     </SimpleForm>
@@ -138,17 +127,9 @@ export const ProductEdit = () => (
         ]}
         validate={[required()]}
       />
-      <SelectInput
-        source="categoryId"
-        label="分类"
-        choices={[
-          { id: '1', name: '电子产品' },
-          { id: '2', name: '服装' },
-          { id: '3', name: '家居' },
-          { id: '4', name: '图书' },
-        ]}
-        validate={[required()]}
-      />
+      <ReferenceInput source="categoryId" reference="categories" label="分类">
+        <SelectInput optionText="name" validate={[required()]} />
+      </ReferenceInput>
       <TextInput source="imageUrl" label="图片URL" />
       <TextInput source="tags" label="标签" helperText="用逗号分隔多个标签" />
     </SimpleForm>
@@ -172,7 +153,9 @@ export const ProductShow = () => (
       />
       <NumberField source="stock" label="库存" />
       <TextField source="status" label="状态" />
-      <TextField source="categoryId" label="分类ID" />
+      <ReferenceField source="categoryId" reference="categories" label="分类">
+        <TextField source="name" />
+      </ReferenceField>
       <TextField source="imageUrl" label="图片URL" />
       <TextField source="tags" label="标签" />
       <DateField source="createdAt" label="创建时间" />

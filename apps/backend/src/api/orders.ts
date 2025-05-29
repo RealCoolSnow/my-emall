@@ -58,7 +58,7 @@ router.get(
 router.get(
   '/:id',
   authenticate,
-  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
+  validate(commonSchemas.id, 'params'),
   asyncHandler(async (req, res) => {
     const order = await orderService.getOrderById(req.params.id);
 
@@ -120,7 +120,7 @@ router.post(
 router.put(
   '/:id',
   authenticate,
-  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
+  validate(commonSchemas.id, 'params'),
   validate(orderSchemas.update),
   asyncHandler(async (req, res) => {
     // 先获取订单信息以检查权限
@@ -163,7 +163,7 @@ router.put(
 router.post(
   '/:id/cancel',
   authenticate,
-  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
+  validate(commonSchemas.id, 'params'),
   asyncHandler(async (req, res) => {
     // 如果不是管理员，只能取消自己的订单
     const userId = ['ADMIN', 'SUPER_ADMIN'].includes(req.user!.role)
@@ -191,7 +191,7 @@ router.post(
 router.delete(
   '/:id',
   authenticate,
-  validate(z.object({ id: z.string().min(1, '订单ID不能为空') }), 'params'),
+  validate(commonSchemas.id, 'params'),
   asyncHandler(async (req, res) => {
     // 先获取订单信息以检查权限和状态
     const existingOrder = await orderService.getOrderById(req.params.id);
@@ -246,7 +246,7 @@ router.delete(
 router.get(
   '/user/:userId',
   authenticate,
-  validate(z.object({ userId: z.string().min(1, '用户ID不能为空') }), 'params'),
+  validate(commonSchemas.userId, 'params'),
   checkResourceOwnership((req) => req.params.userId),
   validate(orderSchemas.query, 'query'),
   asyncHandler(async (req, res) => {

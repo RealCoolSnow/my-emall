@@ -18,6 +18,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 // 导入 API 路由
 import authRoutes from './api/auth';
 import productRoutes from './api/products';
+import categoryRoutes from './api/categories';
 import orderRoutes from './api/orders';
 import couponRoutes from './api/coupons';
 import paymentRoutes from './api/payments';
@@ -98,6 +99,7 @@ app.get('/api', (req, res) => {
     endpoints: {
       auth: '/api/auth',
       products: '/api/products',
+      categories: '/api/categories',
       orders: '/api/orders',
       coupons: '/api/coupons',
       payments: '/api/payments',
@@ -109,6 +111,7 @@ app.get('/api', (req, res) => {
 // API 路由
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/payments', paymentRoutes);
