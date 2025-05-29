@@ -8,7 +8,7 @@
  */
 export const API_CONFIG = {
   // 后端API基础URL
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
 
   // 请求超时时间（毫秒）
   TIMEOUT: parseInt(import.meta.env.VITE_API_TIMEOUT || '10000'),

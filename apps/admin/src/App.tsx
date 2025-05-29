@@ -11,6 +11,7 @@ import {
 import { dataProvider, authProvider } from './dataProvider';
 import { APP_CONFIG, ENV_UTILS, Logger } from './config/env';
 import Dashboard from './components/Dashboard';
+import LoginPage from './components/LoginPage';
 
 // 导入各模块组件
 import ProductManagement from './components/ProductManagement';
@@ -90,6 +91,7 @@ function App() {
       authProvider={authProvider}
       dashboard={Dashboard}
       layout={CustomLayout}
+      loginPage={LoginPage}
       title={APP_CONFIG.TITLE}
       theme={{
         palette: {
