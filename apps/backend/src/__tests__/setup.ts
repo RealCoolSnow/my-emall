@@ -31,8 +31,16 @@ beforeAll(async () => {
     }
 
     await db.prisma.$executeRaw`PRAGMA foreign_keys = ON;`;
+
+    // 推送数据库模式以创建表
+    const { execSync } = require('child_process');
+    execSync('npx prisma db push --force-reset', {
+      cwd: process.cwd(),
+      stdio: 'pipe'
+    });
+
   } catch (error) {
-    console.warn('Warning: Could not clean database tables:', error);
+    console.warn('Warning: Could not setup database:', error);
   }
 });
 

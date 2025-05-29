@@ -49,7 +49,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
 
   // 模块路径映射
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^shared/(.*)$': '<rootDir>/../../packages/shared/src/$1',
     '^coupons/(.*)$': '<rootDir>/../../packages/coupons/src/$1',
   },
