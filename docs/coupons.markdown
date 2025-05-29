@@ -1,6 +1,7 @@
 # 优惠券模块开发指南
 
 ## 目录结构
+
 ```
 packages/coupons/
 ├── src/
@@ -15,6 +16,7 @@ packages/coupons/
 ```
 
 ## 依赖安装
+
 ```bash
 cd packages/coupons
 pnpm add packages/shared
@@ -22,8 +24,11 @@ pnpm add -D typescript
 ```
 
 ## 核心功能
+
 1. **规则引擎**
+
    - 示例：
+
      ```ts
      // src/services/couponService.ts
      import { Coupon } from 'packages/shared/types';
@@ -35,7 +40,9 @@ pnpm add -D typescript
      class FullDiscountCoupon implements CouponStrategy {
        apply(order: any, coupon: Coupon): number {
          const { threshold, discount } = coupon.rules;
-         return order.totalAmount >= threshold ? order.totalAmount - discount : order.totalAmount;
+         return order.totalAmount >= threshold
+           ? order.totalAmount - discount
+           : order.totalAmount;
        }
      }
 
@@ -58,5 +65,6 @@ pnpm add -D typescript
      ```
 
 ## Cursor 使用提示
+
 - 生成策略：`生成 TypeScript 优惠券策略模式`。
 - 生成服务：`生成优惠券服务逻辑，支持 JSON 规则`。

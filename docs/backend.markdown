@@ -1,6 +1,7 @@
 # 后端开发指南
 
 ## 目录结构
+
 ```
 apps/backend/
 ├── src/
@@ -23,6 +24,7 @@ apps/backend/
 ```
 
 ## 依赖安装
+
 ```bash
 cd apps/backend
 pnpm add express @prisma/client jsonwebtoken
@@ -31,7 +33,9 @@ pnpm add packages/coupons packages/shared
 ```
 
 ## 核心功能
+
 1. **Prisma 配置**
+
    - `prisma/schema.prisma`：
      ```prisma
      datasource db {
@@ -58,7 +62,9 @@ pnpm add packages/coupons packages/shared
      ```
 
 2. **API 实现**
+
    - 示例：优惠券应用 API
+
      ```ts
      // src/api/coupons.ts
      import express from 'express';
@@ -77,6 +83,7 @@ pnpm add packages/coupons packages/shared
      ```
 
 ## Cursor 使用提示
+
 - 生成 API：`生成 Express 路由处理优惠券应用`。
 - 生成 Prisma 模型：`生成 SQLite Prisma 模型`。
 - 优化服务逻辑：使用 `Ctrl+K`。

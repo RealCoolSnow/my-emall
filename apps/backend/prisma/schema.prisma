@@ -15,8 +15,8 @@ model User {
   email     String   @unique
   username  String   @unique
   password  String
-  role      UserRole @default(CUSTOMER)
-  profile   Json?
+  role      String   @default("CUSTOMER") // CUSTOMER, ADMIN, SUPER_ADMIN
+  profile   String?  // JSON string
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -49,11 +49,11 @@ model Product {
   description String?
   price       Float
   stock       Int      @default(0)
-  imageUrls   Json?    // Array of image URLs
+  imageUrls   String?  // JSON string for array of image URLs
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
-  status      ProductStatus @default(ACTIVE)
-  attributes  Json?    // Product specifications
+  status      String   @default("ACTIVE") // ACTIVE, INACTIVE, OUT_OF_STOCK
+  attributes  String?  // JSON string for product specifications
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -69,11 +69,11 @@ model Order {
   id          String      @id @default(cuid())
   userId      String
   user        User        @relation(fields: [userId], references: [id])
-  status      OrderStatus @default(PENDING)
+  status      String      @default("PENDING") // PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED, REFUNDED
   totalAmount Float
-  shippingAddress Json
+  shippingAddress String  // JSON string
   paymentMethod   String
-  paymentStatus   PaymentStatus @default(PENDING)
+  paymentStatus   String  @default("PENDING") // PENDING, PAID, FAILED, REFUNDED
   notes       String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -132,7 +132,7 @@ model Coupon {
   code        String     @unique
   name        String
   description String?
-  type        CouponType
+  type        String     // FIXED_AMOUNT, PERCENTAGE, FREE_SHIPPING
   value       Float      // Discount amount or percentage
   minAmount   Float?     // Minimum order amount
   maxDiscount Float?     // Maximum discount amount
@@ -162,37 +162,9 @@ model OrderCoupon {
   @@map("order_coupons")
 }
 
-enum UserRole {
-  CUSTOMER
-  ADMIN
-  SUPER_ADMIN
-}
-
-enum ProductStatus {
-  ACTIVE
-  INACTIVE
-  OUT_OF_STOCK
-}
-
-enum OrderStatus {
-  PENDING
-  CONFIRMED
-  PROCESSING
-  SHIPPED
-  DELIVERED
-  CANCELLED
-  REFUNDED
-}
-
-enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
-  REFUNDED
-}
-
-enum CouponType {
-  FIXED_AMOUNT
-  PERCENTAGE
-  FREE_SHIPPING
-}
+// Enums are replaced with String fields with comments indicating valid values
+// UserRole: CUSTOMER, ADMIN, SUPER_ADMIN
+// ProductStatus: ACTIVE, INACTIVE, OUT_OF_STOCK
+// OrderStatus: PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED, REFUNDED
+// PaymentStatus: PENDING, PAID, FAILED, REFUNDED
+// CouponType: FIXED_AMOUNT, PERCENTAGE, FREE_SHIPPING

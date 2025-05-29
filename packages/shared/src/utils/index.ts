@@ -36,7 +36,8 @@ export const isValidEmail = (email: string): boolean => {
 
 // Generate random string
 export const generateRandomString = (length: number): string => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -60,7 +61,7 @@ export const debounce = <T extends (...args: any[]) => any>(
 export const deepClone = <T>(obj: T): T => {
   if (obj === null || typeof obj !== 'object') return obj;
   if (obj instanceof Date) return new Date(obj.getTime()) as any;
-  if (obj instanceof Array) return obj.map(item => deepClone(item)) as any;
+  if (obj instanceof Array) return obj.map((item) => deepClone(item)) as any;
   if (typeof obj === 'object') {
     const clonedObj = {} as any;
     for (const key in obj) {

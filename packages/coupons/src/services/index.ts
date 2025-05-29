@@ -1,15 +1,15 @@
-import { 
-  Coupon, 
-  CouponType, 
-  CouponValidationResult, 
-  CouponDiscountResult, 
-  OrderContext 
+import {
+  Coupon,
+  CouponType,
+  CouponValidationResult,
+  CouponDiscountResult,
+  OrderContext,
 } from '../types';
-import { 
-  CouponStrategy, 
-  FixedAmountStrategy, 
-  PercentageStrategy, 
-  FreeShippingStrategy 
+import {
+  CouponStrategy,
+  FixedAmountStrategy,
+  PercentageStrategy,
+  FreeShippingStrategy,
 } from '../strategies';
 
 export class CouponService {
@@ -22,7 +22,10 @@ export class CouponService {
     this.strategies.set(CouponType.FREE_SHIPPING, new FreeShippingStrategy());
   }
 
-  validateCoupon(coupon: Coupon, orderContext: OrderContext): CouponValidationResult {
+  validateCoupon(
+    coupon: Coupon,
+    orderContext: OrderContext
+  ): CouponValidationResult {
     const strategy = this.strategies.get(coupon.type);
     if (!strategy) {
       return { isValid: false, error: '不支持的优惠券类型' };
@@ -31,7 +34,10 @@ export class CouponService {
     return strategy.validate(coupon, orderContext);
   }
 
-  calculateDiscount(coupon: Coupon, orderContext: OrderContext): CouponDiscountResult | null {
+  calculateDiscount(
+    coupon: Coupon,
+    orderContext: OrderContext
+  ): CouponDiscountResult | null {
     const validation = this.validateCoupon(coupon, orderContext);
     if (!validation.isValid) {
       return null;
@@ -45,7 +51,10 @@ export class CouponService {
     return strategy.calculateDiscount(coupon, orderContext);
   }
 
-  applyCoupons(coupons: Coupon[], orderContext: OrderContext): {
+  applyCoupons(
+    coupons: Coupon[],
+    orderContext: OrderContext
+  ): {
     totalDiscount: number;
     finalAmount: number;
     appliedCoupons: Coupon[];
@@ -59,7 +68,7 @@ export class CouponService {
     for (const coupon of coupons) {
       const currentContext = { ...orderContext, subtotal: currentSubtotal };
       const result = this.calculateDiscount(coupon, currentContext);
-      
+
       if (result) {
         totalDiscount += result.discount;
         currentSubtotal = result.finalAmount;

@@ -4,6 +4,6 @@ const nextConfig = {
     appDir: true,
   },
   transpilePackages: ['shared', 'coupons'],
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

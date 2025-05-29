@@ -1,9 +1,17 @@
-import { Coupon, CouponValidationResult, CouponDiscountResult, OrderContext } from '../types';
+import {
+  Coupon,
+  CouponValidationResult,
+  CouponDiscountResult,
+  OrderContext,
+} from '../types';
 
 // Strategy interface
 export interface CouponStrategy {
   validate(coupon: Coupon, orderContext: OrderContext): CouponValidationResult;
-  calculateDiscount(coupon: Coupon, orderContext: OrderContext): CouponDiscountResult;
+  calculateDiscount(
+    coupon: Coupon,
+    orderContext: OrderContext
+  ): CouponDiscountResult;
 }
 
 // Fixed amount discount strategy
@@ -29,7 +37,10 @@ export class FixedAmountStrategy implements CouponStrategy {
     return { isValid: true };
   }
 
-  calculateDiscount(coupon: Coupon, orderContext: OrderContext): CouponDiscountResult {
+  calculateDiscount(
+    coupon: Coupon,
+    orderContext: OrderContext
+  ): CouponDiscountResult {
     const discount = Math.min(coupon.value, orderContext.subtotal);
     const finalAmount = Math.max(0, orderContext.subtotal - discount);
 
@@ -64,9 +75,12 @@ export class PercentageStrategy implements CouponStrategy {
     return { isValid: true };
   }
 
-  calculateDiscount(coupon: Coupon, orderContext: OrderContext): CouponDiscountResult {
+  calculateDiscount(
+    coupon: Coupon,
+    orderContext: OrderContext
+  ): CouponDiscountResult {
     let discount = (orderContext.subtotal * coupon.value) / 100;
-    
+
     if (coupon.maxDiscount) {
       discount = Math.min(discount, coupon.maxDiscount);
     }
@@ -104,7 +118,10 @@ export class FreeShippingStrategy implements CouponStrategy {
     return { isValid: true };
   }
 
-  calculateDiscount(coupon: Coupon, orderContext: OrderContext): CouponDiscountResult {
+  calculateDiscount(
+    coupon: Coupon,
+    orderContext: OrderContext
+  ): CouponDiscountResult {
     const discount = orderContext.shippingCost;
     const finalAmount = orderContext.subtotal; // Shipping is free, but subtotal remains
 

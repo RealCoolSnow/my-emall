@@ -1,6 +1,7 @@
 # 管理后台开发指南
 
 ## 目录结构
+
 ```
 apps/admin/
 ├── src/
@@ -20,6 +21,7 @@ apps/admin/
 ```
 
 ## 依赖安装
+
 ```bash
 cd apps/admin
 pnpm add react react-dom next react-admin antd
@@ -28,9 +30,12 @@ pnpm add packages/coupons packages/shared
 ```
 
 ## 核心功能
+
 1. **商品管理**
+
    - 使用 React Admin 的 `List` 组件。
    - 示例：
+
      ```tsx
      // src/components/ProductManagement.tsx
      import { List, Datagrid, TextField } from 'react-admin';
@@ -46,8 +51,10 @@ pnpm add packages/coupons packages/shared
      ```
 
 2. **优惠券编辑**
+
    - 调用 `packages/coupons` 服务。
    - 示例：
+
      ```tsx
      // src/components/CouponEditor.tsx
      import { useState } from 'react';
@@ -63,5 +70,6 @@ pnpm add packages/coupons packages/shared
      ```
 
 ## Cursor 使用提示
+
 - 生成组件：`生成 React Admin 商品管理组件`。
 - 优化代码：使用 `Ctrl+Shift+K`。
