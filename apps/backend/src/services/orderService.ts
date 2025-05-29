@@ -9,7 +9,7 @@ import {
   CreateOrderRequest,
   UpdateOrderRequest,
   OrderQuery,
-  PaginatedResponse
+  PaginatedResponse,
 } from '../types';
 import { NotFoundError, ValidationError } from '../middleware/errorHandler';
 import { ProductService } from './productService';
@@ -61,7 +61,9 @@ export class OrderService {
         }
 
         if (product.stock < item.quantity) {
-          throw new ValidationError(`产品 ${product.name} 库存不足，当前库存：${product.stock}`);
+          throw new ValidationError(
+            `产品 ${product.name} 库存不足，当前库存：${product.stock}`
+          );
         }
 
         const itemTotal = product.price * item.quantity;
@@ -97,7 +99,7 @@ export class OrderService {
           subtotal,
           shippingCost: 0, // 暂时设为 0，可以根据实际需求计算
           userId,
-          items: orderItems.map(item => ({
+          items: orderItems.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,
@@ -105,7 +107,7 @@ export class OrderService {
         };
 
         // 转换Prisma Coupon对象为packages/coupons的Coupon类型
-        const convertedCoupons = coupons.map(coupon => ({
+        const convertedCoupons = coupons.map((coupon) => ({
           ...coupon,
           description: coupon.description || undefined,
           minAmount: coupon.minAmount || undefined,
@@ -114,7 +116,10 @@ export class OrderService {
           type: coupon.type as any, // 临时类型断言，因为Prisma使用string而packages/coupons使用枚举
         }));
 
-        const couponResult = this.couponService.applyCoupons(convertedCoupons, orderContext);
+        const couponResult = this.couponService.applyCoupons(
+          convertedCoupons,
+          orderContext
+        );
         totalDiscount = couponResult.totalDiscount;
 
         // 创建一个映射来存储每个优惠券的折扣金额
@@ -122,14 +127,17 @@ export class OrderService {
 
         // 计算每个应用的优惠券的折扣
         for (const appliedCoupon of couponResult.appliedCoupons) {
-          const discountResult = this.couponService.calculateDiscount(appliedCoupon, orderContext);
+          const discountResult = this.couponService.calculateDiscount(
+            appliedCoupon,
+            orderContext
+          );
           if (discountResult) {
             discountMap.set(appliedCoupon.id, discountResult.discount);
           }
         }
 
         for (const coupon of coupons) {
-          if (couponResult.appliedCoupons.some(ac => ac.id === coupon.id)) {
+          if (couponResult.appliedCoupons.some((ac) => ac.id === coupon.id)) {
             appliedCoupons.push({
               couponId: coupon.id,
               discount: discountMap.get(coupon.id) || 0,
@@ -156,7 +164,7 @@ export class OrderService {
           paymentMethod: data.paymentMethod,
           notes: data.notes,
           orderItems: {
-            create: orderItems.map(item => ({
+            create: orderItems.map((item) => ({
               productId: item.productId,
               quantity: item.quantity,
               price: item.price,
@@ -292,7 +300,7 @@ export class OrderService {
     ]);
 
     // 格式化订单数据
-    const formattedOrders = orders.map(order => this.formatOrder(order));
+    const formattedOrders = orders.map((order) => this.formatOrder(order));
 
     return {
       data: formattedOrders,
@@ -479,7 +487,10 @@ export class OrderService {
    * @param currentStatus 当前状态
    * @param newStatus 新状态
    */
-  private validateStatusTransition(currentStatus: string, newStatus: string): void {
+  private validateStatusTransition(
+    currentStatus: string,
+    newStatus: string
+  ): void {
     const validTransitions: Record<string, string[]> = {
       PENDING: ['CONFIRMED', 'CANCELLED'],
       CONFIRMED: ['PROCESSING', 'CANCELLED'],
@@ -491,7 +502,9 @@ export class OrderService {
     };
 
     if (!validTransitions[currentStatus]?.includes(newStatus)) {
-      throw new ValidationError(`无法从状态 ${currentStatus} 转换到 ${newStatus}`);
+      throw new ValidationError(
+        `无法从状态 ${currentStatus} 转换到 ${newStatus}`
+      );
     }
   }
 
@@ -503,8 +516,12 @@ export class OrderService {
   private formatOrder(order: any) {
     return {
       ...order,
-      shippingAddress: order.shippingAddress ? JSON.parse(order.shippingAddress) : null,
-      totalDiscount: order.coupons?.reduce((sum: number, oc: any) => sum + oc.discount, 0) || 0,
+      shippingAddress: order.shippingAddress
+        ? JSON.parse(order.shippingAddress)
+        : null,
+      totalDiscount:
+        order.coupons?.reduce((sum: number, oc: any) => sum + oc.discount, 0) ||
+        0,
     };
   }
 }

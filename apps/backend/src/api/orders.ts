@@ -5,8 +5,16 @@
 
 import express from 'express';
 import { OrderService } from '../services/orderService';
-import { authenticate, authorize, checkResourceOwnership } from '../middleware/auth';
-import { validate, orderSchemas, commonSchemas } from '../middleware/validation';
+import {
+  authenticate,
+  authorize,
+  checkResourceOwnership,
+} from '../middleware/auth';
+import {
+  validate,
+  orderSchemas,
+  commonSchemas,
+} from '../middleware/validation';
 import { asyncHandler } from '../middleware/errorHandler';
 import { ApiResponse } from '../types';
 
@@ -29,7 +37,7 @@ router.get(
     }
 
     const result = await orderService.getOrders(req.query);
-    
+
     const response: ApiResponse = {
       success: true,
       data: result,
@@ -52,7 +60,7 @@ router.get(
   validate(commonSchemas.id, 'params'),
   asyncHandler(async (req, res) => {
     const order = await orderService.getOrderById(req.params.id);
-    
+
     // 检查权限：用户只能查看自己的订单
     if (
       req.user &&
@@ -68,7 +76,7 @@ router.get(
       res.status(403).json(response);
       return;
     }
-    
+
     const response: ApiResponse = {
       success: true,
       data: order,
@@ -91,7 +99,7 @@ router.post(
   validate(orderSchemas.create),
   asyncHandler(async (req, res) => {
     const order = await orderService.createOrder(req.user!.userId, req.body);
-    
+
     const response: ApiResponse = {
       success: true,
       data: order,
@@ -116,7 +124,7 @@ router.put(
   validate(orderSchemas.update),
   asyncHandler(async (req, res) => {
     const order = await orderService.updateOrder(req.params.id, req.body);
-    
+
     const response: ApiResponse = {
       success: true,
       data: order,
@@ -139,12 +147,12 @@ router.post(
   validate(commonSchemas.id, 'params'),
   asyncHandler(async (req, res) => {
     // 如果不是管理员，只能取消自己的订单
-    const userId = ['ADMIN', 'SUPER_ADMIN'].includes(req.user!.role) 
-      ? undefined 
+    const userId = ['ADMIN', 'SUPER_ADMIN'].includes(req.user!.role)
+      ? undefined
       : req.user!.userId;
 
     const order = await orderService.cancelOrder(req.params.id, userId);
-    
+
     const response: ApiResponse = {
       success: true,
       data: order,
@@ -165,12 +173,12 @@ router.get(
   '/user/:userId',
   authenticate,
   validate(commonSchemas.id, 'params'),
-  checkResourceOwnership(req => req.params.userId),
+  checkResourceOwnership((req) => req.params.userId),
   validate(orderSchemas.query, 'query'),
   asyncHandler(async (req, res) => {
     const query = { ...req.query, userId: req.params.userId };
     const result = await orderService.getOrders(query);
-    
+
     const response: ApiResponse = {
       success: true,
       data: result,
@@ -194,7 +202,7 @@ router.get(
   asyncHandler(async (req, res) => {
     // 这里可以添加订单统计逻辑
     // 例如：总订单数、今日订单数、总销售额等
-    
+
     const response: ApiResponse = {
       success: true,
       data: {

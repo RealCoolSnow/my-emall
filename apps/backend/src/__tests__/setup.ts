@@ -14,20 +14,22 @@ process.env.JWT_SECRET = 'test-jwt-secret-key';
 beforeAll(async () => {
   // 确保数据库连接
   await db.prisma.$connect();
-  
+
   // 推送数据库模式（创建表）
   try {
     await db.prisma.$executeRaw`PRAGMA foreign_keys = OFF;`;
-    
+
     // 删除所有表
     const tables = await db.prisma.$queryRaw<Array<{ name: string }>>`
       SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_prisma_migrations';
     `;
-    
+
     for (const table of tables) {
-      await db.prisma.$executeRawUnsafe(`DROP TABLE IF EXISTS "${table.name}";`);
+      await db.prisma.$executeRawUnsafe(
+        `DROP TABLE IF EXISTS "${table.name}";`
+      );
     }
-    
+
     await db.prisma.$executeRaw`PRAGMA foreign_keys = ON;`;
   } catch (error) {
     console.warn('Warning: Could not clean database tables:', error);
@@ -42,7 +44,7 @@ afterAll(async () => {
   } catch (error) {
     console.warn('Warning: Could not cleanup test data:', error);
   }
-  
+
   // 断开数据库连接
   await db.disconnect();
 });

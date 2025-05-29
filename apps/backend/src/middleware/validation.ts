@@ -23,7 +23,7 @@ export function validate(
       const result = schema.safeParse(data);
 
       if (!result.success) {
-        const errors = result.error.errors.map(err => ({
+        const errors = result.error.errors.map((err) => ({
           field: err.path.join('.'),
           message: err.message,
           code: err.code,
@@ -48,16 +48,32 @@ export const commonSchemas = {
 
   // 分页验证基础对象
   paginationBase: z.object({
-    page: z.string().optional().transform(val => val ? parseInt(val, 10) : 1),
-    limit: z.string().optional().transform(val => val ? parseInt(val, 10) : 10),
+    page: z
+      .string()
+      .optional()
+      .transform((val) => (val ? parseInt(val, 10) : 1)),
+    limit: z
+      .string()
+      .optional()
+      .transform((val) => (val ? parseInt(val, 10) : 10)),
   }),
 
   // 分页验证
-  pagination: z.object({
-    page: z.string().optional().transform(val => val ? parseInt(val, 10) : 1),
-    limit: z.string().optional().transform(val => val ? parseInt(val, 10) : 10),
-  }).refine(data => data.page >= 1, { message: '页码必须大于 0' })
-    .refine(data => data.limit >= 1 && data.limit <= 100, { message: '每页数量必须在 1-100 之间' }),
+  pagination: z
+    .object({
+      page: z
+        .string()
+        .optional()
+        .transform((val) => (val ? parseInt(val, 10) : 1)),
+      limit: z
+        .string()
+        .optional()
+        .transform((val) => (val ? parseInt(val, 10) : 10)),
+    })
+    .refine((data) => data.page >= 1, { message: '页码必须大于 0' })
+    .refine((data) => data.limit >= 1 && data.limit <= 100, {
+      message: '每页数量必须在 1-100 之间',
+    }),
 
   // 排序验证基础对象
   sortBase: z.object({
@@ -77,8 +93,14 @@ export const userSchemas = {
   // 注册验证
   register: z.object({
     email: z.string().email('邮箱格式不正确'),
-    username: z.string().min(3, '用户名至少 3 个字符').max(20, '用户名最多 20 个字符'),
-    password: z.string().min(8, '密码至少 8 个字符').max(100, '密码最多 100 个字符'),
+    username: z
+      .string()
+      .min(3, '用户名至少 3 个字符')
+      .max(20, '用户名最多 20 个字符'),
+    password: z
+      .string()
+      .min(8, '密码至少 8 个字符')
+      .max(100, '密码最多 100 个字符'),
   }),
 
   // 登录验证
@@ -89,7 +111,11 @@ export const userSchemas = {
 
   // 更新用户信息验证
   updateProfile: z.object({
-    username: z.string().min(3, '用户名至少 3 个字符').max(20, '用户名最多 20 个字符').optional(),
+    username: z
+      .string()
+      .min(3, '用户名至少 3 个字符')
+      .max(20, '用户名最多 20 个字符')
+      .optional(),
     profile: z.record(z.any()).optional(),
   }),
 };
@@ -98,7 +124,10 @@ export const userSchemas = {
 export const productSchemas = {
   // 创建产品验证
   create: z.object({
-    name: z.string().min(1, '产品名称不能为空').max(100, '产品名称最多 100 个字符'),
+    name: z
+      .string()
+      .min(1, '产品名称不能为空')
+      .max(100, '产品名称最多 100 个字符'),
     description: z.string().max(1000, '产品描述最多 1000 个字符').optional(),
     price: z.number().positive('价格必须大于 0'),
     stock: z.number().int().min(0, '库存不能为负数'),
@@ -109,7 +138,11 @@ export const productSchemas = {
 
   // 更新产品验证
   update: z.object({
-    name: z.string().min(1, '产品名称不能为空').max(100, '产品名称最多 100 个字符').optional(),
+    name: z
+      .string()
+      .min(1, '产品名称不能为空')
+      .max(100, '产品名称最多 100 个字符')
+      .optional(),
     description: z.string().max(1000, '产品描述最多 1000 个字符').optional(),
     price: z.number().positive('价格必须大于 0').optional(),
     stock: z.number().int().min(0, '库存不能为负数').optional(),
@@ -126,8 +159,14 @@ export const productSchemas = {
     categoryId: z.string().optional(),
     status: z.enum(['ACTIVE', 'INACTIVE', 'OUT_OF_STOCK']).optional(),
     search: z.string().optional(),
-    minPrice: z.string().optional().transform(val => val ? parseFloat(val) : undefined),
-    maxPrice: z.string().optional().transform(val => val ? parseFloat(val) : undefined),
+    minPrice: z
+      .string()
+      .optional()
+      .transform((val) => (val ? parseFloat(val) : undefined)),
+    maxPrice: z
+      .string()
+      .optional()
+      .transform((val) => (val ? parseFloat(val) : undefined)),
   }),
 };
 
@@ -135,10 +174,14 @@ export const productSchemas = {
 export const orderSchemas = {
   // 创建订单验证
   create: z.object({
-    items: z.array(z.object({
-      productId: z.string().min(1, '产品 ID 不能为空'),
-      quantity: z.number().int().positive('数量必须大于 0'),
-    })).min(1, '订单至少包含一个商品'),
+    items: z
+      .array(
+        z.object({
+          productId: z.string().min(1, '产品 ID 不能为空'),
+          quantity: z.number().int().positive('数量必须大于 0'),
+        })
+      )
+      .min(1, '订单至少包含一个商品'),
     shippingAddress: z.object({
       street: z.string().min(1, '街道地址不能为空'),
       city: z.string().min(1, '城市不能为空'),
@@ -153,7 +196,17 @@ export const orderSchemas = {
 
   // 更新订单验证
   update: z.object({
-    status: z.enum(['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED']).optional(),
+    status: z
+      .enum([
+        'PENDING',
+        'CONFIRMED',
+        'PROCESSING',
+        'SHIPPED',
+        'DELIVERED',
+        'CANCELLED',
+        'REFUNDED',
+      ])
+      .optional(),
     paymentStatus: z.enum(['PENDING', 'PAID', 'FAILED', 'REFUNDED']).optional(),
     notes: z.string().max(500, '备注最多 500 个字符').optional(),
   }),
@@ -163,7 +216,17 @@ export const orderSchemas = {
     ...commonSchemas.paginationBase.shape,
     ...commonSchemas.sortBase.shape,
     userId: z.string().optional(),
-    status: z.enum(['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED']).optional(),
+    status: z
+      .enum([
+        'PENDING',
+        'CONFIRMED',
+        'PROCESSING',
+        'SHIPPED',
+        'DELIVERED',
+        'CANCELLED',
+        'REFUNDED',
+      ])
+      .optional(),
     paymentStatus: z.enum(['PENDING', 'PAID', 'FAILED', 'REFUNDED']).optional(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
@@ -173,31 +236,45 @@ export const orderSchemas = {
 // 优惠券相关验证模式
 export const couponSchemas = {
   // 创建优惠券验证
-  create: z.object({
-    code: z.string().min(1, '优惠券代码不能为空').max(20, '优惠券代码最多 20 个字符'),
-    name: z.string().min(1, '优惠券名称不能为空').max(100, '优惠券名称最多 100 个字符'),
-    description: z.string().max(500, '优惠券描述最多 500 个字符').optional(),
-    type: z.enum(['FIXED_AMOUNT', 'PERCENTAGE', 'FREE_SHIPPING']),
-    value: z.number().positive('优惠值必须大于 0'),
-    minAmount: z.number().min(0, '最小金额不能为负数').optional(),
-    maxDiscount: z.number().positive('最大折扣必须大于 0').optional(),
-    startDate: z.string().datetime('开始时间格式不正确'),
-    endDate: z.string().datetime('结束时间格式不正确'),
-    usageLimit: z.number().int().positive('使用限制必须大于 0').optional(),
-  }).refine(data => new Date(data.endDate) > new Date(data.startDate), {
-    message: '结束时间必须晚于开始时间',
-  }),
+  create: z
+    .object({
+      code: z
+        .string()
+        .min(1, '优惠券代码不能为空')
+        .max(20, '优惠券代码最多 20 个字符'),
+      name: z
+        .string()
+        .min(1, '优惠券名称不能为空')
+        .max(100, '优惠券名称最多 100 个字符'),
+      description: z.string().max(500, '优惠券描述最多 500 个字符').optional(),
+      type: z.enum(['FIXED_AMOUNT', 'PERCENTAGE', 'FREE_SHIPPING']),
+      value: z.number().positive('优惠值必须大于 0'),
+      minAmount: z.number().min(0, '最小金额不能为负数').optional(),
+      maxDiscount: z.number().positive('最大折扣必须大于 0').optional(),
+      startDate: z.string().datetime('开始时间格式不正确'),
+      endDate: z.string().datetime('结束时间格式不正确'),
+      usageLimit: z.number().int().positive('使用限制必须大于 0').optional(),
+    })
+    .refine((data) => new Date(data.endDate) > new Date(data.startDate), {
+      message: '结束时间必须晚于开始时间',
+    }),
 
   // 应用优惠券验证
   apply: z.object({
-    orderItems: z.array(z.object({
-      productId: z.string().min(1, '产品 ID 不能为空'),
-      quantity: z.number().int().positive('数量必须大于 0'),
-      price: z.number().positive('价格必须大于 0'),
-    })).min(1, '订单至少包含一个商品'),
+    orderItems: z
+      .array(
+        z.object({
+          productId: z.string().min(1, '产品 ID 不能为空'),
+          quantity: z.number().int().positive('数量必须大于 0'),
+          price: z.number().positive('价格必须大于 0'),
+        })
+      )
+      .min(1, '订单至少包含一个商品'),
     subtotal: z.number().min(0, '小计不能为负数'),
     shippingCost: z.number().min(0, '运费不能为负数'),
-    couponCodes: z.array(z.string().min(1, '优惠券代码不能为空')).min(1, '至少提供一个优惠券代码'),
+    couponCodes: z
+      .array(z.string().min(1, '优惠券代码不能为空'))
+      .min(1, '至少提供一个优惠券代码'),
     userId: z.string().min(1, '用户 ID 不能为空'),
   }),
 };
@@ -230,7 +307,10 @@ export const reviewSchemas = {
 export const categorySchemas = {
   // 创建分类验证
   create: z.object({
-    name: z.string().min(1, '分类名称不能为空').max(50, '分类名称最多 50 个字符'),
+    name: z
+      .string()
+      .min(1, '分类名称不能为空')
+      .max(50, '分类名称最多 50 个字符'),
     description: z.string().max(500, '分类描述最多 500 个字符').optional(),
     imageUrl: z.string().url('图片 URL 格式不正确').optional(),
     parentId: z.string().optional(),
@@ -238,7 +318,11 @@ export const categorySchemas = {
 
   // 更新分类验证
   update: z.object({
-    name: z.string().min(1, '分类名称不能为空').max(50, '分类名称最多 50 个字符').optional(),
+    name: z
+      .string()
+      .min(1, '分类名称不能为空')
+      .max(50, '分类名称最多 50 个字符')
+      .optional(),
     description: z.string().max(500, '分类描述最多 500 个字符').optional(),
     imageUrl: z.string().url('图片 URL 格式不正确').optional(),
     parentId: z.string().optional(),

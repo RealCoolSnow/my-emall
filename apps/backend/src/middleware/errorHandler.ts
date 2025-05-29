@@ -84,7 +84,9 @@ export class ConflictError extends AppError {
  * @param error Prisma 错误
  * @returns AppError 应用错误
  */
-function handlePrismaError(error: Prisma.PrismaClientKnownRequestError): AppError {
+function handlePrismaError(
+  error: Prisma.PrismaClientKnownRequestError
+): AppError {
   switch (error.code) {
     case 'P2002':
       // 唯一约束违反
@@ -126,7 +128,9 @@ function handlePrismaError(error: Prisma.PrismaClientKnownRequestError): AppErro
 function handleValidationError(error: any): AppError {
   if (error.details) {
     // Joi 验证错误
-    const message = error.details.map((detail: any) => detail.message).join(', ');
+    const message = error.details
+      .map((detail: any) => detail.message)
+      .join(', ');
     return new ValidationError(message, error.details);
   }
 
@@ -226,7 +230,12 @@ export function notFoundHandler(req: Request, res: Response): void {
  * 自动捕获异步函数中的错误并传递给错误处理中间件
  */
 export function asyncHandler<T extends any[]>(
-  fn: (req: Request, res: Response, next: NextFunction, ...args: T) => Promise<any>
+  fn: (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    ...args: T
+  ) => Promise<any>
 ) {
   return (req: Request, res: Response, next: NextFunction, ...args: T) => {
     Promise.resolve(fn(req, res, next, ...args)).catch(next);

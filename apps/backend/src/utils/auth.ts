@@ -10,9 +10,11 @@ import { JwtPayload } from '../types';
 /**
  * JWT 配置
  */
-const JWT_SECRET: string = process.env.JWT_SECRET || 'your-super-secret-jwt-key';
+const JWT_SECRET: string =
+  process.env.JWT_SECRET || 'your-super-secret-jwt-key';
 const JWT_EXPIRES_IN: string = process.env.JWT_EXPIRES_IN || '7d';
-const REFRESH_TOKEN_EXPIRES_IN: string = process.env.REFRESH_TOKEN_EXPIRES_IN || '30d';
+const REFRESH_TOKEN_EXPIRES_IN: string =
+  process.env.REFRESH_TOKEN_EXPIRES_IN || '30d';
 
 /**
  * 密码加密
@@ -42,7 +44,9 @@ export async function verifyPassword(
  * @param payload JWT 载荷
  * @returns string JWT 令牌
  */
-export function generateAccessToken(payload: Omit<JwtPayload, 'iat' | 'exp'>): string {
+export function generateAccessToken(
+  payload: Omit<JwtPayload, 'iat' | 'exp'>
+): string {
   return (jwt.sign as any)(payload, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
     issuer: 'ecommerce-platform',
@@ -55,7 +59,9 @@ export function generateAccessToken(payload: Omit<JwtPayload, 'iat' | 'exp'>): s
  * @param payload JWT 载荷
  * @returns string 刷新令牌
  */
-export function generateRefreshToken(payload: Omit<JwtPayload, 'iat' | 'exp'>): string {
+export function generateRefreshToken(
+  payload: Omit<JwtPayload, 'iat' | 'exp'>
+): string {
   return (jwt.sign as any)(payload, JWT_SECRET, {
     expiresIn: REFRESH_TOKEN_EXPIRES_IN,
     issuer: 'ecommerce-platform',
@@ -86,7 +92,9 @@ export function verifyToken(token: string): JwtPayload | null {
  * @param authHeader Authorization 头
  * @returns string | null 提取的令牌或 null
  */
-export function extractBearerToken(authHeader: string | undefined): string | null {
+export function extractBearerToken(
+  authHeader: string | undefined
+): string | null {
   if (!authHeader) {
     return null;
   }
@@ -118,7 +126,7 @@ export function hasPermission(
 
   const userLevel = roleHierarchy[userRole] || 0;
   const requiredLevel = Math.min(
-    ...requiredRoles.map(role => roleHierarchy[role] || Infinity)
+    ...requiredRoles.map((role) => roleHierarchy[role] || Infinity)
   );
 
   return userLevel >= requiredLevel;
@@ -130,7 +138,8 @@ export function hasPermission(
  * @returns string 随机字符串
  */
 export function generateRandomString(length: number = 32): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));

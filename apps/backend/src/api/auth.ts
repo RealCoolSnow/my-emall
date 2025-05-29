@@ -13,12 +13,22 @@ import {
   generateRefreshToken,
   blacklistToken,
   isValidEmail,
-  validatePassword
+  validatePassword,
 } from '../utils/auth';
 import { authenticate } from '../middleware/auth';
 import { validate, userSchemas } from '../middleware/validation';
-import { asyncHandler, ValidationError, UnauthorizedError, ConflictError } from '../middleware/errorHandler';
-import { ApiResponse, AuthResponse, LoginRequest, RegisterRequest } from '../types';
+import {
+  asyncHandler,
+  ValidationError,
+  UnauthorizedError,
+  ConflictError,
+} from '../middleware/errorHandler';
+import {
+  ApiResponse,
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+} from '../types';
 
 const router = express.Router();
 
@@ -301,10 +311,15 @@ router.put(
 router.post(
   '/change-password',
   authenticate,
-  validate(z.object({
-    currentPassword: z.string().min(1, '当前密码不能为空'),
-    newPassword: z.string().min(8, '新密码至少 8 个字符').max(100, '新密码最多 100 个字符'),
-  })),
+  validate(
+    z.object({
+      currentPassword: z.string().min(1, '当前密码不能为空'),
+      newPassword: z
+        .string()
+        .min(8, '新密码至少 8 个字符')
+        .max(100, '新密码最多 100 个字符'),
+    })
+  ),
   asyncHandler(async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
@@ -318,7 +333,10 @@ router.post(
     }
 
     // 验证当前密码
-    const isCurrentPasswordValid = await verifyPassword(currentPassword, user.password);
+    const isCurrentPasswordValid = await verifyPassword(
+      currentPassword,
+      user.password
+    );
     if (!isCurrentPasswordValid) {
       throw new UnauthorizedError('当前密码错误');
     }

@@ -4,11 +4,11 @@
  */
 
 import { db } from '../models/database';
-import { 
-  CreateProductRequest, 
-  UpdateProductRequest, 
-  ProductQuery, 
-  PaginatedResponse 
+import {
+  CreateProductRequest,
+  UpdateProductRequest,
+  ProductQuery,
+  PaginatedResponse,
 } from '../types';
 import { NotFoundError, ValidationError } from '../middleware/errorHandler';
 
@@ -122,7 +122,9 @@ export class ProductService {
     ]);
 
     // 格式化产品数据
-    const formattedProducts = products.map(product => this.formatProduct(product));
+    const formattedProducts = products.map((product) =>
+      this.formatProduct(product)
+    );
 
     return {
       data: formattedProducts,
@@ -209,7 +211,9 @@ export class ProductService {
       data: {
         ...data,
         imageUrls: data.imageUrls ? JSON.stringify(data.imageUrls) : undefined,
-        attributes: data.attributes ? JSON.stringify(data.attributes) : undefined,
+        attributes: data.attributes
+          ? JSON.stringify(data.attributes)
+          : undefined,
       },
       include: {
         category: true,
@@ -243,7 +247,9 @@ export class ProductService {
 
     // 检查是否有关联的订单项
     if (product._count.orderItems > 0) {
-      throw new ValidationError('无法删除已有订单的产品，请先将产品状态设为停用');
+      throw new ValidationError(
+        '无法删除已有订单的产品，请先将产品状态设为停用'
+      );
     }
 
     // 删除产品
@@ -313,7 +319,7 @@ export class ProductService {
       take: limit,
     });
 
-    return products.map(product => this.formatProduct(product));
+    return products.map((product) => this.formatProduct(product));
   }
 
   /**
@@ -326,9 +332,13 @@ export class ProductService {
       ...product,
       imageUrls: product.imageUrls ? JSON.parse(product.imageUrls) : [],
       attributes: product.attributes ? JSON.parse(product.attributes) : {},
-      averageRating: product.reviews?.length > 0 
-        ? product.reviews.reduce((sum: number, review: any) => sum + review.rating, 0) / product.reviews.length
-        : 0,
+      averageRating:
+        product.reviews?.length > 0
+          ? product.reviews.reduce(
+              (sum: number, review: any) => sum + review.rating,
+              0
+            ) / product.reviews.length
+          : 0,
     };
   }
 }

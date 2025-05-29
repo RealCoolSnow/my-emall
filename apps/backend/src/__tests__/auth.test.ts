@@ -9,7 +9,7 @@ import {
   generateAccessToken,
   verifyToken,
   isValidEmail,
-  validatePassword
+  validatePassword,
 } from '../utils/auth';
 import { db } from '../models/database';
 
@@ -81,7 +81,7 @@ describe('Authentication Utils', () => {
         'user+tag@example.org',
       ];
 
-      validEmails.forEach(email => {
+      validEmails.forEach((email) => {
         expect(isValidEmail(email)).toBe(true);
       });
     });
@@ -95,7 +95,7 @@ describe('Authentication Utils', () => {
         '',
       ];
 
-      invalidEmails.forEach(email => {
+      invalidEmails.forEach((email) => {
         expect(isValidEmail(email)).toBe(false);
       });
     });
@@ -103,13 +103,9 @@ describe('Authentication Utils', () => {
 
   describe('Password Validation', () => {
     it('should validate strong passwords', () => {
-      const strongPasswords = [
-        'Test123!@#',
-        'MyP@ssw0rd',
-        'Str0ng!Pass',
-      ];
+      const strongPasswords = ['Test123!@#', 'MyP@ssw0rd', 'Str0ng!Pass'];
 
-      strongPasswords.forEach(password => {
+      strongPasswords.forEach((password) => {
         const result = validatePassword(password);
         expect(result.isValid).toBe(true);
         expect(result.errors).toHaveLength(0);
@@ -118,14 +114,14 @@ describe('Authentication Utils', () => {
 
     it('should reject weak passwords', () => {
       const weakPasswords = [
-        '123',           // too short
-        'password',      // no uppercase, no numbers, no special chars
-        'PASSWORD',      // no lowercase, no numbers, no special chars
-        'Password',      // no numbers, no special chars
-        'Password123',   // no special chars
+        '123', // too short
+        'password', // no uppercase, no numbers, no special chars
+        'PASSWORD', // no lowercase, no numbers, no special chars
+        'Password', // no numbers, no special chars
+        'Password123', // no special chars
       ];
 
-      weakPasswords.forEach(password => {
+      weakPasswords.forEach((password) => {
         const result = validatePassword(password);
         expect(result.isValid).toBe(false);
         expect(result.errors.length).toBeGreaterThan(0);

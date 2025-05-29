@@ -18,13 +18,11 @@ describe('Products API', () => {
     await db.cleanup();
 
     // 创建管理员用户
-    const adminResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'admin@example.com',
-        username: 'admin',
-        password: 'Admin123!@#',
-      });
+    const adminResponse = await request(app).post('/api/auth/register').send({
+      email: 'admin@example.com',
+      username: 'admin',
+      password: 'Admin123!@#',
+    });
 
     // 手动设置管理员角色
     await db.prisma.user.update({
@@ -33,23 +31,19 @@ describe('Products API', () => {
     });
 
     // 重新登录获取管理员令牌
-    const adminLoginResponse = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'admin@example.com',
-        password: 'Admin123!@#',
-      });
+    const adminLoginResponse = await request(app).post('/api/auth/login').send({
+      email: 'admin@example.com',
+      password: 'Admin123!@#',
+    });
 
     adminToken = adminLoginResponse.body.data.token;
 
     // 创建普通用户
-    const userResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'user@example.com',
-        username: 'user',
-        password: 'User123!@#',
-      });
+    const userResponse = await request(app).post('/api/auth/register').send({
+      email: 'user@example.com',
+      username: 'user',
+      password: 'User123!@#',
+    });
 
     userToken = userResponse.body.data.token;
 
@@ -139,9 +133,7 @@ describe('Products API', () => {
 
   describe('GET /api/products', () => {
     it('should get products list without authentication', async () => {
-      const response = await request(app)
-        .get('/api/products')
-        .expect(200);
+      const response = await request(app).get('/api/products').expect(200);
 
       expect(response.body.success).toBe(true);
       expect(response.body.data.data).toBeInstanceOf(Array);

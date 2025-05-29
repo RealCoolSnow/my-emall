@@ -6,9 +6,21 @@
 import express from 'express';
 import { CouponService } from 'coupons/services';
 import { db } from '../models/database';
-import { authenticate, authorize, optionalAuthenticate } from '../middleware/auth';
-import { validate, couponSchemas, commonSchemas } from '../middleware/validation';
-import { asyncHandler, NotFoundError, ValidationError } from '../middleware/errorHandler';
+import {
+  authenticate,
+  authorize,
+  optionalAuthenticate,
+} from '../middleware/auth';
+import {
+  validate,
+  couponSchemas,
+  commonSchemas,
+} from '../middleware/validation';
+import {
+  asyncHandler,
+  NotFoundError,
+  ValidationError,
+} from '../middleware/errorHandler';
 import { ApiResponse, CreateCouponRequest, ApplyCouponRequest } from '../types';
 
 const router = express.Router();
@@ -29,7 +41,7 @@ router.get(
 
     // 构建查询条件
     const where: any = {};
-    
+
     // 如果不是管理员，只显示有效的优惠券
     if (!req.user || !['ADMIN', 'SUPER_ADMIN'].includes(req.user.role)) {
       where.isActive = true;
@@ -235,12 +247,14 @@ router.post(
         originalAmount: data.subtotal,
         totalDiscount: result.totalDiscount,
         finalAmount: result.finalAmount,
-        appliedCoupons: result.appliedCoupons.map(coupon => ({
+        appliedCoupons: result.appliedCoupons.map((coupon) => ({
           id: coupon.id,
           code: coupon.code,
           name: coupon.name,
           type: coupon.type,
-          discount: result.appliedCoupons.find(c => c.id === coupon.id)?.discount || 0,
+          discount:
+            result.appliedCoupons.find((c) => c.id === coupon.id)?.discount ||
+            0,
         })),
         errors: result.errors,
       },

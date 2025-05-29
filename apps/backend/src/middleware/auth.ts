@@ -4,11 +4,11 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import { 
-  extractBearerToken, 
-  verifyToken, 
-  hasPermission, 
-  isTokenBlacklisted 
+import {
+  extractBearerToken,
+  verifyToken,
+  hasPermission,
+  isTokenBlacklisted,
 } from '../utils/auth';
 import { ApiResponse, JwtPayload } from '../types';
 
@@ -25,7 +25,11 @@ declare global {
  * 认证中间件
  * 验证 JWT 令牌并将用户信息添加到请求对象中
  */
-export function authenticate(req: Request, res: Response, next: NextFunction): void {
+export function authenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   try {
     const authHeader = req.headers.authorization;
     const token = extractBearerToken(authHeader);
@@ -85,7 +89,11 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
  * 可选认证中间件
  * 如果提供了令牌则验证，否则继续执行
  */
-export function optionalAuthenticate(req: Request, res: Response, next: NextFunction): void {
+export function optionalAuthenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   try {
     const authHeader = req.headers.authorization;
     const token = extractBearerToken(authHeader);

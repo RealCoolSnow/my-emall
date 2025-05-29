@@ -22,11 +22,7 @@ module.exports = {
   ],
 
   // 忽略的文件和目录
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/',
-    '/build/',
-  ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/build/'],
 
   // 覆盖率配置
   collectCoverageFrom: [

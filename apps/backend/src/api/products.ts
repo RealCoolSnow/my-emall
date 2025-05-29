@@ -6,8 +6,16 @@
 import express from 'express';
 import { z } from 'zod';
 import { ProductService } from '../services/productService';
-import { authenticate, authorize, optionalAuthenticate } from '../middleware/auth';
-import { validate, productSchemas, commonSchemas } from '../middleware/validation';
+import {
+  authenticate,
+  authorize,
+  optionalAuthenticate,
+} from '../middleware/auth';
+import {
+  validate,
+  productSchemas,
+  commonSchemas,
+} from '../middleware/validation';
 import { asyncHandler } from '../middleware/errorHandler';
 import { ApiResponse } from '../types';
 
@@ -140,11 +148,16 @@ router.patch(
   authenticate,
   authorize(['ADMIN']),
   validate(commonSchemas.id, 'params'),
-  validate(z.object({
-    quantity: z.number().int('库存变化量必须为整数'),
-  })),
+  validate(
+    z.object({
+      quantity: z.number().int('库存变化量必须为整数'),
+    })
+  ),
   asyncHandler(async (req, res) => {
-    const product = await productService.updateStock(req.params.id, req.body.quantity);
+    const product = await productService.updateStock(
+      req.params.id,
+      req.body.quantity
+    );
 
     const response: ApiResponse = {
       success: true,

@@ -15,7 +15,10 @@ class DatabaseService {
 
   private constructor() {
     this.prisma = new PrismaClient({
-      log: process.env.NODE_ENV === 'development' ? ['query', 'info', 'warn', 'error'] : ['error'],
+      log:
+        process.env.NODE_ENV === 'development'
+          ? ['query', 'info', 'warn', 'error']
+          : ['error'],
       errorFormat: 'pretty',
     });
 
@@ -79,7 +82,17 @@ class DatabaseService {
    * @returns Promise<T> 事务结果
    */
   public async transaction<T>(
-    fn: (prisma: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => Promise<T>
+    fn: (
+      prisma: Omit<
+        PrismaClient,
+        | '$connect'
+        | '$disconnect'
+        | '$on'
+        | '$transaction'
+        | '$use'
+        | '$extends'
+      >
+    ) => Promise<T>
   ): Promise<T> {
     return this.prisma.$transaction(fn);
   }
