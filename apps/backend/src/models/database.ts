@@ -120,7 +120,7 @@ class DatabaseService {
         'products',
         'categories',
         'coupons',
-        'users'
+        'users',
       ];
 
       for (const tableName of deleteOrder) {
@@ -128,7 +128,10 @@ class DatabaseService {
           await this.prisma.$executeRawUnsafe(`DELETE FROM "${tableName}";`);
         } catch (error) {
           // 忽略表不存在的错误
-          console.warn(`Warning: Could not delete from table ${tableName}:`, error);
+          console.warn(
+            `Warning: Could not delete from table ${tableName}:`,
+            error
+          );
         }
       }
 

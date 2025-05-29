@@ -214,10 +214,12 @@ router.post(
  */
 router.post(
   '/validate',
-  validate(z.object({
-    code: z.string().min(1, '优惠券代码不能为空'),
-    subtotal: z.number().min(0, '订单金额不能为负数'),
-  })),
+  validate(
+    z.object({
+      code: z.string().min(1, '优惠券代码不能为空'),
+      subtotal: z.number().min(0, '订单金额不能为负数'),
+    })
+  ),
   asyncHandler(async (req, res) => {
     const { code, subtotal } = req.body;
 
@@ -282,15 +284,19 @@ router.post(
 router.post(
   '/apply',
   authenticate,
-  validate(z.object({
-    codes: z.array(z.string()).min(1, '至少需要一个优惠券代码'),
-    subtotal: z.number().min(0, '订单金额不能为负数'),
-    items: z.array(z.object({
-      productId: z.string(),
-      quantity: z.number().min(1),
-      price: z.number().min(0),
-    })),
-  })),
+  validate(
+    z.object({
+      codes: z.array(z.string()).min(1, '至少需要一个优惠券代码'),
+      subtotal: z.number().min(0, '订单金额不能为负数'),
+      items: z.array(
+        z.object({
+          productId: z.string(),
+          quantity: z.number().min(1),
+          price: z.number().min(0),
+        })
+      ),
+    })
+  ),
   asyncHandler(async (req, res) => {
     const { codes, subtotal, items } = req.body;
 
