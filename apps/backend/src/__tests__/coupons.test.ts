@@ -128,9 +128,7 @@ describe('Coupons API', () => {
     });
 
     it('should return 404 for non-existent coupon', async () => {
-      await request(app)
-        .get('/api/coupons/non-existent-id')
-        .expect(404);
+      await request(app).get('/api/coupons/non-existent-id').expect(404);
     });
   });
 
@@ -210,10 +208,7 @@ describe('Coupons API', () => {
         endDate: '2024-12-31',
       };
 
-      await request(app)
-        .post('/api/coupons')
-        .send(couponData)
-        .expect(401);
+      await request(app).post('/api/coupons').send(couponData).expect(401);
     });
 
     it('should validate required fields', async () => {

@@ -150,9 +150,15 @@ router.get(
   '/order-trends',
   authenticate,
   authorize(['ADMIN', 'SUPER_ADMIN']),
-  validate(z.object({
-    days: z.string().optional().transform(val => parseInt(val || '30')),
-  }), 'query'),
+  validate(
+    z.object({
+      days: z
+        .string()
+        .optional()
+        .transform((val) => parseInt(val || '30')),
+    }),
+    'query'
+  ),
   asyncHandler(async (req, res) => {
     const days = parseInt(req.query.days as string) || 30;
     const endDate = new Date();
@@ -189,9 +195,15 @@ router.get(
   '/popular-products',
   authenticate,
   authorize(['ADMIN', 'SUPER_ADMIN']),
-  validate(z.object({
-    limit: z.string().optional().transform(val => parseInt(val || '10')),
-  }), 'query'),
+  validate(
+    z.object({
+      limit: z
+        .string()
+        .optional()
+        .transform((val) => parseInt(val || '10')),
+    }),
+    'query'
+  ),
   asyncHandler(async (req, res) => {
     const limit = parseInt(req.query.limit as string) || 10;
 
@@ -229,9 +241,15 @@ router.get(
   '/user-growth',
   authenticate,
   authorize(['ADMIN', 'SUPER_ADMIN']),
-  validate(z.object({
-    days: z.string().optional().transform(val => parseInt(val || '30')),
-  }), 'query'),
+  validate(
+    z.object({
+      days: z
+        .string()
+        .optional()
+        .transform((val) => parseInt(val || '30')),
+    }),
+    'query'
+  ),
   asyncHandler(async (req, res) => {
     const days = parseInt(req.query.days as string) || 30;
     const endDate = new Date();
@@ -300,7 +318,7 @@ router.get(
     ]);
 
     // 解析 profile JSON
-    const formattedUsers = users.map(user => ({
+    const formattedUsers = users.map((user) => ({
       ...user,
       profile: user.profile ? JSON.parse(user.profile) : null,
     }));
@@ -335,18 +353,22 @@ router.put(
   authenticate,
   authorize(['ADMIN', 'SUPER_ADMIN']),
   validate(commonSchemas.id, 'params'),
-  validate(z.object({
-    username: z.string().min(1).optional(),
-    email: z.string().email().optional(),
-    role: z.enum(['CUSTOMER', 'ADMIN', 'SUPER_ADMIN']).optional(),
-    isActive: z.boolean().optional(),
-    profile: z.object({
-      firstName: z.string().optional(),
-      lastName: z.string().optional(),
-      phone: z.string().optional(),
-      address: z.string().optional(),
-    }).optional(),
-  })),
+  validate(
+    z.object({
+      username: z.string().min(1).optional(),
+      email: z.string().email().optional(),
+      role: z.enum(['CUSTOMER', 'ADMIN', 'SUPER_ADMIN']).optional(),
+      isActive: z.boolean().optional(),
+      profile: z
+        .object({
+          firstName: z.string().optional(),
+          lastName: z.string().optional(),
+          phone: z.string().optional(),
+          address: z.string().optional(),
+        })
+        .optional(),
+    })
+  ),
   asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { username, email, role, isActive, profile } = req.body;

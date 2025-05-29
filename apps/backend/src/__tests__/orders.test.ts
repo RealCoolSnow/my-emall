@@ -162,10 +162,7 @@ describe('Orders API', () => {
         appliedCoupons: [],
       };
 
-      await request(app)
-        .post('/api/orders')
-        .send(orderData)
-        .expect(401);
+      await request(app).post('/api/orders').send(orderData).expect(401);
     });
 
     it('should validate required fields', async () => {
@@ -249,9 +246,7 @@ describe('Orders API', () => {
     });
 
     it('should require authentication', async () => {
-      await request(app)
-        .get('/api/orders')
-        .expect(401);
+      await request(app).get('/api/orders').expect(401);
     });
   });
 
@@ -286,9 +281,7 @@ describe('Orders API', () => {
     });
 
     it('should require authentication', async () => {
-      await request(app)
-        .get(`/api/orders/${orderId}`)
-        .expect(401);
+      await request(app).get(`/api/orders/${orderId}`).expect(401);
     });
   });
 
@@ -308,7 +301,9 @@ describe('Orders API', () => {
 
       expect(response.body.success).toBe(true);
       expect(response.body.data.status).toBe(updateData.status);
-      expect(response.body.data.shippingAddress).toBe(updateData.shippingAddress);
+      expect(response.body.data.shippingAddress).toBe(
+        updateData.shippingAddress
+      );
       expect(response.body.data.contactPhone).toBe(updateData.contactPhone);
     });
 
@@ -403,9 +398,7 @@ describe('Orders API', () => {
     });
 
     it('should require authentication', async () => {
-      await request(app)
-        .delete(`/api/orders/${orderToDelete}`)
-        .expect(401);
+      await request(app).delete(`/api/orders/${orderToDelete}`).expect(401);
     });
 
     it('should not allow deletion of paid orders', async () => {

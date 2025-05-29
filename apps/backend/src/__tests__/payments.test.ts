@@ -251,9 +251,7 @@ describe('Payments API', () => {
     });
 
     it('should require authentication', async () => {
-      await request(app)
-        .get(`/api/payments/order/${orderId}`)
-        .expect(401);
+      await request(app).get(`/api/payments/order/${orderId}`).expect(401);
     });
   });
 

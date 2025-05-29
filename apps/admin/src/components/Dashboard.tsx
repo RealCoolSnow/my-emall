@@ -24,20 +24,24 @@ const StatCard: React.FC<StatCardProps> = ({
   color = '#1976d2',
   icon,
 }) => (
-  <div style={{
-    minHeight: '120px',
-    margin: '8px',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    overflow: 'hidden',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  }}>
-    <div style={{
-      backgroundColor: color,
-      color: 'white',
-      padding: '16px',
-      fontWeight: 'bold',
-    }}>
+  <div
+    style={{
+      minHeight: '120px',
+      margin: '8px',
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+      overflow: 'hidden',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    }}
+  >
+    <div
+      style={{
+        backgroundColor: color,
+        color: 'white',
+        padding: '16px',
+        fontWeight: 'bold',
+      }}
+    >
       {title}
     </div>
     <div style={{ padding: '16px', textAlign: 'center' }}>
@@ -70,19 +74,23 @@ const AlertList: React.FC<AlertListProps> = ({
   renderItem,
   emptyMessage,
 }) => (
-  <div style={{
-    margin: '8px',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    overflow: 'hidden',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  }}>
-    <div style={{
-      backgroundColor: '#f5f5f5',
-      padding: '16px',
-      fontWeight: 'bold',
-      borderBottom: '1px solid #ddd'
-    }}>
+  <div
+    style={{
+      margin: '8px',
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+      overflow: 'hidden',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    }}
+  >
+    <div
+      style={{
+        backgroundColor: '#f5f5f5',
+        padding: '16px',
+        fontWeight: 'bold',
+        borderBottom: '1px solid #ddd',
+      }}
+    >
       {title}
     </div>
     <div style={{ padding: '16px' }}>
@@ -93,7 +101,8 @@ const AlertList: React.FC<AlertListProps> = ({
               key={index}
               style={{
                 padding: '8px',
-                borderBottom: index < items.length - 1 ? '1px solid #eee' : 'none',
+                borderBottom:
+                  index < items.length - 1 ? '1px solid #eee' : 'none',
               }}
             >
               {renderItem(item)}
@@ -281,19 +290,23 @@ export const Dashboard: React.FC = () => {
       )}
 
       {/* 快速操作区域 */}
-      <div style={{
-        margin: '8px',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
-        overflow: 'hidden',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <div style={{
-          backgroundColor: '#f5f5f5',
-          padding: '16px',
-          fontWeight: 'bold',
-          borderBottom: '1px solid #ddd'
-        }}>
+      <div
+        style={{
+          margin: '8px',
+          border: '1px solid #ddd',
+          borderRadius: '4px',
+          overflow: 'hidden',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: '#f5f5f5',
+            padding: '16px',
+            fontWeight: 'bold',
+            borderBottom: '1px solid #ddd',
+          }}
+        >
           快速操作
         </div>
         <div style={{ padding: '16px' }}>
@@ -365,19 +378,23 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* 系统信息 */}
-      <div style={{
-        margin: '8px',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
-        overflow: 'hidden',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <div style={{
-          backgroundColor: '#f5f5f5',
-          padding: '16px',
-          fontWeight: 'bold',
-          borderBottom: '1px solid #ddd'
-        }}>
+      <div
+        style={{
+          margin: '8px',
+          border: '1px solid #ddd',
+          borderRadius: '4px',
+          overflow: 'hidden',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: '#f5f5f5',
+            padding: '16px',
+            fontWeight: 'bold',
+            borderBottom: '1px solid #ddd',
+          }}
+        >
           系统信息
         </div>
         <div style={{ padding: '16px' }}>

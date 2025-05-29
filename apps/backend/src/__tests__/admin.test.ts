@@ -141,9 +141,7 @@ describe('Admin API', () => {
     });
 
     it('should deny access without authentication', async () => {
-      await request(app)
-        .get('/api/admin/stats')
-        .expect(401);
+      await request(app).get('/api/admin/stats').expect(401);
     });
   });
 

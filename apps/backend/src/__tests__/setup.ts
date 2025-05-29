@@ -36,9 +36,8 @@ beforeAll(async () => {
     const { execSync } = require('child_process');
     execSync('npx prisma db push --force-reset', {
       cwd: process.cwd(),
-      stdio: 'pipe'
+      stdio: 'pipe',
     });
-
   } catch (error) {
     console.warn('Warning: Could not setup database:', error);
   }
