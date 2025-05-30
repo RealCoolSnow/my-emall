@@ -52,7 +52,7 @@ export default function OrdersPage() {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
 
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   const loadOrders = useCallback(async () => {
     setLoading(true);
@@ -89,12 +89,20 @@ export default function OrdersPage() {
   ]);
 
   useEffect(() => {
+    // 如果还在加载认证状态，不做任何操作
+    if (isLoading) {
+      return;
+    }
+
+    // 如果认证状态已确定且未认证，跳转到登录页面
     if (!isAuthenticated) {
       router.push('/login');
       return;
     }
+
+    // 如果已认证，加载订单
     loadOrders();
-  }, [isAuthenticated, router, loadOrders]);
+  }, [isAuthenticated, isLoading, router, loadOrders]);
 
   const handleTableChange = (paginationInfo: any) => {
     setPagination({

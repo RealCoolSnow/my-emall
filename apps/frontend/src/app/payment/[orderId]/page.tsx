@@ -299,7 +299,14 @@ export default function PaymentPage() {
 
                   {/* 模拟支付按钮 - 仅用于测试 */}
                   <div style={{ marginTop: 16 }}>
-                    <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginBottom: 8 }}>
+                    <Text
+                      type="secondary"
+                      style={{
+                        fontSize: '12px',
+                        display: 'block',
+                        marginBottom: 8,
+                      }}
+                    >
                       🧪 测试模式：
                     </Text>
                     <Space>

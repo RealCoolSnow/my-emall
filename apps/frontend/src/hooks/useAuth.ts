@@ -9,6 +9,7 @@ export const useAuth = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
+      isLoading: true, // 添加加载状态
 
       login: async (email: string, password: string) => {
         try {
@@ -17,9 +18,11 @@ export const useAuth = create<AuthState>()(
             user: authData.user,
             token: authData.token,
             isAuthenticated: true,
+            isLoading: false,
           });
         } catch (error) {
           console.error('Login failed:', error);
+          set({ isLoading: false });
           throw error;
         }
       },
@@ -35,9 +38,11 @@ export const useAuth = create<AuthState>()(
             user: authData.user,
             token: authData.token,
             isAuthenticated: true,
+            isLoading: false,
           });
         } catch (error) {
           console.error('Registration failed:', error);
+          set({ isLoading: false });
           throw error;
         }
       },
@@ -48,6 +53,7 @@ export const useAuth = create<AuthState>()(
           user: null,
           token: null,
           isAuthenticated: false,
+          isLoading: false,
         });
       },
 
@@ -59,12 +65,20 @@ export const useAuth = create<AuthState>()(
               user,
               token: authService.getStoredToken(),
               isAuthenticated: true,
+              isLoading: false,
             });
+          } else {
+            set({ isLoading: false });
           }
         } catch (error) {
           console.error('Load user failed:', error);
           // 如果获取用户信息失败，清除认证状态
-          get().logout();
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
         }
       },
     }),
@@ -74,7 +88,14 @@ export const useAuth = create<AuthState>()(
         user: state.user,
         token: state.token,
         isAuthenticated: state.isAuthenticated,
+        // 不持久化 isLoading，每次启动时都应该是 true
       }),
+      onRehydrateStorage: () => (state) => {
+        // 数据恢复后，设置 isLoading 为 false
+        if (state) {
+          state.isLoading = false;
+        }
+      },
     }
   )
 );

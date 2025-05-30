@@ -51,6 +51,82 @@ router.get(
 );
 
 /**
+ * GET /api/orders/user
+ * 获取当前用户的订单列表
+ * 需要用户认证
+ */
+router.get(
+  '/user',
+  authenticate,
+  validate(orderSchemas.query, 'query'),
+  asyncHandler(async (req, res) => {
+    const query = { ...req.query, userId: req.user!.userId };
+    const result = await orderService.getOrders(query);
+
+    const response: ApiResponse = {
+      success: true,
+      data: result,
+      message: '获取用户订单列表成功',
+      timestamp: new Date().toISOString(),
+    };
+
+    res.json(response);
+  })
+);
+
+/**
+ * GET /api/orders/user/:userId
+ * 获取指定用户的订单列表
+ * 需要管理员权限或用户本人
+ */
+router.get(
+  '/user/:userId',
+  authenticate,
+  validate(commonSchemas.userId, 'params'),
+  checkResourceOwnership((req) => req.params.userId),
+  validate(orderSchemas.query, 'query'),
+  asyncHandler(async (req, res) => {
+    const query = { ...req.query, userId: req.params.userId };
+    const result = await orderService.getOrders(query);
+
+    const response: ApiResponse = {
+      success: true,
+      data: result,
+      message: '获取用户订单列表成功',
+      timestamp: new Date().toISOString(),
+    };
+
+    res.json(response);
+  })
+);
+
+/**
+ * GET /api/orders/stats/summary
+ * 获取订单统计信息
+ * 需要管理员权限
+ */
+router.get(
+  '/stats/summary',
+  authenticate,
+  authorize(['ADMIN']),
+  asyncHandler(async (req, res) => {
+    // 这里可以添加订单统计逻辑
+    // 例如：总订单数、今日订单数、总销售额等
+
+    const response: ApiResponse = {
+      success: true,
+      data: {
+        message: '订单统计功能待实现',
+      },
+      message: '获取订单统计成功',
+      timestamp: new Date().toISOString(),
+    };
+
+    res.json(response);
+  })
+);
+
+/**
  * GET /api/orders/:id
  * 根据 ID 获取订单详情
  * 用户只能查看自己的订单，管理员可以查看所有订单
@@ -243,56 +319,6 @@ router.delete(
   })
 );
 
-/**
- * GET /api/orders/user/:userId
- * 获取指定用户的订单列表
- * 需要管理员权限或用户本人
- */
-router.get(
-  '/user/:userId',
-  authenticate,
-  validate(commonSchemas.userId, 'params'),
-  checkResourceOwnership((req) => req.params.userId),
-  validate(orderSchemas.query, 'query'),
-  asyncHandler(async (req, res) => {
-    const query = { ...req.query, userId: req.params.userId };
-    const result = await orderService.getOrders(query);
 
-    const response: ApiResponse = {
-      success: true,
-      data: result,
-      message: '获取用户订单列表成功',
-      timestamp: new Date().toISOString(),
-    };
-
-    res.json(response);
-  })
-);
-
-/**
- * GET /api/orders/stats/summary
- * 获取订单统计信息
- * 需要管理员权限
- */
-router.get(
-  '/stats/summary',
-  authenticate,
-  authorize(['ADMIN']),
-  asyncHandler(async (req, res) => {
-    // 这里可以添加订单统计逻辑
-    // 例如：总订单数、今日订单数、总销售额等
-
-    const response: ApiResponse = {
-      success: true,
-      data: {
-        message: '订单统计功能待实现',
-      },
-      message: '获取订单统计成功',
-      timestamp: new Date().toISOString(),
-    };
-
-    res.json(response);
-  })
-);
 
 export default router;

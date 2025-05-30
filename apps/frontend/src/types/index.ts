@@ -48,6 +48,7 @@ export interface AuthState {
   user: any | null;
   token: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean; // 添加加载状态
   login: (email: string, password: string) => Promise<void>;
   register: (
     email: string,
