@@ -80,8 +80,8 @@ async function main() {
         categoryId: categories[0].id,
         status: 'ACTIVE',
         imageUrls: JSON.stringify([
-          'https://example.com/iphone15pro-1.jpg',
-          'https://example.com/iphone15pro-2.jpg',
+          'https://m.media-amazon.com/images/I/81CgtwSII3L._AC_SX679_.jpg',
+          'https://mineo.jp/_mg/_uploads/files/099d9582bc590af1_iPhone15_black_front_380x600_rev01.png',
         ]),
       },
     }),
@@ -94,7 +94,7 @@ async function main() {
         categoryId: categories[1].id,
         status: 'ACTIVE',
         imageUrls: JSON.stringify([
-          'https://example.com/white-tshirt-1.jpg',
+          'https://ydot-official.com/cdn/shop/files/YS25-13_2_1024x1024.jpg',
         ]),
       },
     }),
@@ -107,7 +107,7 @@ async function main() {
         categoryId: categories[2].id,
         status: 'ACTIVE',
         imageUrls: JSON.stringify([
-          'https://example.com/nordic-lamp-1.jpg',
+          'https://www.nikki-tr.co.jp/shop/html/html/upload/save_image/02151530_58a3f58f7dc7e.jpg',
         ]),
       },
     }),

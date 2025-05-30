@@ -46,6 +46,7 @@ cd apps/backend
 pnpm prisma generate
 pnpm prisma db push
 cp .env.example .env
+pnpm db:seed
 ```
 
 ### 启动开发服务器
