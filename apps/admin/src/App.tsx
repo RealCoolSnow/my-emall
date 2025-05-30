@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Admin,
-  Resource,
-} from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 import { dataProvider, authProvider } from './dataProvider';
 import { APP_CONFIG, ENV_UTILS, Logger } from './config/env';
 import Dashboard from './components/Dashboard';
@@ -14,8 +11,6 @@ import ProductManagement from './components/ProductManagement';
 import CouponEditor from './components/CouponEditor';
 import OrderManagement from './components/OrderManagement';
 import UserManagement from './components/UserManagement';
-
-
 
 /**
  * 主应用组件

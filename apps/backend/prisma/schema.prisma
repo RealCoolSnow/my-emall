@@ -22,9 +22,10 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  orders    Order[]
-  reviews   Review[]
-  cartItems CartItem[]
+  orders      Order[]
+  reviews     Review[]
+  cartItems   CartItem[]
+  userCoupons UserCoupon[]
 
   @@map("users")
 }
@@ -129,6 +130,22 @@ model CartItem {
   @@map("cart_items")
 }
 
+model UserCoupon {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  couponId   String
+  coupon     Coupon   @relation(fields: [couponId], references: [id])
+  isUsed     Boolean  @default(false)
+  usedAt     DateTime?
+  obtainedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, couponId])
+  @@map("user_coupons")
+}
+
 model Coupon {
   id          String     @id @default(cuid())
   code        String     @unique
@@ -147,7 +164,8 @@ model Coupon {
   updatedAt   DateTime   @updatedAt
 
   // Relations
-  orders OrderCoupon[]
+  orders      OrderCoupon[]
+  userCoupons UserCoupon[]
 
   @@map("coupons")
 }

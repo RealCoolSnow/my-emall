@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  MenuItemLink,
-  usePermissions,
-  useSidebarState,
-} from 'react-admin';
+import { MenuItemLink, usePermissions, useSidebarState } from 'react-admin';
 import {
   DashboardOutlined,
   ShoppingOutlined,

@@ -108,16 +108,31 @@ export const Cart: React.FC = () => {
             >
               <List.Item.Meta
                 avatar={
-                  <Image
-                    width={80}
-                    height={80}
-                    src={
-                      item.product.imageUrls?.[0] || '/placeholder-image.jpg'
-                    }
-                    alt={item.product.name}
-                    style={{ objectFit: 'cover' }}
-                    fallback="/placeholder-image.jpg"
-                  />
+                  <div style={{
+                    width: 80,
+                    height: 80,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '6px'
+                  }}>
+                    <Image
+                      width={80}
+                      height={80}
+                      src={
+                        item.product.imageUrls?.[0] || '/placeholder-image.jpg'
+                      }
+                      alt={item.product.name}
+                      style={{
+                        objectFit: 'cover',
+                        width: '100%',
+                        height: '100%'
+                      }}
+                      fallback="/placeholder-image.jpg"
+                    />
+                  </div>
                 }
                 title={
                   <Space direction="vertical" size="small">

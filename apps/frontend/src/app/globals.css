@@ -49,6 +49,48 @@ img {
   height: auto;
 }
 
+/* 图片居中容器 */
+.image-center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-center-container img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* 商品图片样式 */
+.product-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+}
+
+.product-image-list {
+  height: 200px;
+}
+
+.product-image-detail {
+  min-height: 400px;
+  max-height: 500px;
+}
+
+.product-image-thumbnail {
+  height: 80px;
+}
+
+.product-image-cart {
+  width: 80px;
+  height: 80px;
+}
+
 /* 响应式工具类 */
 .container {
   max-width: 1200px;

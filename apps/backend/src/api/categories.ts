@@ -15,7 +15,11 @@ import {
   categorySchemas,
   commonSchemas,
 } from '../middleware/validation';
-import { asyncHandler, NotFoundError, ValidationError } from '../middleware/errorHandler';
+import {
+  asyncHandler,
+  NotFoundError,
+  ValidationError,
+} from '../middleware/errorHandler';
 import { ApiResponse } from '../types';
 
 const router = express.Router();
@@ -251,12 +255,16 @@ router.delete(
 
     // 检查是否有子分类
     if (category.children.length > 0) {
-      throw new ValidationError('无法删除包含子分类的分类，请先删除或移动子分类');
+      throw new ValidationError(
+        '无法删除包含子分类的分类，请先删除或移动子分类'
+      );
     }
 
     // 检查是否有关联的产品
     if (category._count.products > 0) {
-      throw new ValidationError('无法删除包含产品的分类，请先移动或删除相关产品');
+      throw new ValidationError(
+        '无法删除包含产品的分类，请先移动或删除相关产品'
+      );
     }
 
     // 删除分类

@@ -10,11 +10,7 @@ import {
   Space,
   Divider,
 } from 'antd';
-import {
-  UserOutlined,
-  LockOutlined,
-  LoginOutlined,
-} from '@ant-design/icons';
+import { UserOutlined, LockOutlined, LoginOutlined } from '@ant-design/icons';
 import { APP_CONFIG, ENV_UTILS } from '../config/env';
 
 const { Title, Text } = Typography;
@@ -37,7 +33,10 @@ export const LoginPage: React.FC = () => {
     });
   }, [form]);
 
-  const handleSubmit = async (values: { username: string; password: string }) => {
+  const handleSubmit = async (values: {
+    username: string;
+    password: string;
+  }) => {
     setLoading(true);
 
     try {
@@ -117,10 +116,7 @@ export const LoginPage: React.FC = () => {
                 { type: 'email', message: '请输入有效的邮箱地址' },
               ]}
             >
-              <Input
-                prefix={<UserOutlined />}
-                placeholder="请输入邮箱"
-              />
+              <Input prefix={<UserOutlined />} placeholder="请输入邮箱" />
             </Form.Item>
 
             <Form.Item
@@ -146,7 +142,8 @@ export const LoginPage: React.FC = () => {
                   height: 48,
                   borderRadius: 8,
                   fontSize: '16px',
-                  background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
+                  background:
+                    'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
                   border: 'none',
                 }}
               >

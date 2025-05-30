@@ -14,7 +14,7 @@ const formatDatesInData = (data: any): any => {
   // 需要格式化的日期字段
   const dateFields = ['startDate', 'endDate', 'createdAt', 'updatedAt'];
 
-  dateFields.forEach(field => {
+  dateFields.forEach((field) => {
     if (result[field]) {
       const date = new Date(result[field]);
       if (!isNaN(date.getTime())) {

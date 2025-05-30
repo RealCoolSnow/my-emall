@@ -81,8 +81,12 @@ const CustomUserMenu = () => {
   }
 
   const displayName = userInfo?.username || userInfo?.email || '管理员';
-  const roleText = userInfo?.role === 'ADMIN' ? '管理员' :
-                   userInfo?.role === 'SUPER_ADMIN' ? '超级管理员' : '用户';
+  const roleText =
+    userInfo?.role === 'ADMIN'
+      ? '管理员'
+      : userInfo?.role === 'SUPER_ADMIN'
+        ? '超级管理员'
+        : '用户';
 
   return (
     <Dropdown
@@ -115,20 +119,30 @@ const CustomUserMenu = () => {
             border: '2px solid #e3f2fd',
           }}
         />
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <span style={{
-            color: '#333',
-            fontSize: '14px',
-            fontWeight: '500',
-            lineHeight: '1.2',
-          }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          }}
+        >
+          <span
+            style={{
+              color: '#333',
+              fontSize: '14px',
+              fontWeight: '500',
+              lineHeight: '1.2',
+            }}
+          >
             {displayName}
           </span>
-          <span style={{
-            color: '#999',
-            fontSize: '12px',
-            lineHeight: '1.2',
-          }}>
+          <span
+            style={{
+              color: '#999',
+              fontSize: '12px',
+              lineHeight: '1.2',
+            }}
+          >
             {roleText}
           </span>
         </div>

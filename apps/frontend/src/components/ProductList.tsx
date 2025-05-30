@@ -78,15 +78,27 @@ export const ProductList: React.FC<ProductListProps> = ({
                     hoverable
                     cover={
                       <a href={`/products/${product.id}`}>
-                        <Image
-                          alt={product.name}
-                          src={
-                            product.imageUrls?.[0] || '/placeholder-image.jpg'
-                          }
-                          height={200}
-                          style={{ objectFit: 'cover' }}
-                          fallback="/placeholder-image.jpg"
-                        />
+                        <div style={{
+                          height: 200,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          overflow: 'hidden'
+                        }}>
+                          <Image
+                            alt={product.name}
+                            src={
+                              product.imageUrls?.[0] || '/placeholder-image.jpg'
+                            }
+                            height={200}
+                            style={{
+                              objectFit: 'cover',
+                              width: '100%',
+                              height: '100%'
+                            }}
+                            fallback="/placeholder-image.jpg"
+                          />
+                        </div>
                       </a>
                     }
                     actions={[

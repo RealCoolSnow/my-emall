@@ -22,14 +22,14 @@ body {
 .RaAppBar-root {
   background: #ffffff !important;
   color: #333 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   border-bottom: 1px solid #f0f0f0 !important;
 }
 
 .RaSidebar-root {
   background-color: #ffffff;
   border-right: 1px solid #f0f0f0;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .RaMenuItemLink-root {
@@ -51,8 +51,6 @@ body {
   font-weight: 600 !important;
   border-left: 3px solid #1976d2;
 }
-
-
 
 .RaMenuItemLink-active {
   background-color: #1976d2 !important;
