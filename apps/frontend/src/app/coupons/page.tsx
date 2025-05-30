@@ -45,7 +45,7 @@ export default function CouponsPage() {
   const [activeTab, setActiveTab] = useState('available');
 
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   const handleGoBack = () => {
     // 尝试返回上一页，如果没有历史记录则返回首页
@@ -57,12 +57,19 @@ export default function CouponsPage() {
   };
 
   useEffect(() => {
+    // 如果还在加载认证状态，不做任何操作
+    if (isLoading) {
+      return;
+    }
+
+    // 如果认证状态已确定且未认证，跳转到登录页面
     if (!isAuthenticated) {
       router.push('/login?redirect=/coupons');
       return;
     }
+
     loadData();
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   const loadData = async () => {
     setLoading(true);
@@ -146,18 +153,19 @@ export default function CouponsPage() {
     }
   };
 
-  if (!isAuthenticated) {
+  // 如果还在加载认证状态或未认证，不渲染页面
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
   return (
-    <Layout>
+    <Layout style={{ background: '#f5f5f5' }}>
       <Header
         style={{
-          background: '#fff',
-          padding: '0 50px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          height: '64px',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          padding: '0 24px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          height: '70px',
           lineHeight: 'normal',
           display: 'flex',
           alignItems: 'center',
@@ -168,57 +176,78 @@ export default function CouponsPage() {
             type="text"
             icon={<ArrowLeftOutlined />}
             onClick={handleGoBack}
+            style={{
+              color: '#fff',
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '8px',
+            }}
           >
             返回
           </Button>
-          <Title level={3} style={{ margin: 0 }}>
-            我的优惠券
+          <Title level={3} style={{ margin: 0, color: '#fff', fontWeight: 600 }}>
+            🎫 我的优惠券
           </Title>
+          {stats && (
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                color: '#fff',
+                padding: '4px 12px',
+                borderRadius: '12px',
+                fontSize: '12px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              {stats.available} 张可用
+            </span>
+          )}
         </Space>
       </Header>
 
-      <Content style={{ padding: '50px', minHeight: 'calc(100vh - 64px)' }}>
+      <Content style={{ padding: '24px', minHeight: 'calc(100vh - 70px)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <Spin spinning={loading}>
             {/* 统计信息 */}
             {stats && (
-              <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+              <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
                 <Col xs={12} sm={6}>
-                  <Card>
+                  <Card className="modern-card" style={{ textAlign: 'center' }}>
                     <Statistic
                       title="总计"
                       value={stats.total}
-                      prefix={<GiftOutlined />}
+                      prefix={<GiftOutlined style={{ color: '#1890ff' }} />}
+                      valueStyle={{ color: '#1890ff', fontWeight: 600 }}
                     />
                   </Card>
                 </Col>
                 <Col xs={12} sm={6}>
-                  <Card>
+                  <Card className="modern-card" style={{ textAlign: 'center' }}>
                     <Statistic
                       title="可用"
                       value={stats.available}
-                      prefix={<CheckCircleOutlined />}
-                      valueStyle={{ color: '#3f8600' }}
+                      prefix={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
+                      valueStyle={{ color: '#52c41a', fontWeight: 600 }}
                     />
                   </Card>
                 </Col>
                 <Col xs={12} sm={6}>
-                  <Card>
+                  <Card className="modern-card" style={{ textAlign: 'center' }}>
                     <Statistic
                       title="已使用"
                       value={stats.used}
-                      prefix={<ClockCircleOutlined />}
-                      valueStyle={{ color: '#cf1322' }}
+                      prefix={<ClockCircleOutlined style={{ color: '#ff4d4f' }} />}
+                      valueStyle={{ color: '#ff4d4f', fontWeight: 600 }}
                     />
                   </Card>
                 </Col>
                 <Col xs={12} sm={6}>
-                  <Card>
+                  <Card className="modern-card" style={{ textAlign: 'center' }}>
                     <Statistic
                       title="已过期"
                       value={stats.expired}
-                      prefix={<ExclamationCircleOutlined />}
-                      valueStyle={{ color: '#d46b08' }}
+                      prefix={<ExclamationCircleOutlined style={{ color: '#fa8c16' }} />}
+                      valueStyle={{ color: '#fa8c16', fontWeight: 600 }}
                     />
                   </Card>
                 </Col>
@@ -226,33 +255,41 @@ export default function CouponsPage() {
             )}
 
             {/* 领取优惠券 */}
-            <Card style={{ marginBottom: 24 }}>
-              <Title level={4}>领取优惠券</Title>
+            <Card className="modern-card" style={{ marginBottom: 24 }}>
+              <Title level={4} style={{ marginBottom: 16 }}>
+                🎁 领取优惠券
+              </Title>
               <Space.Compact style={{ width: '100%', maxWidth: 400 }}>
                 <Input
                   placeholder="输入优惠券代码"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   onPressEnter={handleClaimCoupon}
+                  style={{ borderRadius: '8px 0 0 8px' }}
                 />
                 <Button
                   type="primary"
                   icon={<PlusOutlined />}
                   loading={claimLoading}
                   onClick={handleClaimCoupon}
+                  style={{ borderRadius: '0 8px 8px 0' }}
                 >
                   领取
                 </Button>
               </Space.Compact>
-              <div style={{ marginTop: 8 }}>
-                <Text type="secondary">
-                  可用代码: WELCOME10, SAVE50, FREESHIP, SUMMER20
+              <div style={{ marginTop: 12, padding: '12px', background: '#f8f9fa', borderRadius: '8px' }}>
+                <Text type="secondary" style={{ fontSize: '13px' }}>
+                  💡 可用代码:
+                  <Text code style={{ margin: '0 4px' }}>WELCOME10</Text>
+                  <Text code style={{ margin: '0 4px' }}>SAVE50</Text>
+                  <Text code style={{ margin: '0 4px' }}>FREESHIP</Text>
+                  <Text code style={{ margin: '0 4px' }}>SUMMER20</Text>
                 </Text>
               </div>
             </Card>
 
             {/* 优惠券列表 */}
-            <Card>
+            <Card className="modern-card">
               <Tabs
                 activeKey={activeTab}
                 onChange={setActiveTab}

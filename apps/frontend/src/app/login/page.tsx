@@ -79,19 +79,17 @@ export default function LoginPage() {
   };
 
   // 设置测试账号
-  const setTestAccount = (type: 'admin' | 'user') => {
-    if (type === 'admin') {
-      loginForm.setFieldsValue({
-        email: 'admin@emall.com',
-        password: 'admin123',
-      });
-    } else {
-      loginForm.setFieldsValue({
-        email: 'zhang.wei@example.com',
-        password: 'user123',
-      });
-    }
+  const setTestAccount = () => {
+    loginForm.setFieldsValue({
+      email: 'zhang.wei@example.com',
+      password: 'user123',
+    });
   };
+
+  // 页面加载时自动填入普通用户账号
+  useEffect(() => {
+    setTestAccount();
+  }, []);
 
   if (isAuthenticated) {
     return null;
@@ -123,10 +121,27 @@ export default function LoginPage() {
           <div style={{ padding: '32px' }}>
             {/* 标题 */}
             <div style={{ textAlign: 'center', marginBottom: 32 }}>
-              <Title level={2} style={{ color: '#1976d2', marginBottom: 8 }}>
-                🛒 电商平台
+              <div
+                style={{
+                  width: 60,
+                  height: 60,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                  fontSize: 24,
+                }}
+              >
+                👑
+              </div>
+              <Title level={2} style={{ color: '#333', marginBottom: 8, fontWeight: 600 }}>
+                优选商城
               </Title>
-              <Text type="secondary">欢迎使用电商平台</Text>
+              <Text type="secondary" style={{ fontSize: 16 }}>
+                品质生活，从这里开始
+              </Text>
             </div>
 
             {/* 测试账号提示 */}
@@ -134,23 +149,17 @@ export default function LoginPage() {
               message="测试账号"
               description={
                 <div>
-                  <div style={{ marginBottom: 8 }}>
-                    <strong>管理员:</strong> admin@emall.com / admin123
+                  <div style={{ marginBottom: 12 }}>
+                    <strong>测试用户:</strong> zhang.wei@example.com / user123
                   </div>
                   <div style={{ marginBottom: 8 }}>
-                    <strong>普通用户:</strong> zhang.wei@example.com / user123
+                    <Text type="secondary" style={{ fontSize: '12px' }}>
+                      💡 账号已自动填入，您可以直接点击登录按钮
+                    </Text>
                   </div>
-                  <Space>
-                    <Button
-                      size="small"
-                      onClick={() => setTestAccount('admin')}
-                    >
-                      填入管理员
-                    </Button>
-                    <Button size="small" onClick={() => setTestAccount('user')}>
-                      填入用户
-                    </Button>
-                  </Space>
+                  <Button size="small" onClick={setTestAccount} type="dashed">
+                    重新填入账号
+                  </Button>
                 </div>
               }
               type="info"

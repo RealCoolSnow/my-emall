@@ -125,3 +125,173 @@ img {
   align-items: center;
   height: 200px;
 }
+
+/* 现代化卡片样式 */
+.modern-card {
+  border-radius: 16px !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+.modern-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 渐变按钮 */
+.gradient-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  color: white !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.gradient-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+  color: white !important;
+}
+
+/* 玻璃态效果 */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+/* 商品卡片悬浮效果 */
+.product-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.product-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.product-card .ant-card-cover img {
+  transition: transform 0.3s ease !important;
+}
+
+.product-card:hover .ant-card-cover img {
+  transform: scale(1.05) !important;
+}
+
+/* 搜索框样式 */
+.modern-search .ant-input {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: none !important;
+  border-radius: 25px 0 0 25px !important;
+  padding: 12px 20px !important;
+  font-size: 14px !important;
+}
+
+.modern-search .ant-input:focus {
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* 标签样式 */
+.modern-tag {
+  border-radius: 20px !important;
+  padding: 4px 12px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  border: none !important;
+}
+
+/* 价格样式 */
+.price-text {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #ff4d4f !important;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.original-price {
+  font-size: 12px !important;
+  color: #999 !important;
+  text-decoration: line-through !important;
+}
+
+/* 轮播图样式 */
+.hero-carousel .ant-carousel .slick-dots {
+  bottom: 20px !important;
+}
+
+.hero-carousel .ant-carousel .slick-dots li button {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border-radius: 50% !important;
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.hero-carousel .ant-carousel .slick-dots li.slick-active button {
+  background: white !important;
+}
+
+/* 分类卡片 */
+.category-card {
+  text-align: center !important;
+  border: none !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+.category-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .modern-card {
+    border-radius: 12px !important;
+    margin: 8px !important;
+  }
+
+  .product-card {
+    border-radius: 12px !important;
+  }
+
+  .gradient-button {
+    border-radius: 8px !important;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* 自定义 Ant Design 主题色 */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+}

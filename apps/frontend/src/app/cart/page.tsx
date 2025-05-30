@@ -41,13 +41,13 @@ export default function CartPage() {
   };
 
   return (
-    <Layout>
+    <Layout style={{ background: '#f5f5f5' }}>
       <Header
         style={{
-          background: '#fff',
-          padding: '0 50px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          height: '64px',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          padding: '0 24px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          height: '70px',
           lineHeight: 'normal',
           display: 'flex',
           alignItems: 'center',
@@ -58,16 +58,36 @@ export default function CartPage() {
             type="text"
             icon={<ArrowLeftOutlined />}
             onClick={handleGoBack}
+            style={{
+              color: '#fff',
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '8px',
+            }}
           >
             返回
           </Button>
-          <Title level={3} style={{ margin: 0 }}>
-            购物车
+          <Title level={3} style={{ margin: 0, color: '#fff', fontWeight: 600 }}>
+            🛒 购物车
           </Title>
+          {items.length > 0 && (
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                color: '#fff',
+                padding: '4px 12px',
+                borderRadius: '12px',
+                fontSize: '12px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              {items.length} 件商品
+            </span>
+          )}
         </Space>
       </Header>
 
-      <Content style={{ padding: '50px', minHeight: 'calc(100vh - 64px)' }}>
+      <Content style={{ padding: '24px', minHeight: 'calc(100vh - 70px)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <Row gutter={[24, 24]}>
             <Col xs={24} lg={16}>

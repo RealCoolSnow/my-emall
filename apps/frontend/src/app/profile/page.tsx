@@ -48,9 +48,15 @@ export default function ProfilePage() {
   const [updating, setUpdating] = useState(false);
 
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
 
   useEffect(() => {
+    // 如果还在加载认证状态，不做任何操作
+    if (isLoading) {
+      return;
+    }
+
+    // 如果认证状态已确定且未认证，跳转到登录页面
     if (!isAuthenticated) {
       router.push('/login');
       return;
@@ -76,7 +82,7 @@ export default function ProfilePage() {
     };
 
     loadUserInfo();
-  }, [isAuthenticated, router, form]);
+  }, [isAuthenticated, isLoading, router, form]);
 
   const handleUpdateProfile = async (values: any) => {
     setUpdating(true);
@@ -126,17 +132,22 @@ export default function ProfilePage() {
     router.push('/');
   };
 
-  if (!isAuthenticated) {
+  // 如果还在加载认证状态或未认证，不渲染页面
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
   return (
-    <Layout>
+    <Layout style={{ background: '#f5f5f5' }}>
       <Header
         style={{
-          background: '#fff',
-          padding: '0 50px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          padding: '0 24px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          height: '70px',
+          lineHeight: 'normal',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         <Space align="center" style={{ height: '100%' }}>
@@ -144,43 +155,104 @@ export default function ProfilePage() {
             type="text"
             icon={<ArrowLeftOutlined />}
             onClick={() => router.back()}
+            style={{
+              color: '#fff',
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '8px',
+            }}
           >
             返回
           </Button>
-          <Title level={3} style={{ margin: 0 }}>
-            个人中心
+          <Title level={3} style={{ margin: 0, color: '#fff', fontWeight: 600 }}>
+            👤 个人中心
           </Title>
         </Space>
       </Header>
 
-      <Content style={{ padding: '50px', minHeight: 'calc(100vh - 64px)' }}>
+      <Content style={{ padding: '24px', minHeight: 'calc(100vh - 70px)' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <Spin spinning={loading}>
             <Row gutter={[24, 24]}>
               {/* 用户信息卡片 */}
               <Col xs={24} lg={8}>
-                <Card>
-                  <div style={{ textAlign: 'center' }}>
-                    <Avatar size={80} icon={<UserOutlined />} />
-                    <Title level={4} style={{ marginTop: 16 }}>
+                <Card
+                  className="modern-card"
+                  style={{ textAlign: 'center' }}
+                >
+                  <div style={{ padding: '16px 0' }}>
+                    <div
+                      style={{
+                        width: 100,
+                        height: 100,
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 16px',
+                        fontSize: 40,
+                        color: '#fff',
+                      }}
+                    >
+                      <UserOutlined />
+                    </div>
+                    <Title level={4} style={{ marginBottom: 8, fontWeight: 600 }}>
                       {userInfo?.username || '用户'}
                     </Title>
-                    <Text type="secondary">{userInfo?.email}</Text>
-                    <Divider />
-                    <Space direction="vertical" style={{ width: '100%' }}>
-                      <Text>
-                        <strong>角色：</strong>
-                        {userInfo?.role === 'CUSTOMER' ? '普通用户' : '管理员'}
-                      </Text>
-                      <Text>
-                        <strong>注册时间：</strong>
-                        {userInfo?.createdAt
-                          ? new Date(userInfo.createdAt).toLocaleDateString()
-                          : '-'}
-                      </Text>
-                    </Space>
-                    <Divider />
-                    <Button danger onClick={handleLogout}>
+                    <Text type="secondary" style={{ fontSize: 14 }}>
+                      {userInfo?.email}
+                    </Text>
+
+                    <div style={{ margin: '24px 0' }}>
+                      <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                        <div
+                          style={{
+                            background: '#f8f9fa',
+                            padding: '12px 16px',
+                            borderRadius: '8px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Text style={{ fontWeight: 500 }}>角色</Text>
+                          <Text style={{
+                            color: userInfo?.role === 'ADMIN' ? '#722ed1' : '#1890ff',
+                            fontWeight: 500
+                          }}>
+                            {userInfo?.role === 'CUSTOMER' ? '普通用户' : '管理员'}
+                          </Text>
+                        </div>
+                        <div
+                          style={{
+                            background: '#f8f9fa',
+                            padding: '12px 16px',
+                            borderRadius: '8px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Text style={{ fontWeight: 500 }}>注册时间</Text>
+                          <Text>
+                            {userInfo?.createdAt
+                              ? new Date(userInfo.createdAt).toLocaleDateString()
+                              : '-'}
+                          </Text>
+                        </div>
+                      </Space>
+                    </div>
+
+                    <Button
+                      danger
+                      onClick={handleLogout}
+                      style={{
+                        borderRadius: '8px',
+                        height: '40px',
+                        fontWeight: 500,
+                      }}
+                    >
                       退出登录
                     </Button>
                   </div>
@@ -189,7 +261,7 @@ export default function ProfilePage() {
 
               {/* 详细信息 */}
               <Col xs={24} lg={16}>
-                <Card>
+                <Card className="modern-card">
                   <Tabs defaultActiveKey="profile">
                     <TabPane
                       tab={

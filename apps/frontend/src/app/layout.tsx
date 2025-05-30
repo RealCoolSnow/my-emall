@@ -35,9 +35,7 @@ export default function RootLayout({
             },
           }}
         >
-          <AuthInitializer>
-            {children}
-          </AuthInitializer>
+          <AuthInitializer>{children}</AuthInitializer>
         </ConfigProvider>
       </body>
     </html>
