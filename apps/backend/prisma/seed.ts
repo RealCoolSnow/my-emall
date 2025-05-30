@@ -18,7 +18,6 @@ async function main() {
   if (existingAdmin) {
     console.log('✅ 管理员账号已存在，跳过用户创建');
   } else {
-
     // 创建默认管理员账号
     const hashedPassword = await bcrypt.hash('admin123', 10);
 
@@ -117,8 +116,10 @@ async function main() {
     ]);
 
     console.log('✅ 普通用户创建成功:');
-    users.forEach(user => {
-      console.log(`   用户名: ${user.username}, 邮箱: ${user.email}, 密码: user123`);
+    users.forEach((user) => {
+      console.log(
+        `   用户名: ${user.username}, 邮箱: ${user.email}, 密码: user123`
+      );
     });
   } else {
     console.log('✅ 普通用户已存在，跳过创建');
@@ -306,7 +307,9 @@ async function main() {
           });
         }
 
-        console.log(`   ✅ 已为用户 ${user.username} 分配 ${couponsToAssign.length} 张优惠券`);
+        console.log(
+          `   ✅ 已为用户 ${user.username} 分配 ${couponsToAssign.length} 张优惠券`
+        );
       }
     }
 

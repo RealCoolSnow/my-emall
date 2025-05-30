@@ -78,13 +78,15 @@ export const ProductList: React.FC<ProductListProps> = ({
                     hoverable
                     cover={
                       <a href={`/products/${product.id}`}>
-                        <div style={{
-                          height: 200,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          overflow: 'hidden'
-                        }}>
+                        <div
+                          style={{
+                            height: 200,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            overflow: 'hidden',
+                          }}
+                        >
                           <Image
                             alt={product.name}
                             src={
@@ -94,7 +96,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                             style={{
                               objectFit: 'cover',
                               width: '100%',
-                              height: '100%'
+                              height: '100%',
                             }}
                             fallback="/placeholder-image.jpg"
                           />

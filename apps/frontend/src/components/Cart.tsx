@@ -108,16 +108,18 @@ export const Cart: React.FC = () => {
             >
               <List.Item.Meta
                 avatar={
-                  <div style={{
-                    width: 80,
-                    height: 80,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    overflow: 'hidden',
-                    border: '1px solid #f0f0f0',
-                    borderRadius: '6px'
-                  }}>
+                  <div
+                    style={{
+                      width: 80,
+                      height: 80,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      border: '1px solid #f0f0f0',
+                      borderRadius: '6px',
+                    }}
+                  >
                     <Image
                       width={80}
                       height={80}
@@ -128,7 +130,7 @@ export const Cart: React.FC = () => {
                       style={{
                         objectFit: 'cover',
                         width: '100%',
-                        height: '100%'
+                        height: '100%',
                       }}
                       fallback="/placeholder-image.jpg"
                     />

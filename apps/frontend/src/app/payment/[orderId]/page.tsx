@@ -52,6 +52,15 @@ export default function PaymentPage() {
 
   const orderId = params.orderId as string;
 
+  const handleGoBack = () => {
+    // 尝试返回上一页，如果没有历史记录则返回订单列表
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/orders');
+    }
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/login');
@@ -60,8 +69,10 @@ export default function PaymentPage() {
 
     const loadOrder = async () => {
       try {
+        console.log('开始加载订单，订单ID:', orderId);
         setLoading(true);
         const orderData = await orderService.getOrder(orderId);
+        console.log('订单数据加载成功:', orderData);
         setOrder(orderData);
 
         // 如果订单已支付，直接显示成功页面
@@ -70,6 +81,7 @@ export default function PaymentPage() {
           setPaymentResult('success');
         }
       } catch (error) {
+        console.error('加载订单信息失败:', error);
         message.error('加载订单信息失败');
         router.push('/orders');
       } finally {
@@ -156,13 +168,17 @@ export default function PaymentPage() {
           background: '#fff',
           padding: '0 50px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          height: '64px',
+          lineHeight: 'normal',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         <Space align="center" style={{ height: '100%' }}>
           <Button
             type="text"
             icon={<ArrowLeftOutlined />}
-            onClick={() => router.back()}
+            onClick={handleGoBack}
           >
             返回
           </Button>

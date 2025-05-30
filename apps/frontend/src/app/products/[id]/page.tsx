@@ -139,21 +139,23 @@ export default function ProductDetailPage() {
             {/* 商品图片 */}
             <Col xs={24} md={12}>
               <Card>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: 400,
-                  maxHeight: 500,
-                  overflow: 'hidden'
-                }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: 400,
+                    maxHeight: 500,
+                    overflow: 'hidden',
+                  }}
+                >
                   <Image
                     src={product.imageUrls?.[0] || '/placeholder-image.jpg'}
                     alt={product.name}
                     style={{
                       width: '100%',
                       maxHeight: 500,
-                      objectFit: 'contain'
+                      objectFit: 'contain',
                     }}
                     fallback="/placeholder-image.jpg"
                   />
@@ -163,15 +165,17 @@ export default function ProductDetailPage() {
                     <Row gutter={8}>
                       {product.imageUrls.slice(1, 5).map((url, index) => (
                         <Col span={6} key={index}>
-                          <div style={{
-                            height: 80,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            overflow: 'hidden',
-                            border: '1px solid #f0f0f0',
-                            borderRadius: '6px'
-                          }}>
+                          <div
+                            style={{
+                              height: 80,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              overflow: 'hidden',
+                              border: '1px solid #f0f0f0',
+                              borderRadius: '6px',
+                            }}
+                          >
                             <Image
                               src={url}
                               alt={`${product.name} ${index + 2}`}

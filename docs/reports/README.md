@@ -6,7 +6,7 @@
 
 ### 1. [项目实施完整性检查报告](./IMPLEMENTATION_REVIEW.md)
 
-**文件**: `IMPLEMENTATION_REVIEW.md`  
+**文件**: `IMPLEMENTATION_REVIEW.md`
 **内容**: 整体项目功能完成度评估
 
 - 核心电商功能实现状态
@@ -26,7 +26,7 @@
 
 ### 2. [管理后台实施状态报告](./ADMIN_IMPLEMENTATION_STATUS.md)
 
-**文件**: `ADMIN_IMPLEMENTATION_STATUS.md`  
+**文件**: `ADMIN_IMPLEMENTATION_STATUS.md`
 **内容**: 管理后台功能实现详情
 
 - 后端管理API完成状态
@@ -46,7 +46,7 @@
 
 ### 3. [后端测试实施报告](./BACKEND_TESTING_REPORT.md)
 
-**文件**: `BACKEND_TESTING_REPORT.md`  
+**文件**: `BACKEND_TESTING_REPORT.md`
 **内容**: 后端API测试套件实施情况
 
 - 测试基础设施搭建状态
@@ -61,6 +61,27 @@
 - 测试类型覆盖: 90%
 - 代码质量: 95%
 - 测试可维护性: 90%
+
+---
+
+### 4. [用户流程测试指南](./USER_FLOW_TEST.md)
+
+**文件**: `USER_FLOW_TEST.md`
+**内容**: 完整的用户流程测试指南和操作手册
+
+- 测试环境准备和配置
+- 完整用户流程测试步骤
+- API测试命令和示例
+- 常见问题排查指南
+- 性能和兼容性测试要点
+
+**测试覆盖范围**:
+
+- 用户登录注册流程
+- 商品浏览和购物车管理
+- 优惠券系统测试
+- 订单创建和支付流程
+- 前端UI和交互测试
 
 ## 🎯 项目总体状态
 

@@ -17,6 +17,15 @@ export default function CartPage() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
+  const handleGoBack = () => {
+    // 尝试返回上一页，如果没有历史记录则返回首页
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       loadCart();
@@ -38,13 +47,17 @@ export default function CartPage() {
           background: '#fff',
           padding: '0 50px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          height: '64px',
+          lineHeight: 'normal',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         <Space align="center" style={{ height: '100%' }}>
           <Button
             type="text"
             icon={<ArrowLeftOutlined />}
-            onClick={() => router.back()}
+            onClick={handleGoBack}
           >
             返回
           </Button>

@@ -12,7 +12,14 @@ import {
   Spin,
   Button,
 } from 'antd';
-import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  ShoppingCartOutlined,
+  GiftOutlined,
+  LoginOutlined,
+  UserOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
 import { ProductList } from '../components/ProductList';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
@@ -25,7 +32,7 @@ const { Search } = Input;
 export default function Home() {
   const { searchProducts } = useProducts();
   const { loadCart, itemCount } = useCart();
-  const { loadUser, isAuthenticated } = useAuth();
+  const { loadUser, isAuthenticated, user, logout } = useAuth();
 
   // 初始化数据
   useEffect(() => {
@@ -49,21 +56,34 @@ export default function Home() {
           position: 'sticky',
           top: 0,
           zIndex: 1000,
+          height: '64px',
+          lineHeight: 'normal',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        <Row justify="space-between" align="middle" style={{ height: '100%' }}>
+        <Row justify="space-between" align="middle" style={{ height: '100%', width: '100%' }}>
           <Col>
             <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
               电商平台
             </Title>
           </Col>
-          <Col flex="auto" style={{ maxWidth: 600, margin: '0 50px' }}>
+          <Col
+            flex="auto"
+            style={{
+              maxWidth: 600,
+              margin: '0 50px',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
             <Search
               placeholder="搜索商品..."
               allowClear
               enterButton={<SearchOutlined />}
               size="large"
               onSearch={handleSearch}
+              style={{ width: '100%' }}
             />
           </Col>
           <Col>
@@ -89,12 +109,43 @@ export default function Home() {
                   )}
                 </Space>
               </Button>
-              <Button type="text" href="/profile">
-                个人中心
-              </Button>
-              <Button type="text" href="/orders">
-                我的订单
-              </Button>
+
+              {isAuthenticated ? (
+                <>
+                  <Button type="text" href="/coupons" style={{ padding: '4px 8px' }}>
+                    <Space>
+                      <GiftOutlined style={{ fontSize: 20 }} />
+                      <Text>我的优惠券</Text>
+                    </Space>
+                  </Button>
+                  <Button type="text" href="/orders">
+                    我的订单
+                  </Button>
+                  <Button type="text" href="/profile">
+                    <Space>
+                      <UserOutlined />
+                      <Text>{user?.username || '个人中心'}</Text>
+                    </Space>
+                  </Button>
+                  <Button
+                    type="text"
+                    onClick={logout}
+                    style={{ padding: '4px 8px' }}
+                  >
+                    <Space>
+                      <LogoutOutlined />
+                      <Text>退出</Text>
+                    </Space>
+                  </Button>
+                </>
+              ) : (
+                <Button type="primary" href="/login">
+                  <Space>
+                    <LoginOutlined />
+                    <Text>登录</Text>
+                  </Space>
+                </Button>
+              )}
             </Space>
           </Col>
         </Row>

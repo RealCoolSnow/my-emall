@@ -23,6 +23,7 @@ import orderRoutes from './api/orders';
 import couponRoutes from './api/coupons';
 import userCouponRoutes from './api/userCoupons';
 import cartRoutes from './api/cart';
+import orderCalculationRoutes from './api/orderCalculation';
 import paymentRoutes from './api/payments';
 import adminRoutes from './api/admin';
 
@@ -106,6 +107,7 @@ app.get('/api', (req, res) => {
       coupons: '/api/coupons',
       userCoupons: '/api/user-coupons',
       cart: '/api/cart',
+      orderCalculation: '/api/order-calculation',
       payments: '/api/payments',
       admin: '/api/admin',
     },
@@ -120,6 +122,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/user-coupons', userCouponRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/order-calculation', orderCalculationRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 

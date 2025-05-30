@@ -62,6 +62,12 @@ router.get(
   asyncHandler(async (req, res) => {
     const order = await orderService.getOrderById(req.params.id);
 
+    // 调试日志
+    console.log('获取订单详情 - 订单ID:', req.params.id);
+    console.log('获取订单详情 - 订单用户ID:', order.userId);
+    console.log('获取订单详情 - 请求用户ID:', req.user?.userId);
+    console.log('获取订单详情 - 请求用户角色:', req.user?.role);
+
     // 检查权限：用户只能查看自己的订单
     if (
       req.user &&

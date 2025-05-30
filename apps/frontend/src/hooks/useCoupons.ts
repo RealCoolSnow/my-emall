@@ -17,11 +17,20 @@ export const useCoupons = () => {
     error: null,
   });
 
-  // 加载可用优惠券
+  // 加载可用优惠券（用户的优惠券）
   const loadAvailableCoupons = async () => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
-      const coupons = await couponService.getAvailableCoupons();
+      // 优先获取用户的优惠券，如果失败则获取公共优惠券
+      let coupons;
+      try {
+        const userCoupons = await couponService.getUserCoupons();
+        coupons = userCoupons.map((uc: any) => uc.coupon || uc);
+      } catch (userError) {
+        // 如果用户未登录或获取用户优惠券失败，获取公共优惠券
+        coupons = await couponService.getAvailableCoupons();
+      }
+
       setState((prev) => ({
         ...prev,
         availableCoupons: coupons,

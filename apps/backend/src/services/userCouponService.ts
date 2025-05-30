@@ -179,7 +179,7 @@ export class UserCouponService {
    */
   async getUserCouponStats(userId: string) {
     const now = new Date();
-    
+
     const [total, used, expired] = await Promise.all([
       // 总数
       db.prisma.userCoupon.count({

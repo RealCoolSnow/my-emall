@@ -73,9 +73,11 @@ export class CartService {
     if (existingCartItem) {
       // 更新数量
       const newQuantity = existingCartItem.quantity + data.quantity;
-      
+
       if (newQuantity > product.stock) {
-        throw new ValidationError(`库存不足，当前库存：${product.stock}，购物车中已有：${existingCartItem.quantity}`);
+        throw new ValidationError(
+          `库存不足，当前库存：${product.stock}，购物车中已有：${existingCartItem.quantity}`
+        );
       }
 
       cartItem = await db.prisma.cartItem.update({
@@ -117,7 +119,11 @@ export class CartService {
    * @param data 更新数据
    * @returns Promise<CartItem> 更新后的购物车项
    */
-  async updateCartItem(userId: string, productId: string, data: UpdateCartItemRequest) {
+  async updateCartItem(
+    userId: string,
+    productId: string,
+    data: UpdateCartItemRequest
+  ) {
     // 检查购物车项是否存在
     const existingCartItem = await db.prisma.cartItem.findUnique({
       where: {
@@ -137,7 +143,9 @@ export class CartService {
 
     // 验证库存
     if (data.quantity > existingCartItem.product.stock) {
-      throw new ValidationError(`库存不足，当前库存：${existingCartItem.product.stock}`);
+      throw new ValidationError(
+        `库存不足，当前库存：${existingCartItem.product.stock}`
+      );
     }
 
     // 更新数量
@@ -234,12 +242,12 @@ export class CartService {
         price: cartItem.product.price,
         stock: cartItem.product.stock,
         status: cartItem.product.status,
-        imageUrls: cartItem.product.imageUrls 
-          ? JSON.parse(cartItem.product.imageUrls) 
+        imageUrls: cartItem.product.imageUrls
+          ? JSON.parse(cartItem.product.imageUrls)
           : [],
         category: cartItem.product.category,
-        attributes: cartItem.product.attributes 
-          ? JSON.parse(cartItem.product.attributes) 
+        attributes: cartItem.product.attributes
+          ? JSON.parse(cartItem.product.attributes)
           : null,
         createdAt: cartItem.product.createdAt,
         updatedAt: cartItem.product.updatedAt,

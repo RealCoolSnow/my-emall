@@ -22,24 +22,37 @@ export interface OrderSummaryProps {
   showActions?: boolean;
   onCheckout?: () => void;
   selectedCoupons?: any[];
+  calculatedOrder?: any;
+  calculating?: boolean;
 }
 
 export const OrderSummary: React.FC<OrderSummaryProps> = ({
   showActions = true,
   onCheckout,
   selectedCoupons = [],
+  calculatedOrder,
+  calculating = false,
 }) => {
   const { items, total } = useCart();
   const { calculateDiscount } = useCoupons();
 
-  const [calculating, setCalculating] = useState(false);
+  const [localCalculating, setLocalCalculating] = useState(false);
   const [discount, setDiscount] = useState(0);
   const [finalAmount, setFinalAmount] = useState(total);
 
-  const shippingCost = 10; // 固定运费，实际项目中应该根据地址计算
+  // 使用传入的计算结果或默认值
+  const shippingCost = calculatedOrder?.shippingCost || 10;
+  const actualDiscount = calculatedOrder?.couponDiscount || discount;
+  const actualFinalAmount = calculatedOrder?.finalAmount || finalAmount;
+  const isCalculating = calculating || localCalculating;
 
-  // 计算优惠券折扣
+  // 计算优惠券折扣（仅在没有传入计算结果时使用）
   useEffect(() => {
+    if (calculatedOrder) {
+      // 如果有传入的计算结果，直接使用
+      return;
+    }
+
     const calculateOrderDiscount = async () => {
       if (selectedCoupons.length === 0) {
         setDiscount(0);
@@ -47,7 +60,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
         return;
       }
 
-      setCalculating(true);
+      setLocalCalculating(true);
       try {
         const orderData = {
           orderItems: items.map((item) => ({
@@ -68,12 +81,12 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
         setDiscount(0);
         setFinalAmount(total + shippingCost);
       } finally {
-        setCalculating(false);
+        setLocalCalculating(false);
       }
     };
 
     calculateOrderDiscount();
-  }, [selectedCoupons, total, items, calculateDiscount]);
+  }, [selectedCoupons, total, items, calculateDiscount, calculatedOrder]);
 
   const formatPrice = (price: number) => {
     return `¥${price.toFixed(2)}`;
@@ -90,7 +103,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
         </Space>
       }
     >
-      <Spin spinning={calculating}>
+      <Spin spinning={isCalculating}>
         {/* 商品列表 */}
         <List
           size="small"
@@ -159,7 +172,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
                   <GiftOutlined />
                   <Text>优惠券折扣:</Text>
                 </Space>
-                <Text type="success">-{formatPrice(discount)}</Text>
+                <Text type="success">-{formatPrice(actualDiscount)}</Text>
               </div>
 
               {/* 显示使用的优惠券 */}
@@ -188,13 +201,13 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
               总计:
             </Title>
             <Title level={4} type="danger" style={{ margin: 0 }}>
-              {formatPrice(finalAmount)}
+              {formatPrice(actualFinalAmount)}
             </Title>
           </div>
 
-          {discount > 0 && (
+          {actualDiscount > 0 && (
             <Text type="success" style={{ fontSize: '12px' }}>
-              已节省 {formatPrice(discount)}
+              已节省 {formatPrice(actualDiscount)}
             </Text>
           )}
         </Space>
