@@ -80,9 +80,8 @@ export const OrderList = () => (
     <Datagrid rowClick="show">
       <TextField source="id" label="订单ID" />
       <TextField source="orderNumber" label="订单号" />
-      <ReferenceField source="userId" reference="users" label="用户">
-        <TextField source="username" />
-      </ReferenceField>
+      <TextField source="user.username" label="用户名" />
+      <TextField source="user.email" label="用户邮箱" />
       <NumberField
         source="totalAmount"
         label="订单金额"
@@ -114,9 +113,8 @@ export const OrderEdit = () => (
     <SimpleForm>
       <TextField source="id" label="订单ID" />
       <TextField source="orderNumber" label="订单号" />
-      <ReferenceField source="userId" reference="users" label="用户">
-        <TextField source="username" />
-      </ReferenceField>
+      <TextField source="user.username" label="用户名" />
+      <TextField source="user.email" label="用户邮箱" />
 
       <SelectInput
         source="status"
@@ -148,10 +146,8 @@ export const OrderShow = () => (
       <TextField source="orderNumber" label="订单号" />
 
       {/* 用户信息 */}
-      <ReferenceField source="userId" reference="users" label="用户">
-        <TextField source="username" />
-      </ReferenceField>
-      <TextField source="userEmail" label="用户邮箱" />
+      <TextField source="user.username" label="用户名" />
+      <TextField source="user.email" label="用户邮箱" />
 
       {/* 金额信息 */}
       <NumberField

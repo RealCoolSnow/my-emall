@@ -46,7 +46,7 @@ router.post(
   validate(orderCalculationSchema),
   asyncHandler(async (req, res) => {
     const { orderItems, subtotal, shippingCost, couponIds } = req.body;
-    
+
     const result = await orderCalculationService.calculateOrder({
       orderItems,
       subtotal,
@@ -77,12 +77,13 @@ router.post(
   validate(couponRecommendationSchema),
   asyncHandler(async (req, res) => {
     const { orderItems, subtotal } = req.body;
-    
-    const recommendedCouponIds = await orderCalculationService.getRecommendedCoupons(
-      req.user!.userId,
-      orderItems,
-      subtotal
-    );
+
+    const recommendedCouponIds =
+      await orderCalculationService.getRecommendedCoupons(
+        req.user!.userId,
+        orderItems,
+        subtotal
+      );
 
     const response: ApiResponse = {
       success: true,

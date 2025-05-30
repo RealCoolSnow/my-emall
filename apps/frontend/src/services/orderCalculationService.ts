@@ -40,7 +40,9 @@ class OrderCalculationService {
   /**
    * 计算订单总价
    */
-  async calculateOrder(request: OrderCalculationRequest): Promise<OrderCalculationResult> {
+  async calculateOrder(
+    request: OrderCalculationRequest
+  ): Promise<OrderCalculationResult> {
     const response = await api.post('/order-calculation/calculate', request);
     return handleApiResponse<OrderCalculationResult>(response);
   }
@@ -48,8 +50,13 @@ class OrderCalculationService {
   /**
    * 获取优惠券推荐
    */
-  async getRecommendedCoupons(request: CouponRecommendationRequest): Promise<CouponRecommendationResult> {
-    const response = await api.post('/order-calculation/recommend-coupons', request);
+  async getRecommendedCoupons(
+    request: CouponRecommendationRequest
+  ): Promise<CouponRecommendationResult> {
+    const response = await api.post(
+      '/order-calculation/recommend-coupons',
+      request
+    );
     return handleApiResponse<CouponRecommendationResult>(response);
   }
 }

@@ -133,6 +133,4 @@ pnpm db:studio       # 打开 Prisma Studio
 生成优惠券策略模式
 ```
 
-## 📄 许可证
 
-MIT License-full-stack

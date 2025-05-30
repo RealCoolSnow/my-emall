@@ -81,28 +81,31 @@ export default function CheckoutPage() {
     }
 
     try {
-      const orderItems = items.map(item => ({
+      const orderItems = items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
         price: item.product.price,
       }));
 
-      const recommendation = await orderCalculationService.getRecommendedCoupons({
-        orderItems,
-        subtotal: total,
-      });
+      const recommendation =
+        await orderCalculationService.getRecommendedCoupons({
+          orderItems,
+          subtotal: total,
+        });
 
       if (recommendation.recommendedCouponIds.length > 0) {
         // 获取推荐的优惠券详情
         const userCoupons = await userCouponService.getUserCoupons();
-        const recommendedCoupons = userCoupons.filter(uc =>
+        const recommendedCoupons = userCoupons.filter((uc) =>
           recommendation.recommendedCouponIds.includes(uc.couponId)
         );
 
         if (recommendedCoupons.length > 0) {
           // 自动选择第一个推荐的优惠券
           setSelectedCoupons([recommendedCoupons[0].coupon]);
-          message.success(`已为您自动选择最优惠券: ${recommendedCoupons[0].coupon.name}`);
+          message.success(
+            `已为您自动选择最优惠券: ${recommendedCoupons[0].coupon.name}`
+          );
         }
       }
     } catch (error) {
@@ -114,7 +117,7 @@ export default function CheckoutPage() {
   const calculateOrderPrice = async (couponIds: string[] = []) => {
     setCalculating(true);
     try {
-      const orderItems = items.map(item => ({
+      const orderItems = items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
         price: item.product.price,
@@ -164,7 +167,7 @@ export default function CheckoutPage() {
   // 当选择的优惠券改变时重新计算价格（确保数据已加载）
   useEffect(() => {
     if (items.length > 0 && total > 0) {
-      const couponIds = selectedCoupons.map(coupon => coupon.id);
+      const couponIds = selectedCoupons.map((coupon) => coupon.id);
       calculateOrderPrice(couponIds);
     }
   }, [selectedCoupons, items, total]);
@@ -193,9 +196,15 @@ export default function CheckoutPage() {
       const order = await orderService.createOrder(orderData);
 
       console.log('订单创建成功:', order);
+      console.log('准备跳转到支付页面，URL:', `/payment/${order.id}`);
       message.success('订单创建成功！');
       clearCart();
-      router.push(`/payment/${order.id}`);
+
+      // 延迟一下再跳转，确保消息显示
+      setTimeout(() => {
+        console.log('开始跳转到支付页面');
+        router.push(`/payment/${order.id}`);
+      }, 1000);
     } catch (error) {
       console.error('创建订单失败:', error);
       message.error('创建订单失败，请重试');
@@ -289,7 +298,8 @@ export default function CheckoutPage() {
                   >
                     <div style={{ marginBottom: 16 }}>
                       <Text type="secondary" style={{ fontSize: '14px' }}>
-                        💡 已为您预填默认地址，您可以直接使用或修改为您的实际地址
+                        💡
+                        已为您预填默认地址，您可以直接使用或修改为您的实际地址
                       </Text>
                     </div>
                     <Row gutter={16}>

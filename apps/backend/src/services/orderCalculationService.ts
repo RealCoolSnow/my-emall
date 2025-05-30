@@ -50,8 +50,16 @@ export class OrderCalculationService {
    * @param request 订单计算请求
    * @returns Promise<OrderCalculationResult> 计算结果
    */
-  async calculateOrder(request: OrderCalculationRequest): Promise<OrderCalculationResult> {
-    const { orderItems, subtotal, shippingCost = 10, couponIds = [], userId } = request;
+  async calculateOrder(
+    request: OrderCalculationRequest
+  ): Promise<OrderCalculationResult> {
+    const {
+      orderItems,
+      subtotal,
+      shippingCost = 10,
+      couponIds = [],
+      userId,
+    } = request;
 
     // 验证订单项
     await this.validateOrderItems(orderItems);
@@ -67,7 +75,10 @@ export class OrderCalculationService {
     );
 
     // 计算最终金额
-    const finalAmount = Math.max(0, subtotal + shippingCost - couponResult.totalDiscount);
+    const finalAmount = Math.max(
+      0,
+      subtotal + shippingCost - couponResult.totalDiscount
+    );
 
     return {
       subtotal,
@@ -107,7 +118,9 @@ export class OrderCalculationService {
 
       // 验证价格是否正确
       if (Math.abs(product.price - item.price) > 0.01) {
-        throw new ValidationError(`商品 ${product.name} 价格已变更，请刷新页面`);
+        throw new ValidationError(
+          `商品 ${product.name} 价格已变更，请刷新页面`
+        );
       }
     }
   }
@@ -200,16 +213,21 @@ export class OrderCalculationService {
     const result = this.couponService.applyCoupons(coupons, orderContext);
 
     // 计算每个优惠券的具体折扣金额
-    const appliedCouponsWithDiscount = result.appliedCoupons.map((coupon: Coupon) => {
-      const individualResult = this.couponService.calculateDiscount(coupon, orderContext);
-      return {
-        id: coupon.id,
-        code: coupon.code,
-        name: coupon.name,
-        type: coupon.type,
-        discount: individualResult?.discount || 0,
-      };
-    });
+    const appliedCouponsWithDiscount = result.appliedCoupons.map(
+      (coupon: Coupon) => {
+        const individualResult = this.couponService.calculateDiscount(
+          coupon,
+          orderContext
+        );
+        return {
+          id: coupon.id,
+          code: coupon.code,
+          name: coupon.name,
+          type: coupon.type,
+          discount: individualResult?.discount || 0,
+        };
+      }
+    );
 
     return {
       totalDiscount: result.totalDiscount,

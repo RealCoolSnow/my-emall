@@ -28,7 +28,10 @@ import {
 } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth';
-import userCouponService, { UserCoupon, UserCouponStats } from '../../services/userCouponService';
+import userCouponService, {
+  UserCoupon,
+  UserCouponStats,
+} from '../../services/userCouponService';
 
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
@@ -115,7 +118,8 @@ export default function CouponsPage() {
       PERCENTAGE: { color: 'orange', text: '折扣' },
       FREE_SHIPPING: { color: 'blue', text: '包邮' },
     };
-    const typeInfo = typeMap[type as keyof typeof typeMap] || typeMap.FIXED_AMOUNT;
+    const typeInfo =
+      typeMap[type as keyof typeof typeMap] || typeMap.FIXED_AMOUNT;
     return <Tag color={typeInfo.color}>{typeInfo.text}</Tag>;
   };
 
@@ -128,7 +132,8 @@ export default function CouponsPage() {
     switch (activeTab) {
       case 'available':
         return userCoupons.filter(
-          (uc) => !uc.isUsed && !isExpired(uc.coupon.endDate) && uc.coupon.isActive
+          (uc) =>
+            !uc.isUsed && !isExpired(uc.coupon.endDate) && uc.coupon.isActive
         );
       case 'used':
         return userCoupons.filter((uc) => uc.isUsed);
@@ -261,7 +266,9 @@ export default function CouponsPage() {
                         renderItem={(userCoupon) => (
                           <CouponItem userCoupon={userCoupon} />
                         )}
-                        locale={{ emptyText: <Empty description="暂无可用优惠券" /> }}
+                        locale={{
+                          emptyText: <Empty description="暂无可用优惠券" />,
+                        }}
                       />
                     ),
                   },
@@ -274,7 +281,9 @@ export default function CouponsPage() {
                         renderItem={(userCoupon) => (
                           <CouponItem userCoupon={userCoupon} />
                         )}
-                        locale={{ emptyText: <Empty description="暂无已使用优惠券" /> }}
+                        locale={{
+                          emptyText: <Empty description="暂无已使用优惠券" />,
+                        }}
                       />
                     ),
                   },
@@ -287,7 +296,9 @@ export default function CouponsPage() {
                         renderItem={(userCoupon) => (
                           <CouponItem userCoupon={userCoupon} />
                         )}
-                        locale={{ emptyText: <Empty description="暂无过期优惠券" /> }}
+                        locale={{
+                          emptyText: <Empty description="暂无过期优惠券" />,
+                        }}
                       />
                     ),
                   },
@@ -324,7 +335,8 @@ const CouponItem: React.FC<{ userCoupon: UserCoupon }> = ({ userCoupon }) => {
       PERCENTAGE: { color: 'orange', text: '折扣' },
       FREE_SHIPPING: { color: 'blue', text: '包邮' },
     };
-    const typeInfo = typeMap[type as keyof typeof typeMap] || typeMap.FIXED_AMOUNT;
+    const typeInfo =
+      typeMap[type as keyof typeof typeMap] || typeMap.FIXED_AMOUNT;
     return <Tag color={typeInfo.color}>{typeInfo.text}</Tag>;
   };
 
@@ -349,7 +361,10 @@ const CouponItem: React.FC<{ userCoupon: UserCoupon }> = ({ userCoupon }) => {
             <Text type="secondary" disabled={isUsed || isExpired}>
               {coupon.description}
               {coupon.minAmount && <span> · 满¥{coupon.minAmount}可用</span>}
-              <span> · 有效期至{new Date(coupon.endDate).toLocaleDateString()}</span>
+              <span>
+                {' '}
+                · 有效期至{new Date(coupon.endDate).toLocaleDateString()}
+              </span>
             </Text>
             <div style={{ marginTop: 4 }}>
               <Text type="secondary" style={{ fontSize: '12px' }}>

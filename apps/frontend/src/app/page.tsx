@@ -18,7 +18,7 @@ import {
   GiftOutlined,
   LoginOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
 } from '@ant-design/icons';
 import { ProductList } from '../components/ProductList';
 import { useProducts } from '../hooks/useProducts';
@@ -62,7 +62,11 @@ export default function Home() {
           alignItems: 'center',
         }}
       >
-        <Row justify="space-between" align="middle" style={{ height: '100%', width: '100%' }}>
+        <Row
+          justify="space-between"
+          align="middle"
+          style={{ height: '100%', width: '100%' }}
+        >
           <Col>
             <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
               电商平台
@@ -74,7 +78,7 @@ export default function Home() {
               maxWidth: 600,
               margin: '0 50px',
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Search
@@ -112,7 +116,11 @@ export default function Home() {
 
               {isAuthenticated ? (
                 <>
-                  <Button type="text" href="/coupons" style={{ padding: '4px 8px' }}>
+                  <Button
+                    type="text"
+                    href="/coupons"
+                    style={{ padding: '4px 8px' }}
+                  >
                     <Space>
                       <GiftOutlined style={{ fontSize: 20 }} />
                       <Text>我的优惠券</Text>

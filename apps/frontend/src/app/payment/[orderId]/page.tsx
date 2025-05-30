@@ -95,11 +95,12 @@ export default function PaymentPage() {
   }, [orderId, isAuthenticated, router]);
 
   // 处理支付
-  const handlePayment = async () => {
+  const handlePayment = async (mockResult?: 'success' | 'failed') => {
     if (!order) return;
 
+    console.log('开始支付处理，订单ID:', order.id, '模拟结果:', mockResult);
     setPaymentStep(1);
-    setCountdown(3);
+    setCountdown(5);
 
     try {
       // 显示倒计时
@@ -118,6 +119,7 @@ export default function PaymentPage() {
         orderId: order.id,
         paymentMethod: paymentMethod as any,
         amount: order.totalAmount,
+        mockResult,
       });
 
       clearInterval(timer);
@@ -125,9 +127,11 @@ export default function PaymentPage() {
       setPaymentStep(2);
       message.success('支付成功！');
 
+      console.log('支付成功，结果:', result);
       // 更新本地订单状态
       setOrder(result.order);
     } catch (error) {
+      console.error('支付失败:', error);
       setPaymentResult('failed');
       setPaymentStep(2);
       message.error('支付失败，请重试');
@@ -288,10 +292,35 @@ export default function PaymentPage() {
                     size="large"
                     block
                     style={{ marginTop: 24 }}
-                    onClick={handlePayment}
+                    onClick={() => handlePayment()}
                   >
                     确认支付 {formatPrice(order.totalAmount)}
                   </Button>
+
+                  {/* 模拟支付按钮 - 仅用于测试 */}
+                  <div style={{ marginTop: 16 }}>
+                    <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginBottom: 8 }}>
+                      🧪 测试模式：
+                    </Text>
+                    <Space>
+                      <Button
+                        size="small"
+                        type="dashed"
+                        onClick={() => handlePayment('success')}
+                        style={{ color: '#52c41a', borderColor: '#52c41a' }}
+                      >
+                        模拟支付成功
+                      </Button>
+                      <Button
+                        size="small"
+                        type="dashed"
+                        onClick={() => handlePayment('failed')}
+                        style={{ color: '#ff4d4f', borderColor: '#ff4d4f' }}
+                      >
+                        模拟支付失败
+                      </Button>
+                    </Space>
+                  </div>
                 </Card>
               </Col>
             </Row>
