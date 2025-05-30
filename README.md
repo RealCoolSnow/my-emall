@@ -101,6 +101,15 @@ pnpm db:studio       # 打开 Prisma Studio
 
 ## 🎯 功能特性
 
+### 核心功能
+- ✅ **用户管理**: 注册、登录、个人资料管理
+- ✅ **商品管理**: 商品展示、分类、搜索、详情页
+- ✅ **购物车**: 添加商品、数量调整、价格计算
+- ✅ **订单系统**: 下单、支付、订单管理、状态跟踪
+- ✅ **优惠券系统**: 多种优惠券类型、自动推荐、策略模式
+- ✅ **管理后台**: 商品管理、订单管理、用户管理、数据统计
+
+### 技术特性
 - ✅ Monorepo 架构
 - ✅ TypeScript 全栈
 - ✅ SQLite 数据库
@@ -109,26 +118,50 @@ pnpm db:studio       # 打开 Prisma Studio
 - ✅ 代码质量工具
 - ✅ Git Hooks
 - ✅ 共享类型和工具
+- ✅ 现代化UI设计
+- ✅ 响应式布局
+
+## 🖼️ 界面截图
+
+### 前端用户界面 (`screen/frontend/`)
+
+![主页](screen/frontend/1.png)
+主页：轮播图、分类导航、商品展示
+
+![商品列表](screen/frontend/2.png)
+商品列表：现代化卡片设计、悬浮效果
+
+![购物车](screen/frontend/3.png)
+购物车：商品管理、价格计算
+
+![结算页面](screen/frontend/4.png)
+结算页面：地址信息、优惠券选择
+
+![个人中心](screen/frontend/5.png)
+个人中心：用户信息、订单历史
+
+![登录页面](screen/frontend/6.png)
+登录页面：品牌设计、测试账号
+
+### 管理后台界面 (`screen/admin/`)
+
+![仪表板](screen/admin/1.png)
+仪表板：数据统计、系统概览
+
+![商品管理](screen/admin/2.png)
+商品管理：商品列表、编辑功能
+
+![订单管理](screen/admin/3.png)
+订单管理：订单状态、用户信息
+
+![用户管理](screen/admin/4.png)
+用户管理：用户列表、权限管理
+
+![优惠券管理](screen/admin/5.png)
+优惠券：优惠券列表、编辑功能
+
+> 💡 **提示**: 所有截图展示了完整的功能界面和现代化的UI设计，体现了专业的C端电商产品体验。
 
 ## 📚 开发指南
 
-详细的开发指南请查看 `docs/` 目录：
-
-- [项目设置](docs/setup.markdown)
-- [前端开发](docs/frontend.markdown)
-- [后端开发](docs/backend.markdown)
-- [管理后台](docs/admin.markdown)
-- [优惠券系统](docs/coupons.markdown)
-- [测试指南](docs/testing.markdown)
-- [部署指南](docs/deployment.markdown)
-
-## 🤖 AI 辅助开发
-
-项目配置了 `.cursorrules` 文件，支持 Cursor AI 智能代码生成：
-
-```
-生成 Ant Design 商品列表组件
-生成 Express 优惠券 API
-生成 Prisma SQLite 模型
-生成优惠券策略模式
-```
+详细的开发指南请查看 `docs/`
